@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
+import 'package:learn_it/attendance_page/screens/attendance_page.dart';
+import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/homepage/providers/dashboard_provider.dart';
+import 'package:learn_it/profile_page/screens/profile_page.dart';
+import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:provider/provider.dart';
+
+import '../../common/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,45 +26,17 @@ class _HomePageState extends State<HomePage> {
 
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
+    final pages = [
+      DashBoardPage(),
+      TodaySchedulePage(),
+      AttendancePage(),
+      AddCoursesPage(),
+      ProfilePage()
+    ];
     return Scaffold(
-      appBar: AppBar(title: const Text("HomePage")),
-      body: ListView(
-        children: [
-          GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: width * 0.5,
-              childAspectRatio: 3 / 4,
-            ),
-            //GridBuilder
-            itemBuilder: (context, index) {
-              final cardDetails = dashboardData!.data[index];
-              return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  //----Styled Container here----
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    height: 50,
-                    width: 50,
-                    color: Colors.grey,
-                    child: Column(
-                      children: [
-                        Text(cardDetails.courseName),
-                        Text(cardDetails.description),
-                        Text(cardDetails.scheduleDate.toIso8601String())
-                      ],
-                    ),
-                  ));
-            },
-            itemCount: 2,
-          ),
-        ],
-      ),
+      body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Colors.purple,
+          selectedItemColor: Palette.kToDark,
           backgroundColor: Colors.grey,
           unselectedItemColor: Colors.grey,
           // ignore: prefer_const_literals_to_create_immutables

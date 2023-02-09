@@ -30,13 +30,14 @@ class LearnItButton extends StatelessWidget {
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               gradient: const LinearGradient(colors: [
-                Color.fromARGB(255, 106, 27, 154),
-                Color.fromARGB(255, 182, 78, 200)
+                Color.fromARGB(255, 10, 48, 114),
+                Color.fromARGB(180, 14, 96, 195),
+                //Color.fromARGB(180, 9, 43, 101),
               ])),
           child: Center(
             child: Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 15),
+              style: TextStyle(color: Colors.white, fontSize: 20),
             ),
           )),
     );
