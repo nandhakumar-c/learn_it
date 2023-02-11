@@ -10,7 +10,8 @@ import '../../login_page/widgets/bottomborderclipper.dart';
 import '../../login_page/widgets/topborderclipper.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  SignUpPage({required this.userType, super.key});
+  String userType;
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -33,7 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
   int? _value = 0;
   List<String> data = ["Student", "Teacher"];
   List<String> values = ["S", "T"];
-  String user = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -56,6 +57,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.userType);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     final provider = Provider.of<BackEndProvider>(context);
@@ -87,9 +89,12 @@ class _SignUpPageState extends State<SignUpPage> {
     handleSignUp(BuildContext context, String username, String email,
         String password, String confirmPassword, String userType) async {
       var payload = await attemptSignUp(
-          username, email, password, confirmPassword, userType);
+          username, email, password, confirmPassword, widget.userType);
       if (payload != null) {
         print(payload);
+
+        provider.setpayloadData(payload);
+        provider.storeJwtToken("jwt", provider.payloadData!.token);
         print("Success");
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const HomePage(),
@@ -163,6 +168,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
+                                //username
                                 TextField(
                                   textInputAction: TextInputAction.next,
                                   style: const TextStyle(fontSize: 20),
@@ -180,6 +186,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     thickness: 2,
                                   ),
                                 ),
+
+                                //email
                                 TextField(
                                   textInputAction: TextInputAction.next,
                                   style: const TextStyle(fontSize: 20),
@@ -197,6 +205,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     thickness: 2,
                                   ),
                                 ),
+
+                                //password
                                 TextField(
                                   textInputAction: TextInputAction.next,
                                   style: TextStyle(fontSize: 20),
@@ -228,6 +238,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     thickness: 2,
                                   ),
                                 ),
+
+                                //confirm password
                                 TextField(
                                   textInputAction: TextInputAction.next,
                                   style: TextStyle(fontSize: 20),
@@ -264,7 +276,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         height: height * 0.05,
                         width: width * 0.4,
                         text: "SIGN UP",
-                        onPressed: () {})
+                        onPressed: () {
+                          handleSignUp(
+                              context,
+                              username!.text,
+                              email!.text,
+                              password!.text,
+                              confirmPassword!.text,
+                              widget.userType);
+                        })
                   ],
                 ),
               ),

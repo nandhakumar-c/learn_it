@@ -19,27 +19,47 @@ class DashBoardPage extends StatefulWidget {
 class _DashBoardPageState extends State<DashBoardPage> {
   late Future<String> myFuture;
   late String id;
+  late String userType;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     String jwt = context.read<BackEndProvider>().jwt;
     String serverIp = context.read<BackEndProvider>().getLocalhost();
-    myFuture = getDashboardData(jwt, serverIp);
+
     id = context.read<BackEndProvider>().payloadData!.user.id;
+    userType = context.read<BackEndProvider>().payloadData!.user.userType;
+    print("Debug------> $userType");
+    myFuture = getDashboardData(jwt, serverIp);
   }
 
   Future<String> getDashboardData(String jwtToken, String serverIp) async {
-    print("Testing Id ===> $id");
-    var res = await http.get(Uri.parse("$serverIp/getAllcourses/"),
-        headers: {"Authorization": jwtToken});
-    print("Dashboard - Success");
-    //success prompt
-    if (res.statusCode == 200) {
-      print("Dashboard - Success");
+    if (userType == "T") {
+      print("teacher");
+      var res = await http.get(Uri.parse("$serverIp/getAllcourses/$id"),
+          headers: {"Authorization": jwtToken});
 
-      return res.body;
+      //success prompt
+      if (res.statusCode == 200) {
+        print("Dashboard - Success");
+
+        return res.body;
+      }
     }
+    if (userType == "S") {
+      print("student");
+      var res = await http.get(Uri.parse("$serverIp/getAllcourses"),
+          headers: {"Authorization": jwtToken});
+
+      //success prompt
+      if (res.statusCode == 200) {
+        print("Dashboard - Success");
+
+        return res.body;
+      }
+    }
+
     return "";
   }
 
@@ -87,13 +107,21 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
                     itemBuilder: (context, index) {
                       final cardDetails = dashboardData.data[index];
-                      String dateFormat = DateFormat("MMM dd, yyyy hh:mm a")
-                          .format(DateTime.parse(
-                              cardDetails.scheduleDate.toString()));
+                      final dateFormat = DateFormat("MMM dd, yyyy HH:mm a");
+                      String dateInput = dateFormat.format(
+                          DateTime.parse(cardDetails.scheduleDate.toString()));
+                      print(
+                          "Input Value =====> ${cardDetails.scheduleDate.toString()}");
+                      print("dateformat ------->  ${dateInput}");
+
                       String date = DateFormat("MMM dd, yyyy").format(
                           DateTime.parse(cardDetails.scheduleDate.toString()));
                       String time = DateFormat("hh:mm:a").format(
                           DateTime.parse(cardDetails.scheduleDate.toString()));
+
+                      /*final parsedDate =
+                          cardDetails.scheduleDate.toString().parseToDate();
+                      print(parsedDate.toIso8601String());*/
 
                       //----Styled Container here----
                       return ClayContainer(

@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/common/widgets/colors.dart';
+import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
+import 'package:learn_it/profile_page/screens/profile_page.dart';
+import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
+import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'dart:ui' as ui;
 import '../../common/widgets/clipper.dart';
 
@@ -36,7 +40,7 @@ class _StartupScreenState extends State<StartupScreen> {
       });
     });
 
-    //
+    //Navigation to the User Selection Page
     Future.delayed(Duration(seconds: 2), () {
       setState(() {
         isButtonVisible = true;
@@ -46,7 +50,7 @@ class _StartupScreenState extends State<StartupScreen> {
       print("Pressed !");
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => SignUpPage(),
+          builder: (context) => ProfilePage(),
         ),
       );
     }
@@ -186,8 +190,7 @@ class _StartupScreenState extends State<StartupScreen> {
       duration: Duration(seconds: 1),
       builder: (context, double value, child) {
         return Positioned(
-          top: height * 0.815,
-          bottom: 50,
+          bottom: height * 0.07,
           left: 0,
           right: 0,
           child: Opacity(
@@ -195,10 +198,8 @@ class _StartupScreenState extends State<StartupScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               child: LearnItButton(
-                // height: height * 0.06,
-                // width: width,
+                height: height * 0.06,
                 onPressed: navigationCallBack,
-
                 text: "Get Started",
               ),
             ),
