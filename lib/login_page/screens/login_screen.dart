@@ -9,7 +9,7 @@ import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/widgets/clipper.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
-import 'package:learn_it/homepage/providers/dashboard_provider.dart';
+import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/login_page/widgets/bottomborderclipper.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
 import 'package:learn_it/signup_page/screens/user_selection_page.dart';

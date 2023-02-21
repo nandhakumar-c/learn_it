@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/common/widgets/colors.dart';
+import 'package:learn_it/dashboard_page/video_call_page.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
@@ -50,7 +51,7 @@ class _StartupScreenState extends State<StartupScreen> {
       print("Pressed !");
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => ProfilePage(),
+          builder: (context) => UserSelectionPage(),
         ),
       );
     }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/widgets/button.dart';
-import 'package:learn_it/homepage/models/dashboard_model.dart';
+import 'package:learn_it/dashboard_page/models/dashboard_model.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../../common/providers/backend_provider.dart';
-import '../../homepage/providers/dashboard_provider.dart';
+import '../providers/dashboard_provider.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});
@@ -87,7 +87,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           if (snapshot.hasData) {
             final dashboardData =
                 dashboardDataFromJson(snapshot.data as String);
-
+            dashboardProvider.setDashboardData(snapshot.data as String);
             return Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: ListView(
@@ -110,9 +110,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       final dateFormat = DateFormat("MMM dd, yyyy HH:mm a");
                       String dateInput = dateFormat.format(
                           DateTime.parse(cardDetails.scheduleDate.toString()));
-                      print(
-                          "Input Value =====> ${cardDetails.scheduleDate.toString()}");
-                      print("dateformat ------->  ${dateInput}");
+                      // print(
+                      //     "Input Value =====> ${cardDetails.scheduleDate.toString()}");
+                      // print("dateformat ------->  ${dateInput}");
 
                       String date = DateFormat("MMM dd, yyyy").format(
                           DateTime.parse(cardDetails.scheduleDate.toString()));

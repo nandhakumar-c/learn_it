@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/widgets/colors.dart';
-import 'package:learn_it/homepage/providers/dashboard_provider.dart';
+import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/startup_page/screens/startup_page.dart';
 import 'package:provider/provider.dart';
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         debugShowCheckedModeBanner: false,
-        home: const SafeArea(child: AddCoursesPage()),
+        home: const SafeArea(child: StartupScreen()),
       ),
     );
   }

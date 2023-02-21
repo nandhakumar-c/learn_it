@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/attendance_page/screens/attendance_page.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
-import 'package:learn_it/homepage/providers/dashboard_provider.dart';
+import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:provider/provider.dart';
