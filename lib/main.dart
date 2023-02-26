@@ -9,6 +9,7 @@ import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/startup_page/screens/startup_page.dart';
+import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -51,10 +52,14 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => DashBoardProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => VideoCallProvider(),
         )
       ],
       child: MaterialApp(
           theme: ThemeData(
+              scaffoldBackgroundColor: Color(0xFFF5FAFA),
               fontFamily: 'Inter',
               textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
               useMaterial3: true,

@@ -164,6 +164,38 @@ class _DashBoardPageState extends State<DashBoardPage> {
               time: "06:00 - 07:00 PM",
               imgUrl: "assets/images/Template1.jpg",
             ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "React Native Course",
+              time: "10:00 - 11:00 PM",
+              imgUrl: "assets/images/Template3.jpg",
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "Node JS",
+              time: "06:00 - 07:00 PM",
+              imgUrl: "assets/images/Template1.jpg",
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "React Native Course",
+              time: "10:00 - 11:00 PM",
+              imgUrl: "assets/images/Template3.jpg",
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "Node JS",
+              time: "06:00 - 07:00 PM",
+              imgUrl: "assets/images/Template1.jpg",
+            ),
           ],
         ),
       ),

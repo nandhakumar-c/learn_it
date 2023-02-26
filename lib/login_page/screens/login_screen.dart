@@ -17,6 +17,8 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/utils/screen_size.dart';
+import '../../video_call_page/screens/video_call_screen.dart';
+import '../../video_call_page/screens/video_call_screen_layout.dart';
 import '../widgets/topborderclipper.dart';
 
 class LoginPage extends StatefulWidget {
@@ -171,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                 FilledButton(
                   onPressed: () async {
                     Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => HomePage(),
+                      builder: (context) => VideoCallScreen(),
                     ));
                     /*print(username.text);
                   print(password.text);

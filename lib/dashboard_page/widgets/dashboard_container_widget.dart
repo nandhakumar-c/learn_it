@@ -31,7 +31,8 @@ class DashboardContainer extends StatelessWidget {
           borderRadius: BorderRadius.circular(7),
           image: DecorationImage(
               filterQuality: FilterQuality.high,
-              colorFilter: ColorFilter.mode(Colors.black38, BlendMode.multiply),
+              colorFilter:
+                  const ColorFilter.mode(Colors.black38, BlendMode.multiply),
               opacity: 0.95,
               image: AssetImage(imgUrl),
               fit: BoxFit.cover),
