@@ -4,10 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/dashboard_page/models/dashboard_model.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../../common/providers/backend_provider.dart';
+import '../../common/utils/color.dart';
+import '../../common/utils/screen_size.dart';
 import '../providers/dashboard_provider.dart';
+import '../widgets/dashboard_container_widget.dart';
 
 class DashBoardPage extends StatefulWidget {
   const DashBoardPage({super.key});
@@ -25,13 +29,13 @@ class _DashBoardPageState extends State<DashBoardPage> {
     // TODO: implement initState
     super.initState();
 
-    String jwt = context.read<BackEndProvider>().jwt;
+    /* String jwt = context.read<BackEndProvider>().jwt;
     String serverIp = context.read<BackEndProvider>().getLocalhost();
 
     id = context.read<BackEndProvider>().payloadData!.user.id;
     userType = context.read<BackEndProvider>().payloadData!.user.userType;
     print("Debug------> $userType");
-    myFuture = getDashboardData(jwt, serverIp);
+    myFuture = getDashboardData(jwt, serverIp); */
   }
 
   Future<String> getDashboardData(String jwtToken, String serverIp) async {
@@ -76,12 +80,94 @@ class _DashBoardPageState extends State<DashBoardPage> {
 //function to get dashboard data
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F2F2),
+      //backgroundColor: const Color(0xFFF2F2F2),
       appBar: AppBar(
-        title: const Text("Dashboard page"),
-        leading: IconButton(icon: Icon(Icons.chevron_left), onPressed: () {}),
+        title: const Text("Hi, Steve"),
+        automaticallyImplyLeading: false,
       ),
-      body: FutureBuilder(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: ListView(
+          //shrinkWrap: true,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: RichText(
+                  text: TextSpan(
+                      text: "You have ",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontWeight: FontWeight.w600),
+                      children: [
+                        TextSpan(
+                            text: "3",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(
+                                    color: CustomColor.primaryColor,
+                                    fontWeight: FontWeight.bold)),
+                        const TextSpan(text: " meetings today")
+                      ]),
+                ),
+              ),
+            ),
+            /* SizedBox(
+              child: Lottie.asset(
+                "assets/lottie/dashboard_meeting.json",
+                height: SizeConfig.height! * 30,
+                width: SizeConfig.height! * 30,
+              ),
+            ),*/
+            SizedBox(
+              height: SizeConfig.height! * 3,
+            ),
+            Text(
+              "Current Meeting",
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                  color: CustomColor.primaryColor, fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 1.5,
+            ),
+            DashboardContainer(
+              courseName: "Flutter Course",
+              time: "04:00 - 05:00 PM",
+              imgUrl: "assets/images/Template4.jpg",
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 5,
+            ),
+            Text(
+              "Upcoming Meetings",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontWeight: FontWeight.w700),
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "React Native Course",
+              time: "10:00 - 11:00 PM",
+              imgUrl: "assets/images/Template3.jpg",
+            ),
+            SizedBox(
+              height: SizeConfig.height! * 2,
+            ),
+            DashboardContainer(
+              courseName: "Node JS",
+              time: "06:00 - 07:00 PM",
+              imgUrl: "assets/images/Template1.jpg",
+            ),
+          ],
+        ),
+      ),
+      /* body: FutureBuilder(
         future: myFuture,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
@@ -296,7 +382,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
             );
           }
         },
-      ),
+      )*/
     );
   }
 }
