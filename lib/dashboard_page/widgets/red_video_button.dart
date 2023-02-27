@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:provider/provider.dart';
 
-class VideoButton extends StatefulWidget {
-  const VideoButton({super.key});
+class RedVideoButton extends StatefulWidget {
+  const RedVideoButton({super.key});
 
   @override
-  State<VideoButton> createState() => _VideoButtonState();
+  State<RedVideoButton> createState() => _RedVideoButtonState();
 }
 
-class _VideoButtonState extends State<VideoButton> {
+class _RedVideoButtonState extends State<RedVideoButton> {
   @override
   Widget build(BuildContext context) {
     final videoProvider = Provider.of<VideoCallProvider>(context);
@@ -26,14 +26,14 @@ class _VideoButtonState extends State<VideoButton> {
           )
         : IconButton(
             style: IconButton.styleFrom(
-              backgroundColor: Color(0xffffffff),
+              backgroundColor: Color(0xffFF002E),
             ),
             onPressed: () {
               videoProvider.videoSwitch();
             },
             icon: const Icon(
               Icons.videocam_off,
-              color: Color(0xff808080),
+              color: Color(0xffffffff),
             ));
   }
 }

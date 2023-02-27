@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:learn_it/common/utils/color.dart';
+import 'package:learn_it/video_call_page/screens/signaling.dart';
 
 import '../../common/utils/screen_size.dart';
 import '../widgets/audio_button.dart';
@@ -18,6 +20,32 @@ class VideoCallScreen extends StatefulWidget {
 }
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
+  Signaling signaling = Signaling();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  String? roomId;
+  TextEditingController textEditingController = TextEditingController(text: '');
+
+  @override
+  void initState() {
+    _localRenderer.initialize();
+    _remoteRenderer.initialize();
+
+    signaling.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

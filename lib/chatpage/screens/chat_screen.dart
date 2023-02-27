@@ -4,6 +4,7 @@ import 'package:learn_it/chatpage/widgets/own_message.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 import '../models/user_model.dart';
+import '../widgets/other_message.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -13,10 +14,10 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-TextEditingController? controller;
-IO.Socket? socket;
-List<MessageModel> message_list = [];
- 
+  TextEditingController? controller;
+  IO.Socket? socket;
+  List<MessageModel> message_list = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -25,59 +26,109 @@ List<MessageModel> message_list = [];
     controller = TextEditingController();
   }
 
-  void connect(){
-     socket = IO.io('http://localhost:3000',<String,dynamic>{"transports":["websocket"],"autoConnect":false});
-  socket!.onConnect((_) {
-    print('---connected to backend---');
-  socket!.on('sendMessageFromBackEnd', (data){
-    final msg = MessageModel(message: data["message"], type: data["type"], sender: data["sender"]);
-    message_list.add(data);
-  });
-  });
-  
-  socket!.onDisconnect((_) => print('disconnect'));
-  socket!.on('fromServer', (_) => print(_));
-  }
-
-  void sendMessage(String message,String senderName){
-
-    MessageModel ownMsg = MessageModel(type: "ownMsg",message: message,sender: senderName);
-    message_list.add(ownMsg);
-      socket!.emit('message',{
-        
-        "type" : "ownMsg",
-        "message": message,
-        "sender":senderName
+  void connect() {
+    socket = IO.io('http://192.168.1.80:4000', <String, dynamic>{
+      "transports": ["websocket"],
+      "autoConnect": false
+    });
+    socket!.connect();
+    socket!.onConnect((_) {
+      print('---connected to backend---');
+      socket!.on('messageResponse', (data) {
+        final msg = MessageModel(
+            message: data["text"],
+            sender: data["name"],
+            date: DateTime.parse(data['currentDate']),
+            socketId: data['socketID']);
+        setState(() {
+          message_list.add(msg);
         });
+      });
+    });
+
+    socket!.onDisconnect((_) => print('disconnect'));
+    socket!.on('fromServer', (_) => print(_));
   }
 
+  void sendMessage(String message, String senderName) {
+    MessageModel ownMsg = MessageModel(
+        date: DateTime.now(),
+        socketId: socket!.id as String,
+        message: message,
+        sender: senderName);
+    setState(() {
+      message_list.add(ownMsg);
+    });
+    print(socket!.id);
+    //emiting to backend
+    socket!.emit('message', {
+      // "type": "ownMsg",
+      "text": message,
+      "name": senderName,
+      "id": "sample",
+      "socketID": socket!.id as String,
+      "currentDate": DateTime.now().toIso8601String()
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Chat Screen")),
-    
-    body: Column(
-      children: [
-        Expanded(
-          child: ListView(children: [
-           OwnMessageWidget(),
-            
-          ]),
+    return Scaffold(
+      // backgroundColor: Color(0xffF5FAFA),
+      appBar: AppBar(title: Text("Chat Screen")),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Expanded(
+                child: ListView.builder(
+              itemCount: message_list.length,
+              itemBuilder: (context, index) {
+                final message_data = message_list[index];
+                return message_data.socketId == socket!.id
+                    ? OwnMessageWidget(
+                        message: message_data.message,
+                        sender: message_data.sender,
+                      )
+                    : OtherMessageWidget(
+                        message: message_data.message,
+                        sender: message_data.sender);
+              },
+            )),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Row(children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: TextFormField(
+                      textAlign: TextAlign.start,
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xffDCEDF5),
+                          contentPadding: EdgeInsets.all(20.0),
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                sendMessage(controller!.text, "NK");
+                                controller!.clear();
+                              },
+                              icon: Icon(Icons.send)),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(width: 0),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(48),
+                            ),
+                          ),
+                          hintText: "Type a message"),
+                      controller: controller,
+                    ),
+                  ),
+                ),
+              ]),
+            )
+          ],
         ),
-        Row(children: [
-        
-              Expanded(child: Padding(
-                padding: EdgeInsets.all(20),
-                child: TextFormField(decoration: InputDecoration(hintText: "Type a message"),controller: controller,))),
-                IconButton(onPressed: (){
-                  
-                  sendMessage(controller!.text,"NK");
-                  controller!.clear();
-                  
-                  },
-                 icon: Icon(Icons.send))
-            ])
-      ],
-    ),);
+      ),
+    );
   }
 }

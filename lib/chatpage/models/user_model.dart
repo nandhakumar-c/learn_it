@@ -1,8 +1,11 @@
-class MessageModel{
-    String message;
-    String type;
-    String sender;
-    MessageModel({required this.message,required this.type,required this.sender});
-
-  
+class MessageModel {
+  String message;
+  String socketId;
+  String sender;
+  DateTime date;
+  MessageModel(
+      {required this.message,
+      required this.socketId,
+      required this.sender,
+      required this.date});
 }

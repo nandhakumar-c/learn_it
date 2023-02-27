@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 
 import '../../common/utils/screen_size.dart';
 
-class OwnMessageWidget extends StatelessWidget {
+class OtherMessageWidget extends StatelessWidget {
   String sender;
   String message;
-  OwnMessageWidget({required this.sender, required this.message, super.key});
-
+  OtherMessageWidget({required this.sender, required this.message, super.key});
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-            color: Color(0xffC1E5F5), borderRadius: BorderRadius.circular(10)),
+            color: Color(0xffffffff), borderRadius: BorderRadius.circular(10)),
         child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: Container(
@@ -32,8 +31,8 @@ class OwnMessageWidget extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(48),
                             child: const Image(
-                                image:
-                                    AssetImage("assets/avatars/avatar2.jpeg")),
+                                image: AssetImage(
+                                    "assets/avatars/channels4_profile.jpg")),
                           ),
                         ),
                       ),
@@ -49,7 +48,7 @@ class OwnMessageWidget extends StatelessWidget {
                                 //width: SizeConfig.width! * 75,
                                 child: Row(children: [
                                   Text(
-                                    "You",
+                                    sender.toString(),
                                     style:
                                         Theme.of(context).textTheme.bodySmall,
                                   ),

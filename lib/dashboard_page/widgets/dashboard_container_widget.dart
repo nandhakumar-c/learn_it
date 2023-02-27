@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/dashboard_page/widgets/join_button.dart';
 import 'package:learn_it/dashboard_page/widgets/modalbottomsheet.dart';
+import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
+import 'package:learn_it/dashboard_page/widgets/red_video_button.dart';
 
 import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
 
-class DashboardContainer extends StatelessWidget {
+class DashboardContainer extends StatefulWidget {
   String time;
   String courseName;
   String imgUrl;
@@ -15,15 +18,44 @@ class DashboardContainer extends StatelessWidget {
       super.key});
 
   @override
+  State<DashboardContainer> createState() => _DashboardContainerState();
+}
+
+class _DashboardContainerState extends State<DashboardContainer> {
+  DraggableScrollableController? controller;
+  double? offset;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = DraggableScrollableController();
+    controller!.addListener(() {
+      offset = controller!.pixels;
+      //print("Offset value $offset");
+      // print("Offset ---> ${controller!.pixels}");
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller!.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: CustomColor.primaryColor,
       onTap: () {
-        // ModalBottomSheet(
-        //     context: context,
-        //     courseName: courseName,
-        //     time: time,
-        //     instructorName: "John Smith");
+        ModalBottomSheet(
+                context: context,
+                courseName: widget.courseName,
+                time: widget.time,
+                instructorName: "John Smith",
+                controller: controller!,
+                offset: offset)
+            .bottomsheet();
       },
       child: Ink(
         decoration: BoxDecoration(
@@ -34,7 +66,7 @@ class DashboardContainer extends StatelessWidget {
               colorFilter:
                   const ColorFilter.mode(Colors.black38, BlendMode.multiply),
               opacity: 0.95,
-              image: AssetImage(imgUrl),
+              image: AssetImage(widget.imgUrl),
               fit: BoxFit.cover),
         ),
         height: 130,
@@ -44,14 +76,14 @@ class DashboardContainer extends StatelessWidget {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              courseName,
+              widget.courseName,
               style: Theme.of(context)
                   .textTheme
                   .headlineSmall!
                   .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
             ),
             Text(
-              time,
+              widget.time,
               style: Theme.of(context)
                   .textTheme
                   .titleMedium!
@@ -60,6 +92,26 @@ class DashboardContainer extends StatelessWidget {
           ]),
         ),
       ),
+    );
+  }
+
+  bottomsheet() {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.5,
+      builder: (context, scrollController) {
+        return Stack(
+          children: [
+            Positioned(
+              child: Text(
+                widget.courseName,
+                style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                    fontWeight: FontWeight.w700,
+                    color: CustomColor.primaryColor),
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

@@ -35,7 +35,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
     id = context.read<BackEndProvider>().payloadData!.user.id;
     userType = context.read<BackEndProvider>().payloadData!.user.userType;
     print("Debug------> $userType");
-    myFuture = getDashboardData(jwt, serverIp); */
+    myFuture = getDashboardData(jwt, serverIp);  */
   }
 
   Future<String> getDashboardData(String jwtToken, String serverIp) async {
@@ -58,7 +58,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
       //success prompt
       if (res.statusCode == 200) {
-        print("Dashboard - Success");
+        print("Dashboard - Success Student");
 
         return res.body;
       }
@@ -73,140 +73,286 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
     //dashboardprovider
     final dashboardProvider = Provider.of<DashBoardProvider>(context);
-
+    //final courseCount = dashboardProvider.dashboardData!.data.length;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-//function to get dashboard data
+    //function to get dashboard data
 
     return Scaffold(
-      //backgroundColor: const Color(0xFFF2F2F2),
-      appBar: AppBar(
-        title: const Text("Hi, Steve"),
-        automaticallyImplyLeading: false,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView(
-          //shrinkWrap: true,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: Align(
-                alignment: Alignment.center,
-                child: RichText(
-                  text: TextSpan(
-                      text: "You have ",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(fontWeight: FontWeight.w600),
-                      children: [
-                        TextSpan(
-                            text: "3",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(
-                                    color: CustomColor.primaryColor,
-                                    fontWeight: FontWeight.bold)),
-                        const TextSpan(text: " meetings today")
-                      ]),
+        //backgroundColor: const Color(0xFFF2F2F2),
+        appBar: AppBar(
+          title: const Text("Hi, Steve"),
+          automaticallyImplyLeading: false,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ListView(
+            //shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: RichText(
+                    text: TextSpan(
+                        text: "You have ",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(fontWeight: FontWeight.w600),
+                        children: [
+                          TextSpan(
+                              text: "3",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(
+                                      color: CustomColor.primaryColor,
+                                      fontWeight: FontWeight.bold)),
+                          const TextSpan(text: " meetings today")
+                        ]),
+                  ),
                 ),
               ),
-            ),
-            /* SizedBox(
+              /* SizedBox(
               child: Lottie.asset(
                 "assets/lottie/dashboard_meeting.json",
                 height: SizeConfig.height! * 30,
                 width: SizeConfig.height! * 30,
               ),
             ),*/
-            SizedBox(
-              height: SizeConfig.height! * 3,
-            ),
-            Text(
-              "Current Meeting",
-              style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  color: CustomColor.primaryColor, fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 1.5,
-            ),
-            DashboardContainer(
-              courseName: "Flutter Course",
-              time: "04:00 - 05:00 PM",
-              imgUrl: "assets/images/Template4.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 5,
-            ),
-            Text(
-              "Upcoming Meetings",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium!
-                  .copyWith(fontWeight: FontWeight.w700),
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "React Native Course",
-              time: "10:00 - 11:00 PM",
-              imgUrl: "assets/images/Template3.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "Node JS",
-              time: "06:00 - 07:00 PM",
-              imgUrl: "assets/images/Template1.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "React Native Course",
-              time: "10:00 - 11:00 PM",
-              imgUrl: "assets/images/Template3.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "Node JS",
-              time: "06:00 - 07:00 PM",
-              imgUrl: "assets/images/Template1.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "React Native Course",
-              time: "10:00 - 11:00 PM",
-              imgUrl: "assets/images/Template3.jpg",
-            ),
-            SizedBox(
-              height: SizeConfig.height! * 2,
-            ),
-            DashboardContainer(
-              courseName: "Node JS",
-              time: "06:00 - 07:00 PM",
-              imgUrl: "assets/images/Template1.jpg",
-            ),
-          ],
-        ),
-      ),
-      /* body: FutureBuilder(
-        future: myFuture,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final dashboardData =
-                dashboardDataFromJson(snapshot.data as String);
-            dashboardProvider.setDashboardData(snapshot.data as String);
-            return Padding(
+              SizedBox(
+                height: SizeConfig.height! * 3,
+              ),
+              Text(
+                "Current Meeting",
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: CustomColor.primaryColor,
+                    fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 1.5,
+              ),
+              DashboardContainer(
+                courseName: "Flutter Course",
+                time: "04:00 - 05:00 PM",
+                imgUrl: "assets/images/Template4.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 5,
+              ),
+              Text(
+                "Upcoming Meetings",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontWeight: FontWeight.w700),
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "React Native Course",
+                time: "10:00 - 11:00 PM",
+                imgUrl: "assets/images/Template3.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "Node JS",
+                time: "06:00 - 07:00 PM",
+                imgUrl: "assets/images/Template1.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "React Native Course",
+                time: "10:00 - 11:00 PM",
+                imgUrl: "assets/images/Template3.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "Node JS",
+                time: "06:00 - 07:00 PM",
+                imgUrl: "assets/images/Template1.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "React Native Course",
+                time: "10:00 - 11:00 PM",
+                imgUrl: "assets/images/Template3.jpg",
+              ),
+              SizedBox(
+                height: SizeConfig.height! * 2,
+              ),
+              DashboardContainer(
+                courseName: "Node JS",
+                time: "06:00 - 07:00 PM",
+                imgUrl: "assets/images/Template1.jpg",
+              ),
+            ],
+          ),
+        )
+
+        /*body: FutureBuilder(
+          future: myFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final dashboardData =
+                  dashboardDataFromJson(snapshot.data as String);
+              dashboardProvider.setDashboardData(snapshot.data as String);
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: ListView(
+                  //shrinkWrap: true,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: RichText(
+                          text: TextSpan(
+                              text: "You have ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium!
+                                  .copyWith(fontWeight: FontWeight.w600),
+                              children: [
+                                TextSpan(
+                                    text: "3",
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                            color: CustomColor.primaryColor,
+                                            fontWeight: FontWeight.bold)),
+                                const TextSpan(text: " meetings today")
+                              ]),
+                        ),
+                      ),
+                    ),
+                    /* SizedBox(
+              child: Lottie.asset(
+                "assets/lottie/dashboard_meeting.json",
+                height: SizeConfig.height! * 30,
+                width: SizeConfig.height! * 30,
+              ),
+            ),*/
+                    SizedBox(
+                      height: SizeConfig.height! * 3,
+                    ),
+                    Text(
+                      "Current Meeting",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: CustomColor.primaryColor,
+                          fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 1.5,
+                    ),
+                    DashboardContainer(
+                      courseName: "Flutter Course",
+                      time: "04:00 - 05:00 PM",
+                      imgUrl: "assets/images/Template4.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 5,
+                    ),
+                    Text(
+                      "Upcoming Meetings",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "React Native Course",
+                      time: "10:00 - 11:00 PM",
+                      imgUrl: "assets/images/Template3.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "Node JS",
+                      time: "06:00 - 07:00 PM",
+                      imgUrl: "assets/images/Template1.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "React Native Course",
+                      time: "10:00 - 11:00 PM",
+                      imgUrl: "assets/images/Template3.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "Node JS",
+                      time: "06:00 - 07:00 PM",
+                      imgUrl: "assets/images/Template1.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "React Native Course",
+                      time: "10:00 - 11:00 PM",
+                      imgUrl: "assets/images/Template3.jpg",
+                    ),
+                    SizedBox(
+                      height: SizeConfig.height! * 2,
+                    ),
+                    DashboardContainer(
+                      courseName: "Node JS",
+                      time: "06:00 - 07:00 PM",
+                      imgUrl: "assets/images/Template1.jpg",
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ) */
+        );
+  }
+}
+
+
+/* 
+final cardDetails = dashboardData.data[index];
+                      final dateFormat = DateFormat("MMM dd, yyyy HH:mm a");
+                      String dateInput = dateFormat.format(
+                          DateTime.parse(cardDetails.scheduleDate.toString()));
+                      // print(
+                      //     "Input Value =====> ${cardDetails.scheduleDate.toString()}");
+                      // print("dateformat ------->  ${dateInput}");
+
+                      String date = DateFormat("MMM dd, yyyy").format(
+                          DateTime.parse(cardDetails.scheduleDate.toString()));
+                      String time = DateFormat("hh:mm:a").format(
+                          DateTime.parse(cardDetails.scheduleDate.toString()));
+*/
+
+//old layout
+/*
+ return Padding(
               padding: const EdgeInsets.only(left: 15, right: 15),
               child: ListView(
                 shrinkWrap: true,
@@ -408,13 +554,4 @@ class _DashBoardPageState extends State<DashBoardPage> {
                 ],
               ),
             );
-          } else {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      )*/
-    );
-  }
-}
+ */
