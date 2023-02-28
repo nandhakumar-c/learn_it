@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import '../../common/providers/backend_provider.dart';
 import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
+import '../../common/widgets/loading.dart';
 import '../providers/dashboard_provider.dart';
 import '../widgets/dashboard_container_widget.dart';
 
@@ -29,13 +30,13 @@ class _DashBoardPageState extends State<DashBoardPage> {
     // TODO: implement initState
     super.initState();
 
-    /* String jwt = context.read<BackEndProvider>().jwt;
+    String jwt = context.read<BackEndProvider>().jwt;
     String serverIp = context.read<BackEndProvider>().getLocalhost();
 
     id = context.read<BackEndProvider>().payloadData!.user.id;
     userType = context.read<BackEndProvider>().payloadData!.user.userType;
     print("Debug------> $userType");
-    myFuture = getDashboardData(jwt, serverIp);  */
+    myFuture = getDashboardData(jwt, serverIp);
   }
 
   Future<String> getDashboardData(String jwtToken, String serverIp) async {
@@ -85,7 +86,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           title: const Text("Hi, Steve"),
           automaticallyImplyLeading: false,
         ),
-        body: Padding(
+        /* body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: ListView(
             //shrinkWrap: true,
@@ -199,9 +200,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
               ),
             ],
           ),
-        )
+        )*/
 
-        /*body: FutureBuilder(
+        body: FutureBuilder(
           future: myFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
@@ -257,11 +258,64 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     SizedBox(
                       height: SizeConfig.height! * 1.5,
                     ),
-                    DashboardContainer(
-                      courseName: "Flutter Course",
-                      time: "04:00 - 05:00 PM",
-                      imgUrl: "assets/images/Template4.jpg",
-                    ),
+                    dashboardProvider.todaySchedule.length == 0
+                        ? Container(
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                    height: SizeConfig.height! * 20,
+                                    child: Lottie.asset(
+                                        "assets/lottie/no_meeting.json")),
+                                Text(
+                                  "You have no meetings right now",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                          color: Color(0xffFF888F),
+                                          fontWeight: FontWeight.w600),
+                                )
+                              ],
+                            ),
+                          )
+                        : ListView.separated(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) => SizedBox(
+                              height: SizeConfig.height! * 2,
+                            ),
+                            itemCount: dashboardProvider.todaySchedule.length,
+                            itemBuilder: (context, index) {
+                              final dashboardvalue =
+                                  dashboardProvider.todaySchedule[index];
+                              final cardDetails = dashboardData.data[index];
+                              final dateFormat =
+                                  DateFormat("MMM dd, yyyy HH:mm a");
+                              String dateInput = dateFormat.format(
+                                  DateTime.parse(
+                                      cardDetails.scheduleDate.toString()));
+
+                              String date = DateFormat("MMM dd, yyyy").format(
+                                  DateTime.parse(
+                                      cardDetails.scheduleDate.toString()));
+                              String time = DateFormat("hh:mm:a").format(
+                                  DateTime.parse(
+                                      cardDetails.scheduleDate.toString()));
+                              print(dashboardProvider.todaySchedule.length);
+                              return dashboardProvider.todaySchedule.length == 0
+                                  ? Container(
+                                      height: 50,
+                                      width: 50,
+                                      child: Lottie.asset(
+                                          "assets/lottie/no_meeting.json"),
+                                    )
+                                  : DashboardContainer(
+                                      time: time,
+                                      courseName: dashboardvalue.courseName,
+                                      imgUrl:
+                                          dashboardProvider.images[index % 5]);
+                            },
+                          ),
                     SizedBox(
                       height: SizeConfig.height! * 5,
                     ),
@@ -275,62 +329,47 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     SizedBox(
                       height: SizeConfig.height! * 2,
                     ),
-                    DashboardContainer(
-                      courseName: "React Native Course",
-                      time: "10:00 - 11:00 PM",
-                      imgUrl: "assets/images/Template3.jpg",
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height! * 2,
-                    ),
-                    DashboardContainer(
-                      courseName: "Node JS",
-                      time: "06:00 - 07:00 PM",
-                      imgUrl: "assets/images/Template1.jpg",
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height! * 2,
-                    ),
-                    DashboardContainer(
-                      courseName: "React Native Course",
-                      time: "10:00 - 11:00 PM",
-                      imgUrl: "assets/images/Template3.jpg",
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height! * 2,
-                    ),
-                    DashboardContainer(
-                      courseName: "Node JS",
-                      time: "06:00 - 07:00 PM",
-                      imgUrl: "assets/images/Template1.jpg",
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height! * 2,
-                    ),
-                    DashboardContainer(
-                      courseName: "React Native Course",
-                      time: "10:00 - 11:00 PM",
-                      imgUrl: "assets/images/Template3.jpg",
-                    ),
-                    SizedBox(
-                      height: SizeConfig.height! * 2,
-                    ),
-                    DashboardContainer(
-                      courseName: "Node JS",
-                      time: "06:00 - 07:00 PM",
-                      imgUrl: "assets/images/Template1.jpg",
+                    ListView.separated(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) => SizedBox(
+                        height: SizeConfig.height! * 2,
+                      ),
+                      itemCount: dashboardData.data.length,
+                      itemBuilder: (context, index) {
+                        final dashboardvalue = dashboardData.data[index];
+                        final cardDetails = dashboardData.data[index];
+                        final dateFormat = DateFormat("MMM dd, yyyy HH:mm a");
+                        String dateInput = dateFormat.format(DateTime.parse(
+                            cardDetails.scheduleDate.toString()));
+                        // print(
+                        //     "Input Value =====> ${cardDetails.scheduleDate.toString()}");
+                        // print("dateformat ------->  ${dateInput}");
+
+                        String date = DateFormat("MMM dd, yyyy").format(
+                            DateTime.parse(
+                                cardDetails.scheduleDate.toString()));
+                        String time = DateFormat("hh:mm:a").format(
+                            DateTime.parse(
+                                cardDetails.scheduleDate.toString()));
+
+                        /*final parsedDate =
+                          cardDetails.scheduleDate.toString().parseToDate();
+                      print(parsedDate.toIso8601String());*/
+                        return DashboardContainer(
+                            time: time,
+                            courseName: dashboardvalue.courseName,
+                            imgUrl: dashboardProvider.images[index % 5]);
+                      },
                     ),
                   ],
                 ),
               );
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const LoadingScreen();
             }
           },
-        ) */
-        );
+        ));
   }
 }
 

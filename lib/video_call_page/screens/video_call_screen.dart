@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:learn_it/video_call_page/screens/signaling.dart';
-
-
+import 'package:provider/provider.dart';
 
 class VideoApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -37,7 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _localRenderer.initialize();
     _remoteRenderer.initialize();
-
+    final signaling =
+        Provider.of<VideoCallProvider>(context, listen: false).signaling;
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
       setState(() {});
@@ -67,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                  // signaling.openUserMedia(_localRenderer, _remoteRenderer);
                 },
                 child: Text("Camera"),
               ),

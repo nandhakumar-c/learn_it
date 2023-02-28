@@ -173,10 +173,10 @@ class _LoginPageState extends State<LoginPage> {
                 //----Login Button----
                 FilledButton(
                   onPressed: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => DashBoardPage(),
-                    ));
-                    /* print(username.text);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) => DashBoardPage(),
+                    // ));
+                    print(username.text);
                     print(password.text);
 
                     var jwt = await attemptLogIn(username.text, password.text);
@@ -204,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
                       // ignore: use_build_context_synchronously
                       displayDialog(context, "An Error Occurred",
                           "No account was found matching that username and password");
-                    } */
+                    }
                   },
                   child: Text("Login",
                       style: Theme.of(context)

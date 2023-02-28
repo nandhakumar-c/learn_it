@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:learn_it/common/utils/color.dart';
 import 'package:learn_it/video_call_page/screens/signaling.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/utils/screen_size.dart';
+import '../providers/video_call_provider.dart';
 import '../widgets/audio_button.dart';
 import '../widgets/audio_info.dart';
 import '../widgets/client_audio_info.dart';
@@ -20,7 +22,7 @@ class VideoCallScreen extends StatefulWidget {
 }
 
 class _VideoCallScreenState extends State<VideoCallScreen> {
-  Signaling signaling = Signaling();
+  // Signaling signaling = Signaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
@@ -30,8 +32,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
   void initState() {
     _localRenderer.initialize();
     _remoteRenderer.initialize();
+    final videoProvider =
+        Provider.of<VideoCallProvider>(context, listen: false);
 
-    signaling.onAddRemoteStream = ((stream) {
+    videoProvider.signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
       setState(() {});
     });
@@ -48,6 +52,9 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final videoProvider = Provider.of<VideoCallProvider>(context);
+    videoProvider.videoAudioEnablingAndDisablingFunction(
+        _localRenderer, _remoteRenderer);
     return Scaffold(
       backgroundColor: const Color(0xff262626),
       //const Color(0xff101014),
@@ -167,48 +174,96 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               ),
             ),
           ),
-
+   
           //Local Video
           Positioned(
             bottom: SizeConfig.height! * 15,
             right: SizeConfig.width! * 10,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: const Color(0xff4d4d4d),
-                  borderRadius: BorderRadius.circular(
-                    SizeConfig.width! * 2,
+            child: videoProvider.isVideoEnabled
+                ? Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xff4d4d4d),
+                        borderRadius: BorderRadius.circular(
+                          SizeConfig.width! * 2,
+                        ),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.black26, blurRadius: 5)
+                        ]),
+                    height: SizeConfig.height! * 20,
+                    width: SizeConfig.width! * 20,
+                    child: Stack(children: [
+                      Positioned(
+                          child: Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          height: SizeConfig.height! * 20,
+                          width: SizeConfig.width! * 20,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              SizeConfig.width! * 2,
+                            ),
+                            child: RTCVideoView(
+                                objectFit: RTCVideoViewObjectFit
+                                    .RTCVideoViewObjectFitCover,
+                                _localRenderer,
+                                mirror: true),
+                          ),
+                        ),
+                      )),
+                      const Positioned(
+                        top: 7,
+                        right: 7,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: AudioInfoButton(),
+                          ),
+                        ),
+                      ),
+                    ]),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xff4d4d4d),
+                        borderRadius: BorderRadius.circular(
+                          SizeConfig.width! * 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(color: Colors.black26, blurRadius: 5)
+                        ]),
+                    height: SizeConfig.height! * 20,
+                    width: SizeConfig.width! * 20,
+                    child: Stack(children: [
+                      const Positioned(
+                        top: 7,
+                        right: 7,
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: AudioInfoButton(),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                          child: Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          height: SizeConfig.width! * 10,
+                          width: SizeConfig.width! * 10,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(48),
+                            child: const Image(
+                                image:
+                                    AssetImage("assets/avatars/avatar2.jpeg")),
+                          ),
+                        ),
+                      ))
+                    ]),
                   ),
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 5)]),
-              height: SizeConfig.height! * 20,
-              width: SizeConfig.width! * 20,
-              child: Stack(children: [
-                const Positioned(
-                  top: 7,
-                  right: 7,
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: SizedBox(
-                      height: 25,
-                      width: 25,
-                      child: AudioInfoButton(),
-                    ),
-                  ),
-                ),
-                Positioned(
-                    child: Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: SizeConfig.width! * 10,
-                    width: SizeConfig.width! * 10,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(48),
-                      child: const Image(
-                          image: AssetImage("assets/avatars/avatar2.jpeg")),
-                    ),
-                  ),
-                ))
-              ]),
-            ),
           ),
           Positioned(
               bottom: 16,
@@ -216,10 +271,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                 width: SizeConfig.width! * 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [
+                  children: [
                     AudioButton(),
                     VideoButton(),
-                    EndCallButton(),
+                    EndCallButton(localRenderer: _localRenderer),
                     ChatButton(),
                     MoreOptionsButton()
                   ],

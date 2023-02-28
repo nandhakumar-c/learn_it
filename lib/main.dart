@@ -7,6 +7,7 @@ import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
+import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/startup_page/screens/startup_page.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import 'chatpage/screens/chat_screen.dart';
 import 'common/widgets/color_scheme.dart';
+import 'common/widgets/test.dart';
 
 //Integrate the WebRTC
 //Add Chat Feature to the app
@@ -70,7 +72,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
               colorScheme: darkColorScheme),
           debugShowCheckedModeBanner: false,
-          home: const SafeArea(child: StartupScreen())),
+          home: const SafeArea(child: LoginPage())),
     );
   }
 }

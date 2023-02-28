@@ -22,41 +22,38 @@ class DashboardContainer extends StatefulWidget {
 }
 
 class _DashboardContainerState extends State<DashboardContainer> {
-  DraggableScrollableController? controller;
-  double? offset;
+  // DraggableScrollableController? controller;
+  // double? offset;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller = DraggableScrollableController();
-    controller!.addListener(() {
-      offset = controller!.pixels;
-      //print("Offset value $offset");
-      // print("Offset ---> ${controller!.pixels}");
-    });
+    // controller = DraggableScrollableController();
+    // controller!.addListener(() {
+    //   offset = controller!.pixels;
+    //   print("Offset value $offset");
+    //   // print("Offset ---> ${controller!.pixels}");
+    // });
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    controller!.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: implement dispose
+  //   super.dispose();
+  //   controller!.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      splashColor: CustomColor.primaryColor,
-      onTap: () {
-        ModalBottomSheet(
-                context: context,
-                courseName: widget.courseName,
-                time: widget.time,
-                instructorName: "John Smith",
-                controller: controller!,
-                offset: offset)
-            .bottomsheet();
-      },
+    return ModalBottomSheet(
+      context: context,
+      courseName: widget.courseName,
+      time: widget.time,
+      instructorName: "John Smith",
+      courseDescription:
+          "This free Flutter course helps you get started with mobile app development. In this Flutter for beginners course, you will learn the basics on getting started with Flutter and learn how to start building applications for multiple devices using the same codebase",
+      // controller: controller!,
+
       child: Ink(
         decoration: BoxDecoration(
           color: Colors.blue,

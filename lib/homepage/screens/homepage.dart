@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/attendance_page/screens/attendance_page.dart';
+import 'package:learn_it/common/utils/color.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
@@ -22,10 +23,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final dashboardProvider = Provider.of<DashBoardProvider>(context);
-    final dashboardData = dashboardProvider.dashboardData;
+    // final dashboardData = dashboardProvider.dashboardData;
 
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    // double height = MediaQuery.of(context).size.height;
+    // double width = MediaQuery.of(context).size.width;
     final pages = [
       DashBoardPage(),
       TodaySchedulePage(),
@@ -36,8 +37,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: pages[index],
       bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Palette.kToDark,
-          backgroundColor: Colors.grey,
+          selectedItemColor: CustomColor.primaryColor,
+          //  backgroundColor: Colors.grey,
           unselectedItemColor: Colors.grey,
           // ignore: prefer_const_literals_to_create_immutables
           items: [
