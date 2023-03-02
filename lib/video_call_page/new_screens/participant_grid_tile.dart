@@ -71,16 +71,20 @@ class _ParticipantGridTileState extends State<ParticipantGridTile> {
                   ),
                 )
               : Center(
-                  child: Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: black500,
-                    ),
-                    child: Text(
-                      widget.participant.displayName.characters.first
-                          .toUpperCase(),
-                      style: const TextStyle(fontSize: 30),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: black500,
+                      ),
+                      //Participant Grid
+                      child: Text(
+                        widget.participant.displayName.characters.first
+                            .toUpperCase(),
+                        style: const TextStyle(fontSize: 30),
+                      ),
                     ),
                   ),
                 ),
