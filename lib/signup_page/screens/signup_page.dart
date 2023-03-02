@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_it/homepage/screens/homepage.dart';
@@ -29,6 +30,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController? email;
   TextEditingController? password;
   TextEditingController? confirmPassword;
+  int _currentPage = 0;
+  PageController _pageController = PageController(initialPage: 0);
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   int? _value = 0;
@@ -53,6 +56,11 @@ class _SignUpPageState extends State<SignUpPage> {
     email!.dispose();
     password!.dispose();
     confirmPassword!.dispose();
+  }
+
+  animateToPage() {
+    _pageController.animateToPage(_currentPage,
+        duration: Duration(seconds: 1), curve: Curves.easeIn);
   }
 
   @override
@@ -111,7 +119,32 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
 
-    return SafeArea(
+    return Scaffold(
+      body: Container(
+        height: SizeConfig.height! * 100,
+        width: SizeConfig.width! * 100,
+        child: Column(children: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.chevron_left,
+                size: 30,
+                color: Theme.of(context).colorScheme.primary,
+              )),
+          Container(
+            height: SizeConfig.height! * 50,
+            width: SizeConfig.width! * 100,
+            child: PageView(
+              controller: _pageController,
+              children: [],
+            ),
+          ),
+        ]),
+      ),
+    );
+    /*return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Stack(children: [
@@ -371,7 +404,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         )),*/
       ),
-    );
+    );*/
   }
 
   ClipPath bottomBorder(double width, double height) {

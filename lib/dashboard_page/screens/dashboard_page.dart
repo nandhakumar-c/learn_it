@@ -48,7 +48,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
       //success prompt
       if (res.statusCode == 200) {
         print("Dashboard - Success");
-
+        print(res.body);
         return res.body;
       }
     }
@@ -206,6 +206,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
           future: myFuture,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              print(snapshot.data);
               final dashboardData =
                   dashboardDataFromJson(snapshot.data as String);
               dashboardProvider.setDashboardData(snapshot.data as String);
@@ -310,6 +311,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                           "assets/lottie/no_meeting.json"),
                                     )
                                   : DashboardContainer(
+                                      index: index,
                                       time: time,
                                       courseName: dashboardvalue.courseName,
                                       imgUrl:
@@ -357,6 +359,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                           cardDetails.scheduleDate.toString().parseToDate();
                       print(parsedDate.toIso8601String());*/
                         return DashboardContainer(
+                            index: index,
                             time: time,
                             courseName: dashboardvalue.courseName,
                             imgUrl: dashboardProvider.images[index % 5]);

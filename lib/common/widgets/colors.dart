@@ -1,19 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-class Palette {
-  static const MaterialColor kToDark = const MaterialColor(
-    0xff092b65, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
-    const <int, Color>{
-      50: const Color(0xff092b65), //10%
-      100: const Color(0xff08275b), //20%
-      200: const Color(0xff061e47), //30%
-      300: const Color(0xff061e47), //40%
-      400: const Color(0xff051a3d), //50%
-      500: const Color(0xff051633), //60%
-      600: const Color(0xff041128), //70%
-      700: const Color(0xff030d1e), //80%
-      800: const Color(0xff020914), //90%
-      900: const Color(0xff01040a), //100%
-    },
-  );
-} //
+const Color primaryColor = Color.fromRGBO(5, 10, 14, 1);
+const Color secondaryColor = Color.fromRGBO(43, 48, 52, 1);
+const Color hoverColor = Color.fromRGBO(51, 50, 68, 1);
+const Color black900 = Color.fromRGBO(5, 10, 14, 1);
+const Color black800 = Color.fromRGBO(26, 28, 34, 1);
+const Color black750 = Color.fromRGBO(32, 36, 39, 1);
+const Color black700 = Color.fromRGBO(43, 48, 52, 1);
+const Color black600 = Color.fromRGBO(64, 75, 83, 1);
+const Color black500 = Color.fromRGBO(111, 118, 126, 1);
+const Color black400 = Color.fromRGBO(154, 159, 165, 1);
+const Color black300 = Color.fromRGBO(218, 218, 218, 1);
+const Color black200 = Color.fromRGBO(239, 239, 239, 1);
+const Color black100 = Color.fromRGBO(243, 243, 243, 1);
+const Color grey = Color.fromRGBO(29, 41, 57, 1);
+const Color red = Color.fromRGBO(255, 93, 93, 1);
+const Color purple = Color.fromRGBO(85, 104, 254, 1);
+const Color textGray = Color.fromRGBO(154, 159, 156, 1);
+const Color yellow = Color.fromRGBO(250, 167, 19, 1);
+const Color green = Color.fromRGBO(59, 165, 93, 1);

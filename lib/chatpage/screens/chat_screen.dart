@@ -34,7 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
     socket!.connect();
     socket!.onConnect((_) {
       print('---connected to backend---');
+
+      //Response From the Backend
       socket!.on('messageResponse', (data) {
+        //data from backend
         final msg = MessageModel(
             message: data["text"],
             sender: data["name"],

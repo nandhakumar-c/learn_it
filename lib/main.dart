@@ -8,6 +8,7 @@ import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
+import 'package:learn_it/onboarding_page/screens/onboarding_screen.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/startup_page/screens/startup_page.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
@@ -72,7 +73,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
               colorScheme: darkColorScheme),
           debugShowCheckedModeBanner: false,
-          home: const SafeArea(child: LoginPage())),
+          home: OnBoardingScreen()),
     );
   }
 }

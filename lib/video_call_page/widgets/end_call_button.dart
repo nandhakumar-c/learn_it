@@ -4,9 +4,8 @@ import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:provider/provider.dart';
 
 class EndCallButton extends StatefulWidget {
-  RTCVideoRenderer localRenderer;
-
-  EndCallButton({required this.localRenderer, super.key});
+  final void Function() onCallEndButtonPressed;
+  EndCallButton({required this.onCallEndButtonPressed, super.key});
 
   @override
   State<EndCallButton> createState() => _EndCallButtonState();
@@ -27,10 +26,7 @@ class _EndCallButtonState extends State<EndCallButton> {
           Icons.call_end,
           color: Color(0xffffffff),
         ),
-        onPressed: () {
-          videoProvider.hangUp(widget.localRenderer);
-          Navigator.of(context).pop();
-        },
+        onPressed: widget.onCallEndButtonPressed,
       ),
     );
   }

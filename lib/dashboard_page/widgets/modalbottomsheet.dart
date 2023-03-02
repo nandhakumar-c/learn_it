@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
+import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
 import 'package:learn_it/dashboard_page/widgets/red_video_button.dart';
 import 'package:learn_it/video_call_page/widgets/audio_button.dart';
 import 'package:learn_it/video_call_page/widgets/video_button.dart';
+import 'package:provider/provider.dart';
 
 import 'dart:math' as math;
 import 'dart:ui';
@@ -19,11 +22,13 @@ class ModalBottomSheet extends StatefulWidget {
   String time;
   String instructorName;
   String courseDescription;
+  int index;
   // DraggableScrollableController _scrollController;
 
   Widget child;
   ModalBottomSheet(
-      {required this.context,
+      {required this.index,
+      required this.context,
       required this.courseName,
       required this.time,
       required this.instructorName,
@@ -101,6 +106,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
 
   @override
   Widget build(BuildContext context) {
+    final dashboardProvider = Provider.of<DashBoardProvider>(context);
+
     return InkWell(
         splashColor: CustomColor.primaryColor,
         child: widget.child,
@@ -289,7 +296,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                               height: 40,
                                               width: lerp(
                                                   78, SizeConfig.width! * 60),
-                                              child: JoinButton()),
+                                              child: JoinButton(
+                                                  index: widget.index)),
                                         ],
                                       ),
                                     ),

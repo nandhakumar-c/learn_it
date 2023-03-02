@@ -39,7 +39,7 @@ class Datum {
     required this.teacherId,
     required this.roomId,
     required this.hostId,
-    required this.teacher,
+    //required this.teacher,
   });
 
   String id;
@@ -50,7 +50,7 @@ class Datum {
   String teacherId;
   String roomId;
   String hostId;
-  Teacher teacher;
+  // Teacher teacher;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
@@ -61,7 +61,7 @@ class Datum {
         teacherId: json["teacherId"],
         roomId: json["roomId"],
         hostId: json["hostId"],
-        teacher: Teacher.fromJson(json["Teacher"]),
+        //teacher: Teacher.fromJson(json["Teacher"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -73,7 +73,7 @@ class Datum {
         "teacherId": teacherId,
         "roomId": roomId,
         "hostId": hostId,
-        "Teacher": teacher.toJson(),
+        // "Teacher": teacher.toJson(),
       };
 }
 

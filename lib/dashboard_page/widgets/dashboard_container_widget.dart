@@ -11,8 +11,10 @@ class DashboardContainer extends StatefulWidget {
   String time;
   String courseName;
   String imgUrl;
+  int index;
   DashboardContainer(
-      {required this.time,
+      {required this.index,
+      required this.time,
       required this.courseName,
       required this.imgUrl,
       super.key});
@@ -46,6 +48,7 @@ class _DashboardContainerState extends State<DashboardContainer> {
   @override
   Widget build(BuildContext context) {
     return ModalBottomSheet(
+      index: widget.index,
       context: context,
       courseName: widget.courseName,
       time: widget.time,

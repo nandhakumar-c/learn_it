@@ -7,6 +7,8 @@ import 'package:learn_it/common/widgets/button.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
+import '../../video_call_page/utils/api.dart';
+
 class AddCoursesPage extends StatefulWidget {
   const AddCoursesPage({super.key});
 
@@ -15,6 +17,7 @@ class AddCoursesPage extends StatefulWidget {
 }
 
 class _AddCoursesPageState extends State<AddCoursesPage> {
+  String _token = "";
   TextEditingController? courseName;
   TextEditingController? courseDescription;
   String? _selectedDateTime;
@@ -22,6 +25,10 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final token = await fetchToken(context);
+      setState(() => _token = token);
+    });
     courseName = TextEditingController();
     courseDescription = TextEditingController();
   }
@@ -261,14 +268,18 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                 String id = provider.payloadData!.user.id;
                                 //print("id at add courses ====> $id");
                                 String jwt = provider.jwt;
+
                                 //print("date time $_selectedDateTime");
+                                final meetingId = await createMeeting(_token);
                                 var res = await http.post(
                                     Uri.parse(
                                         "${provider.getLocalhost()}/addCourse/$id"),
                                     body: {
                                       "course_name": courseName!.text,
                                       "description": courseDescription!.text,
-                                      "schedule_date": "${_selectedDateTime}Z"
+                                      "schedule_date": "${_selectedDateTime}Z",
+                                      "roomId": meetingId,
+                                      "hostId": id
                                     },
                                     headers: {
                                       "Authorization": jwt
