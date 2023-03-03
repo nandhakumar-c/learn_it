@@ -80,6 +80,7 @@ class _ConferenceParticipantGridState extends State<ConferenceParticipantGrid> {
                                     : (i + 1) * numberofColumns)
                             .elementAt(j)
                             .id),
+                        // Total Participants in the meeting
                         participant: onScreenParticipants.values
                             .toList()
                             .sublist(
@@ -194,6 +195,8 @@ class _ConferenceParticipantGridState extends State<ConferenceParticipantGrid> {
                 : "high";
       });
     }
+
+    //How many columns are there
     if (numberofColumns !=
         (newScreenParticipants.length > 2 ||
                 numberOfMaxOnScreenParticipants == 2

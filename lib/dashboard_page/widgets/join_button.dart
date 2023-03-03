@@ -7,7 +7,7 @@ import 'package:learn_it/video_call_page/screens/video_call_screen_layout.dart';
 import 'package:learn_it/video_call_page/screens/videosdk_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../video_call_page/common/conference_meeting_screen.dart';
+import '../../video_call_page/new_screens/conference_meeting_screen.dart';
 import '../../video_call_page/utils/api.dart';
 import '../../video_call_page/utils/toast.dart';
 
@@ -45,6 +45,7 @@ class _JoinButtonState extends State<JoinButton> {
       var validMeeting = await validateMeeting(_token, meetingId);
       if (validMeeting) {
         if (callType == "GROUP") {
+          // ignore: use_build_context_synchronously
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -59,6 +60,7 @@ class _JoinButtonState extends State<JoinButton> {
           );
         }
       } else {
+        // ignore: use_build_context_synchronously
         showSnackBarMessage(message: "Invalid Meeting ID", context: context);
       }
     }

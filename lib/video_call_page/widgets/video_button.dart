@@ -21,8 +21,10 @@ class _VideoButtonState extends State<VideoButton> {
             onPressed: () {
               videoProvider.videoSwitch();
             },
-            icon: Icon(Icons.videocam),
-            color: Color(0xffffffff),
+            icon: Icon(
+              Icons.videocam,
+              color: Color(0xffffffff),
+            ),
           )
         : IconButton(
             style: IconButton.styleFrom(

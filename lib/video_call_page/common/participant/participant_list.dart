@@ -27,7 +27,7 @@ class _ParticipantListState extends State<ParticipantList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondaryColor,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         flexibleSpace: Align(
           alignment: Alignment.centerLeft,
@@ -40,8 +40,10 @@ class _ParticipantListState extends State<ParticipantList> {
                     "Participants (" +
                         (widget.meeting.participants.length + 1).toString() +
                         ")",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w700, fontSize: 18),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
                 ),
               ),

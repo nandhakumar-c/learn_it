@@ -79,11 +79,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
     double width = MediaQuery.of(context).size.width;
 
     //function to get dashboard data
-
+    String username = provider.payloadData!.user.username;
     return Scaffold(
         //backgroundColor: const Color(0xFFF2F2F2),
         appBar: AppBar(
-          title: const Text("Hi, Steve"),
+          title: Text("Hi, $username"),
           automaticallyImplyLeading: false,
         ),
         /* body: Padding(
@@ -210,6 +210,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
               final dashboardData =
                   dashboardDataFromJson(snapshot.data as String);
               dashboardProvider.setDashboardData(snapshot.data as String);
+              int numberOfCourses =
+                  dashboardProvider.dashboardData!.data.length;
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ListView(
@@ -225,15 +227,21 @@ class _DashBoardPageState extends State<DashBoardPage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium!
-                                  .copyWith(fontWeight: FontWeight.w600),
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontWeight: FontWeight.w600),
                               children: [
                                 TextSpan(
-                                    text: "3",
+                                    text: numberOfCourses.toString(),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium!
                                         .copyWith(
-                                            color: CustomColor.primaryColor,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                             fontWeight: FontWeight.bold)),
                                 const TextSpan(text: " meetings today")
                               ]),
@@ -253,7 +261,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     Text(
                       "Current Meeting",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: CustomColor.primaryColor,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
@@ -273,7 +281,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                       .textTheme
                                       .titleMedium!
                                       .copyWith(
-                                          color: Color(0xffFF888F),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .tertiary,
+                                          // color: Color(0xffFF888F),
                                           fontWeight: FontWeight.w600),
                                 )
                               ],
@@ -323,10 +334,9 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     ),
                     Text(
                       "Upcoming Meetings",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(fontWeight: FontWeight.w700),
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w700),
                     ),
                     SizedBox(
                       height: SizeConfig.height! * 2,

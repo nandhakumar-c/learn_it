@@ -7,7 +7,7 @@ import '../../../common/widgets/colors.dart';
 // ChatScreen
 class ChatView extends StatefulWidget {
   final Room meeting;
-  const ChatView({
+  ChatView({
     Key? key,
     required this.meeting,
   }) : super(key: key);
@@ -43,18 +43,21 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: secondaryColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         flexibleSpace: Align(
           alignment: Alignment.centerLeft,
           child: Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "Chat",
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                    "In Call Messages",
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18),
                   ),
                 ),
               ),
@@ -66,7 +69,7 @@ class _ChatViewState extends State<ChatView> {
           ),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: secondaryColor,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: SafeArea(
@@ -96,7 +99,8 @@ class _ChatViewState extends State<ChatView> {
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.fromLTRB(16, 4, 4, 4),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10), color: black600),
+                    borderRadius: BorderRadius.circular(48),
+                    color: Theme.of(context).colorScheme.primaryContainer),
                 child: Row(
                   children: [
                     Expanded(
@@ -110,7 +114,7 @@ class _ChatViewState extends State<ChatView> {
                           msgTextController.text;
                         }),
                         decoration: const InputDecoration(
-                            hintText: "Write your message",
+                            hintText: "Type your message",
                             border: InputBorder.none,
                             hintStyle: TextStyle(
                               color: black400,
@@ -129,15 +133,20 @@ class _ChatViewState extends State<ChatView> {
                               .then((value) => msgTextController.clear()),
                       child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 8),
+                              horizontal: 8, vertical: 10),
                           width: 45,
                           margin: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               color: msgTextController.text.trim().isEmpty
                                   ? null
-                                  : purple,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: const Icon(Icons.send)),
+                                  : Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(48)),
+                          child: Icon(
+                            Icons.send,
+                            color: msgTextController.text.trim().isEmpty
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.surface,
+                          )),
                     )
                   ],
                 ),

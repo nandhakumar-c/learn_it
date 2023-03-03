@@ -11,6 +11,7 @@ import 'package:learn_it/common/widgets/clipper.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
+import 'package:learn_it/login_page/screens/forgot_password.dart';
 import 'package:learn_it/login_page/widgets/bottomborderclipper.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
 import 'package:learn_it/signup_page/screens/user_selection_page.dart';
@@ -160,7 +161,11 @@ class _LoginPageState extends State<LoginPage> {
                 Align(
                   alignment: Alignment.topRight,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ForgotPasswordScreen(),
+                      ));
+                    },
                     child: const Text(
                       "Forgot Password?",
                       style: TextStyle(decoration: TextDecoration.underline),
@@ -194,11 +199,12 @@ class _LoginPageState extends State<LoginPage> {
                       await provider.storeJwtToken("jwt", payload.token);
 
                       // print("Token JWT ${payload.token}");
+                      String userType = provider.payloadData!.user.userType;
 
                       // ignore: use_build_context_synchronously
                       //Navigation to the dashboard page
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const HomePage()));
+                          builder: (context) => HomePage(userType: userType)));
                     } else {
                       print("Failure");
                       // ignore: use_build_context_synchronously

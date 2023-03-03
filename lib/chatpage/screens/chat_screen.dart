@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/chatpage/providers/chat_provider.dart';
 import 'package:learn_it/chatpage/widgets/own_message.dart';
+import 'package:provider/provider.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -16,7 +18,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   TextEditingController? controller;
   IO.Socket? socket;
-  List<MessageModel> message_list = [];
+  List<MessageModel>? message_list;
 
   @override
   void initState() {
@@ -24,6 +26,8 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     connect();
     controller = TextEditingController();
+    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+    message_list = [...chatProvider.message_list];
   }
 
   void connect() {
@@ -44,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
             date: DateTime.parse(data['currentDate']),
             socketId: data['socketID']);
         setState(() {
-          message_list.add(msg);
+          message_list!.add(msg);
         });
       });
     });
@@ -53,14 +57,16 @@ class _ChatScreenState extends State<ChatScreen> {
     socket!.on('fromServer', (_) => print(_));
   }
 
-  void sendMessage(String message, String senderName) {
+  void sendMessage(String message, String senderName, ChatProvider provider) {
     MessageModel ownMsg = MessageModel(
         date: DateTime.now(),
         socketId: socket!.id as String,
         message: message,
         sender: senderName);
+
     setState(() {
-      message_list.add(ownMsg);
+      message_list!.add(ownMsg);
+      provider.addMessage(message_list!);
     });
     print(socket!.id);
     //emiting to backend
@@ -76,18 +82,35 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final messageProvider = Provider.of<ChatProvider>(context);
     return Scaffold(
       // backgroundColor: Color(0xffF5FAFA),
-      appBar: AppBar(title: Text("Chat Screen")),
+      appBar: AppBar(
+        title: Text(
+          "In Call Messages",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(color: Theme.of(context).colorScheme.secondary),
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.chevron_left),
+          onPressed: () {
+            messageProvider.addMessage(message_list!);
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Expanded(
                 child: ListView.builder(
-              itemCount: message_list.length,
+              itemCount: messageProvider.message_list.length,
               itemBuilder: (context, index) {
-                final message_data = message_list[index];
+                final message_data = messageProvider.message_list[index];
                 return message_data.socketId == socket!.id
                     ? OwnMessageWidget(
                         message: message_data.message,
@@ -112,7 +135,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           contentPadding: EdgeInsets.all(20.0),
                           suffixIcon: IconButton(
                               onPressed: () {
-                                sendMessage(controller!.text, "NK");
+                                sendMessage(
+                                    controller!.text, "NK", messageProvider);
                                 controller!.clear();
                               },
                               icon: Icon(Icons.send)),

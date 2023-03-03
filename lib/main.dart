@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
+import 'package:learn_it/chatpage/providers/chat_provider.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
@@ -58,6 +59,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => VideoCallProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ChatProvider(),
         )
       ],
       child: MaterialApp(

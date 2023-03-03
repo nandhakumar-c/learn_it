@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 import '../../common/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  String userType;
+  HomePage({required this.userType, super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -34,46 +35,84 @@ class _HomePageState extends State<HomePage> {
       AddCoursesPage(),
       ProfilePage()
     ];
-    return Scaffold(
-      body: pages[index],
-      bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: CustomColor.primaryColor,
-          //  backgroundColor: Colors.grey,
-          unselectedItemColor: Colors.grey,
-          // ignore: prefer_const_literals_to_create_immutables
-          items: [
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.dashboard,
-                ),
-                label: "Dashboard"),
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.access_time_filled,
-                ),
-                label: "Today's Schedule"),
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.task_alt,
-                ),
-                label: "Attendance"),
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.add_box_rounded,
-                ),
-                label: "Add Courses"),
-            const BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                ),
-                label: "Profile")
-          ],
-          onTap: (value) {
-            setState(() {
-              index = value;
-            });
-          },
-          currentIndex: index),
-    );
+    final studentPages = [DashBoardPage(), TodaySchedulePage(), ProfilePage()];
+
+    return widget.userType == "S"
+        ? Scaffold(
+            body: studentPages[index],
+            bottomNavigationBar: BottomNavigationBar(
+                selectedItemColor: Theme.of(context).colorScheme.primary,
+                //  backgroundColor: Colors.grey,
+                unselectedItemColor: Colors.grey,
+                // ignore: prefer_const_literals_to_create_immutables
+                items: [
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.dashboard,
+                      ),
+                      label: "Dashboard"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.access_time_filled,
+                      ),
+                      label: "Today's Schedule"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.person,
+                      ),
+                      label: "Profile")
+                ],
+                onTap: (value) {
+                  setState(() {
+                    index = value;
+                  });
+                },
+                currentIndex: index),
+          )
+        : Scaffold(
+            body: pages[index],
+            bottomNavigationBar: BottomNavigationBar(
+                selectedItemColor: Theme.of(context).colorScheme.primary,
+                //  backgroundColor: Colors.grey,
+                unselectedItemColor: Colors.grey,
+                selectedFontSize: 12,
+
+                // showUnselectedLabels: true,
+                unselectedFontSize: 10,
+                // ignore: prefer_const_literals_to_create_immutables
+                items: [
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.dashboard,
+                      ),
+                      label: "Dashboard"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.access_time_filled,
+                      ),
+                      label: "Schedule"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.task_alt,
+                      ),
+                      label: "Attendance"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.add_box_rounded,
+                      ),
+                      label: "Add Courses"),
+                  const BottomNavigationBarItem(
+                      icon: Icon(
+                        Icons.person,
+                      ),
+                      label: "Profile")
+                ],
+                onTap: (value) {
+                  setState(() {
+                    index = value;
+                  });
+                },
+                currentIndex: index),
+          );
   }
 }

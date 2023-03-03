@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:learn_it/chatpage/screens/chat_screen.dart';
+import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/video_call_page/common/participant/participant_list.dart';
+import 'package:provider/provider.dart';
 import 'package:videosdk/videosdk.dart';
 
 import '../../common/widgets/colors.dart';
-import '../new_screens/conference_participant_grid.dart';
-import '../new_screens/conference_screenshare_view.dart';
+import 'conference_participant_grid.dart';
+import 'conference_screenshare_view.dart';
 import '../utils/toast.dart';
-import 'app_bar/meeting_appbar.dart';
-import 'chat/chat_view.dart';
-import 'joining/waiting_to_join.dart';
-import 'meeting_controls/meeting_action_bar.dart';
+import '../common/app_bar/meeting_appbar.dart';
+import '../common/chat/chat_view.dart';
+import '../common/joining/waiting_to_join.dart';
+import '../common/meeting_controls/meeting_action_bar.dart';
 
 class ConfereneceMeetingScreen extends StatefulWidget {
   final String meetingId, token, displayName;
@@ -95,7 +98,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
       child: _joined
           ? SafeArea(
               child: Scaffold(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Color(0xff262626),
                   body: Column(
                     mainAxisSize: MainAxisSize.max,
                     children: [
@@ -159,9 +162,9 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
                           },
 
                           onSwitchMicButtonPressed: (details) async {
-                            List<MediaDeviceInfo> outptuDevice =
+                            List<MediaDeviceInfo> outputDevice =
                                 meeting.getAudioOutputDevices();
-                            double bottomMargin = (70.0 * outptuDevice.length);
+                            double bottomMargin = (70.0 * outputDevice.length);
                             final screenSize = MediaQuery.of(context).size;
                             await showMenu(
                               context: context,
@@ -174,7 +177,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
                                 details.globalPosition.dx,
                                 (bottomMargin),
                               ),
-                              items: outptuDevice.map((e) {
+                              items: outputDevice.map((e) {
                                 return PopupMenuItem(
                                     value: e, child: Text(e.label));
                               }).toList(),
@@ -197,9 +200,12 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
                                       MediaQuery.of(context).size.height -
                                           statusbarHeight),
                               isScrollControlled: true,
-                              builder: (context) => ChatView(
-                                  key: const Key("ChatScreen"),
-                                  meeting: meeting),
+                              builder: (context) =>
+                                  // ChatScreen()
+
+                                  ChatView(
+                                      key: const Key("ChatScreen"),
+                                      meeting: meeting),
                             ).whenComplete(() => {
                                   setState(() {
                                     showChatSnackbar = true;
@@ -278,7 +284,14 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
       }
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(
+            builder: (context) => HomePage(
+              userType: Provider.of<BackEndProvider>(context)
+                  .payloadData!
+                  .user
+                  .userType,
+            ),
+          ),
           (route) => false);
     });
 

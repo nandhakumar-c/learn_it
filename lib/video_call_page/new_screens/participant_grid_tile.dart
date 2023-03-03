@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:videosdk/videosdk.dart';
 
+import '../../common/utils/color.dart';
 import '../../common/widgets/colors.dart';
 import '../stats/call_stats.dart';
 
@@ -51,76 +52,95 @@ class _ParticipantGridTileState extends State<ParticipantGridTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: black800,
-        border: widget.activeSpeakerId != null &&
-                widget.activeSpeakerId == widget.participant.id
-            ? Border.all(color: Colors.blueAccent)
-            : null,
-      ),
-      child: Stack(
-        children: [
-          videoStream != null
-              ? ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: RTCVideoView(
-                    videoStream?.renderer as RTCVideoRenderer,
-                    objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-                  ),
-                )
-              : Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: black500,
-                      ),
-                      //Participant Grid
-                      child: Text(
-                        widget.participant.displayName.characters.first
-                            .toUpperCase(),
-                        style: const TextStyle(fontSize: 30),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: CustomColor.secondaryColor,
+            ),
+            const BoxShadow(
+              //color: Colors.white70,
+              spreadRadius: -3,
+              blurRadius: 10.0,
+            ),
+            BoxShadow(
+                color: CustomColor.secondaryColor,
+                blurRadius: 4,
+                blurStyle: BlurStyle.outer),
+          ],
+          borderRadius: BorderRadius.circular(12),
+          color: black800,
+          border: widget.activeSpeakerId != null &&
+                  widget.activeSpeakerId == widget.participant.id
+              ? Border.all(color: Colors.blueAccent)
+              : null,
+        ),
+        child: Stack(
+          children: [
+            videoStream != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: RTCVideoView(
+                      videoStream?.renderer as RTCVideoRenderer,
+                      mirror: widget.participant.isLocal ? true : false,
+                      objectFit:
+                          RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
+                    ),
+                  )
+                : Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: black500,
+                        ),
+                        //Participant Grid
+                        child: Text(
+                          widget.participant.displayName.characters.first
+                              .toUpperCase(),
+                          style: const TextStyle(fontSize: 30),
+                        ),
                       ),
                     ),
                   ),
-                ),
-          if (audioStream == null)
+            if (audioStream == null)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Icon(
+                      Icons.mic_off,
+                      size: 15,
+                    )),
+              ),
             Positioned(
-              top: 8,
-              right: 8,
+              bottom: 8,
+              left: 8,
               child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: black700,
-                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
-                    Icons.mic_off,
-                    size: 15,
-                  )),
+                  child: Text(widget.participant.isLocal
+                      ? "You"
+                      : widget.participant.displayName)),
             ),
-          Positioned(
-            bottom: 4,
-            left: 4,
-            child: Container(
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  color: black700,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(widget.participant.isLocal
-                    ? "You"
-                    : widget.participant.displayName)),
-          ),
-          Positioned(
-              top: 4,
-              left: 4,
-              child: CallStats(participant: widget.participant)),
-        ],
+            Positioned(
+                top: 4,
+                left: 4,
+                child: CallStats(participant: widget.participant)),
+          ],
+        ),
       ),
     );
   }

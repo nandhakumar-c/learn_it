@@ -107,7 +107,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
   @override
   Widget build(BuildContext context) {
     final dashboardProvider = Provider.of<DashBoardProvider>(context);
-
+    final _courseDescription =
+        dashboardProvider.dashboardData!.data[widget.index].description;
     return InkWell(
         splashColor: CustomColor.primaryColor,
         child: widget.child,
@@ -202,7 +203,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                       child: Opacity(
                                         opacity: lerp(0, 1),
                                         child: Text(
-                                          widget.courseDescription,
+                                          _courseDescription,
                                           //softWrap: false,
                                           style: Theme.of(context)
                                               .textTheme
@@ -234,9 +235,19 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     ),
                                   ),
                                   Positioned(
+                                    top: lerp(
+                                        maxHeight * 0.052, maxHeight * 0.6),
+                                    left: lerp(0, 10),
+                                    child: Icon(
+                                      Icons.access_time_filled_rounded,
+                                      size: lerp(18, 0),
+                                      color: Color(0xff808080),
+                                    ),
+                                  ),
+                                  Positioned(
                                     top:
                                         lerp(maxHeight * 0.05, maxHeight * 0.4),
-                                    left: lerp(0, 10),
+                                    left: lerp(20, 10),
                                     child: Text(
                                       widget.time,
                                       style: Theme.of(context)
@@ -267,9 +278,19 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     ),
                                   ),
                                   Positioned(
+                                    top: lerp(
+                                        maxHeight * 0.052, maxHeight * 0.6),
+                                    left: lerp(maxHeight * 0.15, 10),
+                                    child: Icon(
+                                      Icons.person_rounded,
+                                      size: lerp(18, 0),
+                                      color: Color(0xff808080),
+                                    ),
+                                  ),
+                                  Positioned(
                                     top:
                                         lerp(maxHeight * 0.05, maxHeight * 0.6),
-                                    left: lerp(150, 10),
+                                    left: lerp(maxHeight * 0.175, 10),
                                     child: Text(
                                       widget.instructorName,
                                       style: Theme.of(context)

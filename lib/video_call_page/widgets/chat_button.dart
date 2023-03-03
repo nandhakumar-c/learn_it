@@ -20,7 +20,7 @@ class _ChatButtonState extends State<ChatButton> {
           builder: (context) => ChatScreen(),
         ));
       },
-      icon: Icon(Icons.chat),
+      icon: Icon(Icons.chat, color: Color(0xffffffff)),
       color: Color(0xffffffff),
     );
   }

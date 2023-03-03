@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:touch_ripple_effect/touch_ripple_effect.dart';
@@ -21,7 +22,7 @@ class MeetingActionBar extends StatelessWidget {
 
   final void Function(String) onMoreOptionSelected;
 
-  final void Function(TapDownDetails) onSwitchMicButtonPressed;
+  final void Function(LongPressDownDetails) onSwitchMicButtonPressed;
   const MeetingActionBar({
     Key? key,
     required this.isMicEnabled,
@@ -40,81 +41,36 @@ class MeetingActionBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          PopupMenuButton(
-              position: PopupMenuPosition.under,
-              padding: const EdgeInsets.all(0),
-              color: black700,
-              icon: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: red),
-                  color: red,
-                ),
-                padding: const EdgeInsets.all(8),
-                child: const Icon(
-                  Icons.call_end,
-                  size: 30,
-                ),
-              ),
-              offset: const Offset(0, -185),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              onSelected: (value) => {
-                    if (value == "leave")
-                      onCallLeaveButtonPressed()
-                    else if (value == "end")
-                      onCallEndButtonPressed()
-                  },
-              itemBuilder: (context) => <PopupMenuEntry>[
-                    _buildMeetingPoupItem(
-                      "leave",
-                      "Leave",
-                      "Only you will leave the call",
-                      SvgPicture.asset("assets/ic_leave.svg"),
-                    ),
-                    const PopupMenuDivider(),
-                    _buildMeetingPoupItem(
-                      "end",
-                      "End",
-                      "End call for all participants",
-                      SvgPicture.asset("assets/ic_end.svg"),
-                    ),
-                  ]),
-
           // Mic Control
+
+          //-----------------------------Microphone -------------------------------------
+
+          // onTap : onMicButtonPressed,
+          // onDoubleTapDown: (details) =>   {onSwitchMicButtonPressed(details)},
           TouchRippleEffect(
-            borderRadius: BorderRadius.circular(12),
-            rippleColor: isMicEnabled ? primaryColor : Colors.white,
+            borderRadius: BorderRadius.circular(48),
+            rippleColor: isMicEnabled ? Color(0xff808080) : Colors.white,
             onTap: onMicButtonPressed,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(48),
                 border: Border.all(color: secondaryColor),
-                color: isMicEnabled ? primaryColor : Colors.white,
+                color: isMicEnabled
+                    ? Color.fromARGB(136, 128, 128, 128)
+                    : Colors.white,
               ),
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   Icon(
                     isMicEnabled ? Icons.mic : Icons.mic_off,
-                    size: 30,
-                    color: isMicEnabled ? Colors.white : primaryColor,
+                    size: 24,
+                    color: isMicEnabled ? Colors.white : Color(0xff808080),
                   ),
-                  GestureDetector(
-                      onTapDown: (details) =>
-                          {onSwitchMicButtonPressed(details)},
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: Icon(
-                          Icons.arrow_drop_down,
-                          color: isMicEnabled ? Colors.white : primaryColor,
-                        ),
-                      )),
                 ],
               ),
             ),
@@ -127,38 +83,59 @@ class MeetingActionBar extends StatelessWidget {
             onTap: onCameraButtonPressed,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(48),
                 border: Border.all(color: secondaryColor),
-                color: isCamEnabled ? primaryColor : Colors.white,
+                color: isCamEnabled
+                    ? Color.fromARGB(136, 128, 128, 128)
+                    : Colors.white,
               ),
               padding: const EdgeInsets.all(10),
-              child: SvgPicture.asset(
-                isCamEnabled
-                    ? "assets/ic_video.svg"
-                    : "assets/ic_video_off.svg",
-                width: 26,
-                height: 26,
-                color: isCamEnabled ? Colors.white : primaryColor,
+              child: isCamEnabled
+                  ? Icon(
+                      Icons.videocam,
+                      color: Color(0xffffffff),
+                    )
+                  : const Icon(
+                      Icons.videocam_off,
+                      color: Color(0xff808080),
+                    ),
+            ),
+          ),
+
+          //------------End call button-------------
+          TouchRippleEffect(
+            borderRadius: BorderRadius.circular(48),
+            onTap: onCallLeaveButtonPressed,
+            rippleColor: Color(0xffffffff),
+            child: Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(48),
+                color: Color(0xffFF002E),
+              ),
+              child: const Icon(
+                Icons.call_end,
+                color: Color(0xffffffff),
               ),
             ),
           ),
 
+          //----------------------Chat Button-----------------------
           TouchRippleEffect(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(48),
             rippleColor: primaryColor,
             onTap: onChatButtonPressed,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: secondaryColor),
-                color: primaryColor,
+                borderRadius: BorderRadius.circular(48),
+                border: Border.all(color: Color(0xff808080)),
+                color: Color(0xff808080),
               ),
               padding: const EdgeInsets.all(10),
-              child: SvgPicture.asset(
-                "assets/ic_chat.svg",
-                width: 26,
-                height: 26,
-                color: Colors.white,
+              child: const Icon(
+                Icons.chat,
+                color: Color(0xffffffff),
               ),
             ),
           ),
@@ -170,13 +147,15 @@ class MeetingActionBar extends StatelessWidget {
               color: black700,
               icon: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: secondaryColor),
-                  // color: red,
-                ),
+                    borderRadius: BorderRadius.circular(48),
+                    border: Border.all(color: secondaryColor),
+                    color: Color(0xff808080)
+                    // color: red,
+                    ),
                 padding: const EdgeInsets.all(8),
                 child: const Icon(
                   Icons.more_vert,
+                  color: Colors.white,
                   size: 30,
                 ),
               ),
@@ -225,7 +204,7 @@ class MeetingActionBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
       child: Row(children: [
         leadingIcon,
-        const HorizontalSpacer(12),
+        const HorizontalSpacer(10),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -249,3 +228,82 @@ class MeetingActionBar extends StatelessWidget {
     );
   }
 }
+
+
+
+          /* TouchRippleEffect(
+            borderRadius: BorderRadius.circular(12),
+            rippleColor: isMicEnabled ? primaryColor : Colors.white,
+            onTap: 
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: secondaryColor),
+                color: isMicEnabled ? primaryColor : Colors.white,
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                children: [
+                  Icon(
+                    isMicEnabled ? Icons.mic : Icons.mic_off,
+                    size: 30,
+                    color: isMicEnabled ? Colors.white : primaryColor,
+                  ),
+                  GestureDetector(
+                      onDoubleTapDown: (details) =>
+                          {onSwitchMicButtonPressed(details)},
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: Icon(
+                          Icons.arrow_drop_down,
+                          color: isMicEnabled ? Colors.white : primaryColor,
+                        ),
+                      )),
+                ],
+              ),
+            ),
+          ), */
+
+
+
+  /* PopupMenuButton(
+              position: PopupMenuPosition.under,
+              padding: const EdgeInsets.all(0),
+              color: black700,
+              icon: Container(
+                height: 48,
+                width: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(48),
+                  color: Color(0xffFF002E),
+                ),
+                child: const Icon(
+                  Icons.call_end,
+                  color: Color(0xffffffff),
+                ),
+              ),
+              offset: const Offset(0, -185),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              onSelected: (value) => {
+                    if (value == "leave")
+                      onCallLeaveButtonPressed()
+                    else if (value == "end")
+                      onCallEndButtonPressed()
+                  },
+              itemBuilder: (context) => <PopupMenuEntry>[
+                    _buildMeetingPoupItem(
+                      "leave",
+                      "Leave",
+                      "Only you will leave the call",
+                      SvgPicture.asset("assets/ic_leave.svg"),
+                    ),
+                    const PopupMenuDivider(),
+                    _buildMeetingPoupItem(
+                      "end",
+                      "End",
+                      "End call for all participants",
+                      SvgPicture.asset("assets/ic_end.svg"),
+                    ),
+                  ]),*/

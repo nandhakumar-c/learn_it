@@ -82,5 +82,6 @@ class OtherMessageWidget extends StatelessWidget {
             )),
       ),
     );
+    /* */
   }
 }

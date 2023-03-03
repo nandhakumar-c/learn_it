@@ -71,16 +71,18 @@ class MeetingAppBarState extends State<MeetingAppBar> {
                       children: [
                         Text(
                           widget.meeting.id,
-                          style: const TextStyle(
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         GestureDetector(
-                          child: const Padding(
-                            padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                             child: Icon(
                               Icons.copy,
+                              color: Theme.of(context).colorScheme.onPrimary,
                               size: 16,
                             ),
                           ),
