@@ -1,5 +1,8 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:fancy_password_field/fancy_password_field.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:learn_it/common/widgets/button.dart';
@@ -35,6 +38,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController? confirmPassword;
   final _formKey = GlobalKey<FormState>();
   final _emailFormKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final _passKey = GlobalKey<FormState>();
   bool emailBoolean = false;
   bool nameBoolean = false;
   bool passwordBoolean = false;
@@ -46,6 +51,7 @@ class _SignUpPageState extends State<SignUpPage> {
   List<String> data = ["Student", "Teacher"];
   List<String> values = ["S", "T"];
   int _index = 0;
+  String? passwordText;
   @override
   void initState() {
     // TODO: implement initState
@@ -69,6 +75,18 @@ class _SignUpPageState extends State<SignUpPage> {
   animateToPage() {
     _pageController.animateToPage(_currentPage,
         duration: Duration(seconds: 1), curve: Curves.easeIn);
+  }
+
+  // regular expression to check if string
+  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+  //A function that validate user entered password
+  bool validatePassword(String pass) {
+    String _password = pass.trim();
+    if (pass_valid.hasMatch(_password)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -131,11 +149,12 @@ class _SignUpPageState extends State<SignUpPage> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context, rootNavigator: true).pop();
           },
           icon: Icon(
             Icons.chevron_left,
@@ -165,8 +184,26 @@ class _SignUpPageState extends State<SignUpPage> {
               width: SizeConfig.width! * 80,
               child: Row(
                 children: [
+                  details.currentStep >= 1
+                      ? Container(
+                          alignment: Alignment.center,
+                          width: SizeConfig.width! * 20,
+                          child: OutlinedButton(
+                              onPressed: () => details.onStepCancel!.call(),
+                              child: const Icon(
+                                Icons.chevron_left,
+                              )),
+                        )
+                      : SizedBox(),
+                  details.currentStep >= 1
+                      ? SizedBox(
+                          width: 15,
+                        )
+                      : SizedBox(),
                   SizedBox(
-                    width: SizeConfig.width! * 80,
+                    width: details.currentStep >= 1
+                        ? SizeConfig.width! * 55
+                        : SizeConfig.width! * 80,
                     child: FilledButton(
                       onPressed: () {
                         if (details.currentStep == 0) {
@@ -181,6 +218,19 @@ class _SignUpPageState extends State<SignUpPage> {
                           _emailFormKey.currentState!.validate();
                           if (emailBoolean) {
                             details.onStepContinue!.call();
+                          }
+                        }
+                        if (details.currentStep == 2) {
+                          print("2 press");
+                          _passKey.currentState!.validate();
+                          if (passwordBoolean) {
+                            handleSignUp(
+                                context,
+                                username!.text,
+                                email!.text,
+                                password!.text,
+                                password!.text,
+                                widget.userType);
                           }
                         }
 
@@ -219,22 +269,28 @@ class _SignUpPageState extends State<SignUpPage> {
             });
           }
         },
-        onStepTapped: (int index) {
-          setState(() {
-            _index = index;
-          });
-        },
+        // onStepTapped: (int index) {
+        //   setState(() {
+        //     _index = index;
+        //   });
+        // },
         steps: <Step>[
           Step(
             title: Text(""),
-            state: _index <= 0 ? StepState.indexed : StepState.complete,
-            isActive: true,
+            state: _index > 0 ? StepState.complete : StepState.disabled,
+            isActive: _index >= 0 ? true : false,
             content: Container(
-              height: SizeConfig.height! * 15,
-              // alignment: Alignment.centerLeft,
+              height: SizeConfig.height! * 30,
+              // alignment: Alignment.center,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: SizeConfig.height! * 15,
+                    child: Lottie.asset(
+                        "assets/lottie/person_profile_lottie.json"),
+                  ),
                   Container(
                     padding: EdgeInsets.only(left: 5),
                     height: SizeConfig.height! * 4,
@@ -275,14 +331,19 @@ class _SignUpPageState extends State<SignUpPage> {
           Step(
             title: Text(""),
             label: Text(""),
-            state: _index <= 1 ? StepState.indexed : StepState.complete,
-            isActive: true,
+            state: _index > 1 ? StepState.complete : StepState.disabled,
+            isActive: _index >= 1 ? true : false,
             content: Container(
-              height: SizeConfig.height! * 15,
+              height: SizeConfig.height! * 30,
               // alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    height: SizeConfig.height! * 15,
+                    child: Lottie.asset("assets/lottie/email_lottie.json"),
+                  ),
                   Container(
                     padding: EdgeInsets.only(left: 5),
                     height: SizeConfig.height! * 4,
@@ -328,45 +389,171 @@ class _SignUpPageState extends State<SignUpPage> {
             title: Text(""),
             label: Text(""),
             state: _index <= 2 ? StepState.indexed : StepState.complete,
-            isActive: true,
+            isActive: _index >= 2 ? true : false,
             content: Container(
-              height: SizeConfig.height! * 15,
+              height: SizeConfig.height! * 30,
               // alignment: Alignment.centerLeft,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 5),
-                    height: SizeConfig.height! * 4,
-                    child: Text(
-                      "Enter your password",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.primary),
+                    alignment: Alignment.center,
+                    height: SizeConfig.height! * 15,
+                    child: Lottie.asset(
+                      "assets/lottie/password2_lottie.json",
                     ),
                   ),
-                  TextField(
-                    controller: password,
-                    textInputAction: TextInputAction.done,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      border: const OutlineInputBorder(),
-                      hintText: "Password",
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                        icon: Icon(
-                          Icons.remove_red_eye_rounded,
-                          color: isPasswordVisible ? Colors.blue : Colors.grey,
+                  Row(
+                    children: [
+                      Container(
+                        padding: EdgeInsets.only(left: 5),
+                        height: SizeConfig.height! * 4,
+                        child: Text(
+                          "Enter your password",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: Theme.of(context).colorScheme.primary),
+                        ),
+                      ),
+                      Spacer(),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Ink(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(48)),
+                          width: SizeConfig.height! * 4,
+                          height: SizeConfig.height! * 4,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(48),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: Text("Password rules"),
+                                        content: Text(
+                                            "\u2022 Should contain atleast 8 characters\n\u2022 Should contain atleast 3 Alphabets\n\u2022 Should contain 2 uppercase letters\n\u2022 Should contain 3 numbers\n\u2022 Should contain 1 special character"),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text("OK"))
+                                        ],
+                                      ));
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(bottom: 4.0),
+                              child: Icon(Icons.info_outline, size: 20),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Form(
+                    key: _passKey,
+                    child: TextFormField(
+                      // hasStrengthIndicator: true,
+                      // strengthIndicatorBuilder: (strength) {
+                      //   print(strength.toString());
+                      //   if (strength <= 0.3) {
+                      //     return Text("Weak");
+                      //   }
+                      //   if (strength > 0.3 && strength <= 0.7) {
+                      //     return Text("Normal");
+                      //   }
+                      //   if (strength > 0.7 && strength <= 1) {
+                      //     return Text("Strong");
+                      //   }
+                      //   return Text("Null");
+                      // },
+                      // validationRuleBuilder: (rules, value) {
+                      //   return Container();
+                      // },
+                      // validationRules: {
+                      //   DigitValidationRule(),
+                      //   UppercaseValidationRule(),
+                      //   LowercaseValidationRule(),
+                      //   SpecialCharacterValidationRule(),
+                      //   MinCharactersValidationRule(6),
+                      //   MaxCharactersValidationRule(12),
+                      // },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter password";
+                        } else {
+                          //call function to check password
+                          bool result = validatePassword(value);
+                          if (result) {
+                            // create account event
+                            setState(() {
+                              passwordBoolean = true;
+                            });
+                            return null;
+                          } else {
+                            return "Password should contain Capital, small letter & Number & Special";
+                          }
+                        }
+                      },
+                      controller: password,
+                      onChanged: (value) {
+                        setState(() {
+                          passwordText = value;
+                        });
+                      },
+                      textInputAction: TextInputAction.done,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      obscureText: !isPasswordVisible,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock),
+                        border: const OutlineInputBorder(),
+                        hintText: "Password",
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.remove_red_eye_rounded,
+                            color:
+                                isPasswordVisible ? Colors.blue : Colors.grey,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: SizeConfig.height! * 1,
+                  ),
+
+                  /*   Form(
+                    //key: _passKey,
+                    child: FlutterPwValidator(
+                      key: _passKey,
+                      controller: password!,
+                      minLength: 8,
+                      uppercaseCharCount: 2,
+                      numericCharCount: 3,
+                      specialCharCount: 1,
+                      normalCharCount: 3,
+                      successColor: Color(0xff4BB543),
+                      failureColor: Color(0xffff0000),
+                      width: 400,
+                      height: 10,
+                      onSuccess: () {
+                        print("MATCHED");
+                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                            content: new Text("Password is matched")));
+                      },
+                      onFail: () {
+                        print("NOT MATCHED");
+                      },
+                    ),
+                  ) */
                 ],
               ),
             ),

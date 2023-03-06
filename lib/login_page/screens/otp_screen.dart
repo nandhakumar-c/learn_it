@@ -17,6 +17,7 @@ class OtpScreen extends StatefulWidget {
 }
 
 class _OtpScreenState extends State<OtpScreen> {
+  String otp = "";
   @override
   Widget build(BuildContext context) {
     final backendProvider = Provider.of<BackEndProvider>(context);
@@ -101,26 +102,10 @@ class _OtpScreenState extends State<OtpScreen> {
                           },
                           //runs when every textfield is filled
                           onSubmit: (String verificationCode) async {
-                            // showDialog(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return AlertDialog(
-                            //         title: Text("Verification Code"),
-                            //         content: Text(
-                            //             'Code entered is $verificationCode'),
-                            //       );
-                            //     });
-                            String serverIp = backendProvider.getLocalhost();
-                            final res = await http.post(
-                                Uri.parse("$serverIp/api/verifyOtp"),
-                                body: {
-                                  "user_id": widget.email,
-                                  "otp": "898989"
-                                });
-
-                            print("Result --> ${res.body}");
-
-                            //  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ,));
+                            print(verificationCode);
+                            setState(() {
+                              otp = verificationCode;
+                            });
                           }, // end onSubmit
                         ),
                       ),
@@ -142,8 +127,8 @@ class _OtpScreenState extends State<OtpScreen> {
                       onPressed: () async {
                         String serverIp = backendProvider.getLocalhost();
                         final res = await http.post(
-                            Uri.parse("$serverIp/api/verifyOtp"),
-                            body: {"user_id": widget.email, "otp": "898989"});
+                            Uri.parse("$serverIp/verifyOtp"),
+                            body: {"email": widget.email, "otp": otp});
 
                         print("Result --> ${res.body}");
                       },

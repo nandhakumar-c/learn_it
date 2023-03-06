@@ -58,6 +58,8 @@ dependencies:
   smooth_page_indicator: ^1.0.1
   flutter_otp_text_field: ^1.1.1
   email_validator: ^2.1.17
+  flutter_pw_validator: ^1.5.0
+  fancy_password_field: ^2.0.0
   
   # cloud_firestore_web: ^3.3.3
   # The following adds the Cupertino Icons font to your application.

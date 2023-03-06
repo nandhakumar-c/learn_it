@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/login_page/screens/otp_screen.dart';
@@ -97,17 +99,38 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       onPressed: () async {
                         String serverIp = backendProvider.getLocalhost();
                         final res = await http.post(
-                            Uri.parse("$serverIp/api/forgotPass"),
+                            Uri.parse("$serverIp/forgotPass"),
                             body: {"email": _emailController.text});
 
                         print("Result --> ${res.body}");
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                OtpScreen(email: _emailController.text),
-                          ),
-                        );
-                        _emailController.clear();
+                        final data = jsonDecode(res.body);
+                        if (data["success"] == true) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  OtpScreen(email: _emailController.text),
+                            ),
+                          );
+                          _emailController.clear();
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Oops :("),
+                                content: Text(
+                                    "Email not registered. Please register to continue"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("OK"))
+                                ],
+                              );
+                            },
+                          );
+                        }
                       },
                       child: Text("Next",
                           style: Theme.of(context)

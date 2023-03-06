@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,8 +34,31 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  //final GlobalKey<ScaffoldState> _scaffoldKey1 = GlobalKey<ScaffoldState>();
   bool isPasswordVisible = false;
-  final _formKey = GlobalKey<FormState>();
+  bool emailBoolean = false;
+  bool passwordBoolean = false;
+  final _loginUserFormKey = GlobalKey<FormState>();
+  final _loginPassFormKey = GlobalKey<FormState>();
+  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+  //A function that validate user entered password
+  bool validatePassword(String pass) {
+    String _password = pass.trim();
+    if (pass_valid.hasMatch(_password)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    username.dispose();
+    password.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -80,48 +104,63 @@ class _LoginPageState extends State<LoginPage> {
 
     return SafeArea(
       child: Scaffold(
+        //key: _scaffoldKey1,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Form(
-            key: _formKey,
-            child: ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Container(
-                  height: height * 0.08,
-                  //color: Colors.blue,
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        icon: Icon(
-                          Icons.chevron_left_rounded,
-                          size: width * 0.08,
-                        ),
+          child: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Container(
+                height: height * 0.08,
+                //color: Colors.blue,
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: Icon(
+                        Icons.chevron_left_rounded,
+                        size: width * 0.08,
                       ),
-                      SizedBox(
-                        width: width * 0.04,
-                      ),
-                      Text("Login",
-                          style: Theme.of(context).textTheme.headlineSmall)
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: width * 0.04,
+                    ),
+                    Text("Login",
+                        style: Theme.of(context).textTheme.headlineSmall)
+                  ],
                 ),
-                Lottie.asset(
-                  "assets/lottie/Login_Lottie.json",
-                  height: height * 0.3,
-                  width: height * 0.3,
-                ),
-                SizedBox(
-                  height: height * 0.04,
-                ),
-                //-----Email or username field-----
-                TextFormField(
+              ),
+              Lottie.asset(
+                "assets/lottie/Login_Lottie.json",
+                height: height * 0.3,
+                width: height * 0.3,
+              ),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              //-----Email or username field-----
+              Form(
+                key: _loginUserFormKey,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return 'Please enter your email address';
+                    }
+                    // Check if the entered email has the right format
+                    if (!EmailValidator.validate(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    setState(() {
+                      emailBoolean = true;
+                    });
+                    // Return null if the entered email is valid
+                    return null;
+                  },
                   textInputAction: TextInputAction.next,
                   controller: username,
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -131,11 +170,29 @@ class _LoginPageState extends State<LoginPage> {
                       hintText: "Email or Username",
                       hoverColor: Colors.white),
                 ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                //----password----
-                TextField(
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
+              //----password----
+              Form(
+                key: _loginPassFormKey,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your password";
+                    } else {
+                      //call function to check password
+                      bool result = validatePassword(value);
+                      if (result) {
+                        // create account event
+                        ;
+                        return null;
+                      } else {
+                        return "Please enter the correct password";
+                      }
+                    }
+                  },
                   controller: password,
                   textInputAction: TextInputAction.done,
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -157,33 +214,35 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+              ),
 
-                Align(
-                  alignment: Alignment.topRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen(),
-                      ));
-                    },
-                    child: const Text(
-                      "Forgot Password?",
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
+              Align(
+                alignment: Alignment.topRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ForgotPasswordScreen(),
+                    ));
+                  },
+                  child: const Text(
+                    "Forgot Password?",
+                    style: TextStyle(decoration: TextDecoration.underline),
                   ),
                 ),
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical! * 5,
-                ),
-                //----Login Button----
-                FilledButton(
-                  onPressed: () async {
-                    // Navigator.of(context).push(MaterialPageRoute(
-                    //   builder: (context) => DashBoardPage(),
-                    // ));
-                    print(username.text);
-                    print(password.text);
-
+              ),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical! * 5,
+              ),
+              //----Login Button----
+              FilledButton(
+                onPressed: () async {
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) => DashBoardPage(),
+                  // ));
+                  print(username.text);
+                  print(password.text);
+                  if (_loginUserFormKey.currentState!.validate() &&
+                      _loginPassFormKey.currentState!.validate()) {
                     var jwt = await attemptLogIn(username.text, password.text);
 
                     if (jwt != null) {
@@ -211,65 +270,65 @@ class _LoginPageState extends State<LoginPage> {
                       displayDialog(context, "An Error Occurred",
                           "No account was found matching that username and password");
                     }
-                  },
-                  child: Text("Login",
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge!
-                          .copyWith(color: Colors.white)),
-                ),
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical! * 2,
-                ),
+                  }
+                },
+                child: Text("Login",
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge!
+                        .copyWith(color: Colors.white)),
+              ),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical! * 2,
+              ),
 
-                // ignore: prefer_const_literals_to_create_immutables
-                Row(children: <Widget>[
-                  // ignore: prefer_const_constructors
-                  Expanded(
-                    child: const Divider(
-                      thickness: 1,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
+              // ignore: prefer_const_literals_to_create_immutables
+              Row(children: <Widget>[
+                // ignore: prefer_const_constructors
+                Expanded(
+                  child: const Divider(
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
                   ),
-                  Text(
-                    "OR",
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const Expanded(
-                    child: Divider(
-                      thickness: 1,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-                  ),
-                ]),
-                SizedBox(
-                  height: SizeConfig.blockSizeVertical! * 2,
                 ),
-                OutlinedButton(
-                    style:
-                        OutlinedButton.styleFrom(backgroundColor: Colors.white),
-                    onPressed: () {},
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Image(
-                          image: AssetImage("assets/images/google_logo.png"),
-                          height: 20,
-                          width: 20,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "Continue with Google",
-                          style: TextStyle(color: Colors.black),
-                        )
-                      ],
-                    ))
-              ],
-            ),
+                Text(
+                  "OR",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const Expanded(
+                  child: Divider(
+                    thickness: 1,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                ),
+              ]),
+              SizedBox(
+                height: SizeConfig.blockSizeVertical! * 2,
+              ),
+              OutlinedButton(
+                  style:
+                      OutlinedButton.styleFrom(backgroundColor: Colors.white),
+                  onPressed: () {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Image(
+                        image: AssetImage("assets/images/google_logo.png"),
+                        height: 20,
+                        width: 20,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Continue with Google",
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ],
+                  ))
+            ],
           ),
         ),
       ),
