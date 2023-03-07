@@ -111,7 +111,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   OtpScreen(email: _emailController.text),
                             ),
                           );
-                          _emailController.clear();
+                          // _emailController.clear();
                         } else {
                           showDialog(
                             context: context,

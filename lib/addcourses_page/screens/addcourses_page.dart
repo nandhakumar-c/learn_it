@@ -26,7 +26,8 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   String _token = "";
   TextEditingController? courseName;
   TextEditingController? courseDescription;
-
+  final _courseNameKey = GlobalKey<FormState>();
+  final _courseDescriptionKey = GlobalKey<FormState>();
   late String _setTime, _setDate;
 
   late String _hour, _minute, _time;
@@ -35,7 +36,8 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
 
   DateTime selectedDate = DateTime.now();
 
-  TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay selectedTime =
+      TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
@@ -49,9 +51,9 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
     });
     courseName = TextEditingController();
     courseDescription = TextEditingController();
-    _dateController.text = DateFormat("dd/mm/yyyy").format(DateTime.now());
+    _dateController.text = DateFormat("dd/MM/yyyy").format(DateTime.now());
 
-    _timeController.text = DateFormat("HH:MM aa").format(DateTime.now());
+    _timeController.text = DateFormat("HH:mm aa").format(DateTime.now());
   }
 
   Future<Null> _selectDate(BuildContext context) async {
@@ -80,7 +82,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
         _time = _hour + ' : ' + _minute;
-        _timeController.text = DateFormat("HH:MM aa").format(DateTime(
+        _timeController.text = DateFormat("HH:mm aa").format(DateTime(
             selectedDate.day,
             selectedDate.month,
             selectedDate.year,
@@ -93,9 +95,6 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   @override
   Widget build(BuildContext context) {
     dateTime = DateFormat.yMd().format(DateTime.now());
-
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     // datepickerFunction() {
     //   DatePicker.showDateTimePicker(context,
@@ -110,331 +109,362 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
     // }
 
     final provider = Provider.of<BackEndProvider>(context);
+    Future<bool> showExitPopup() async {
+      return await showDialog(
+            //show confirm dialogue
+            //the return value will be from "Yes" or "No" options
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Exit App'),
+              content: Text('Do you want to exit an App?'),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  //return false when click on "NO"
+                  child: Text('No'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  //return true when click on "Yes"
+                  child: Text('Yes'),
+                ),
+              ],
+            ),
+          ) ??
+          false; //if showDialouge had returned null, then return false
+    }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          icon: Icon(
-            Icons.chevron_left,
-            size: 30,
-            color: Theme.of(context).colorScheme.primary,
+    return WillPopScope(
+      onWillPop: showExitPopup,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Add Course",
+            style: Theme.of(context)
+                .textTheme
+                .titleLarge!
+                .copyWith(color: Theme.of(context).colorScheme.primary),
           ),
         ),
-        title: Text(
-          "Add Course",
-          style: Theme.of(context)
-              .textTheme
-              .titleLarge!
-              .copyWith(color: Theme.of(context).colorScheme.primary),
-        ),
-      ),
-      body: Stepper(
-        physics: NeverScrollableScrollPhysics(),
-        elevation: 0,
-        type: StepperType.horizontal,
-        controlsBuilder: (context, details) {
-          // print(details);
+        body: Stepper(
+          physics: NeverScrollableScrollPhysics(),
+          elevation: 0,
+          type: StepperType.horizontal,
+          controlsBuilder: (context, details) {
+            // print(details);
 
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 40,
-              width: SizeConfig.width! * 80,
-              child: Row(
-                children: [
-                  details.currentStep >= 1
-                      ? Container(
-                          alignment: Alignment.center,
-                          width: SizeConfig.width! * 20,
-                          child: OutlinedButton(
-                              onPressed: () => details.onStepCancel!.call(),
-                              child: const Icon(
-                                Icons.chevron_left,
-                              )),
-                        )
-                      : SizedBox(),
-                  details.currentStep >= 1
-                      ? SizedBox(
-                          width: 15,
-                        )
-                      : SizedBox(),
-                  SizedBox(
-                    width: details.currentStep >= 1
-                        ? SizeConfig.width! * 55
-                        : SizeConfig.width! * 80,
-                    child: FilledButton(
-                      onPressed: () async {
-                        if (details.currentStep == 0) {
-                          details.onStepContinue!.call();
-                        }
-                        if (details.currentStep == 1) {
-                          print("1 press");
-
-                          details.onStepContinue!.call();
-                        }
-                        if (details.currentStep == 2) {
-                          print("2 press");
-                          {
-                            String id = provider.payloadData!.user.id;
-                            //print("id at add courses ====> $id");
-                            String jwt = provider.jwt;
-                            String _selectedDateTime = DateTime(
-                                    selectedDate.year,
-                                    selectedDate.month,
-                                    selectedDate.day,
-                                    selectedTime.hour,
-                                    selectedTime.minute)
-                                .toIso8601String();
-                            //print("date time $_selectedDateTime");
-                            final meetingId = await createMeeting(_token);
-                            var res = await http.post(
-                                Uri.parse(
-                                    "${provider.getLocalhost()}/addCourse/$id"),
-                                body: {
-                                  "course_name": courseName!.text,
-                                  "description": courseDescription!.text,
-                                  "schedule_date": "${_selectedDateTime}Z",
-                                  "roomId": meetingId,
-                                  "hostId": id
-                                },
-                                headers: {
-                                  "Authorization": jwt
-                                });
-
-                            print(res.body);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 40,
+                width: SizeConfig.width! * 80,
+                child: Row(
+                  children: [
+                    details.currentStep >= 1
+                        ? Container(
+                            alignment: Alignment.center,
+                            width: SizeConfig.width! * 20,
+                            child: OutlinedButton(
+                                onPressed: () => details.onStepCancel!.call(),
+                                child: const Icon(
+                                  Icons.chevron_left,
+                                )),
+                          )
+                        : SizedBox(),
+                    details.currentStep >= 1
+                        ? SizedBox(
+                            width: 15,
+                          )
+                        : SizedBox(),
+                    SizedBox(
+                      width: details.currentStep >= 1
+                          ? SizeConfig.width! * 55
+                          : SizeConfig.width! * 80,
+                      child: FilledButton(
+                        onPressed: () async {
+                          if (details.currentStep == 0) {
+                            if (_courseNameKey.currentState!.validate()) {
+                              details.onStepContinue!.call();
+                            }
                           }
-                        }
-                      },
-                      child: Text(details.currentStep == 2 ? "Add" : "Continue",
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelLarge!
-                              .copyWith(color: Colors.white)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-        //margin: EdgeInsetsGeometry.infinity,
-        currentStep: _index,
-        onStepCancel: () {
-          if (_index > 0) {
-            setState(() {
-              _index -= 1;
-            });
-          }
-        },
-        onStepContinue: () {
-          if (_index < 2) {
-            setState(() {
-              _index += 1;
-            });
-          }
-        },
-        // onStepTapped: (int index) {
-        //   setState(() {
-        //     _index = index;
-        //   });
-        // },
-        steps: <Step>[
-          Step(
-            title: Text(""),
-            state: _index > 0 ? StepState.complete : StepState.disabled,
-            isActive: _index >= 0 ? true : false,
-            content: Container(
-              height: SizeConfig.height! * 15,
-              // alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   height: SizeConfig.height! * 15,
-                  //   child: Lottie.asset(
-                  //       "assets/lottie/person_profile_lottie.json"),
-                  // ),
-                  Container(
-                    padding: EdgeInsets.only(left: 5),
-                    height: SizeConfig.height! * 4,
-                    child: Text(
-                      "Enter the course name",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                  Form(
-                    child: TextFormField(
-                      controller: courseName,
-                      validator: (arg) {
-                        if (arg!.length < 3) {
-                          return 'Name must be more than 2 charater';
-                        } else {
-                          setState(() {});
-                        }
-                        return null;
-                      },
-                      textInputAction: TextInputAction.next,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.book),
-                          border: OutlineInputBorder(),
-                          hintText: "More than 3 characters",
-                          hoverColor: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: Text(""),
-            label: Text(""),
-            state: _index > 1 ? StepState.complete : StepState.disabled,
-            isActive: _index >= 1 ? true : false,
-            content: Container(
-              height: SizeConfig.height! * 15,
-              // alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   height: SizeConfig.height! * 15,
-                  //   child: Lottie.asset("assets/lottie/email_lottie.json"),
-                  // ),
-                  Container(
-                    padding: EdgeInsets.only(left: 5),
-                    height: SizeConfig.height! * 4,
-                    child: Text(
-                      "Enter the course description",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                  Form(
-                    child: TextFormField(
-                      controller: courseDescription,
-                      textInputAction: TextInputAction.next,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      decoration: const InputDecoration(
-                          prefixIcon: Icon(Icons.wysiwyg_rounded),
-                          border: OutlineInputBorder(),
-                          hintText: "Max of 300 characters",
-                          hoverColor: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Step(
-            title: Text(""),
-            label: Text(""),
-            state: _index <= 2 ? StepState.indexed : StepState.complete,
-            isActive: _index >= 2 ? true : false,
-            content: Container(
-              height: SizeConfig.height! * 15,
-              // alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   height: SizeConfig.height! * 15,
-                  //   child: Lottie.asset(
-                  //     "assets/lottie/password2_lottie.json",
-                  //   ),
-                  // ),
-                  Container(
-                    padding: EdgeInsets.only(left: 5),
-                    height: SizeConfig.height! * 4,
-                    child: Text(
-                      "Select your course time",
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(48),
-                        onTap: () {
-                          _selectDate(context);
+                          if (details.currentStep == 1) {
+                            print("1 press");
+                            if (_courseDescriptionKey.currentState!
+                                .validate()) {
+                              details.onStepContinue!.call();
+                            }
+                          }
+                          if (details.currentStep == 2) {
+                            print("2 press");
+                            {
+                              String id = provider.payloadData!.user.id;
+                              //print("id at add courses ====> $id");
+                              String jwt = provider.jwt;
+                              String _selectedDateTime = DateTime(
+                                      selectedDate.year,
+                                      selectedDate.month,
+                                      selectedDate.day,
+                                      selectedTime.hour,
+                                      selectedTime.minute)
+                                  .toIso8601String();
+                              //print("date time $_selectedDateTime");
+                              final meetingId = await createMeeting(_token);
+                              var res = await http.post(
+                                  Uri.parse(
+                                      "${provider.getLocalhost()}/addCourse/$id"),
+                                  body: {
+                                    "course_name": courseName!.text,
+                                    "description": courseDescription!.text,
+                                    "schedule_date": "${_selectedDateTime}Z",
+                                    "roomId": meetingId,
+                                    "hostId": id
+                                  },
+                                  headers: {
+                                    "Authorization": jwt
+                                  });
+
+                              print(res.body);
+                            }
+                          }
                         },
-                        child: Container(
-                          width: SizeConfig.width! * 40,
-                          height: SizeConfig.height! * 7,
-                          margin: EdgeInsets.all(5),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(48)),
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            enabled: false,
-                            keyboardType: TextInputType.text,
-                            controller: _dateController,
-                            onSaved: (String? val) {
-                              _setDate = val!;
-                            },
-                            decoration: InputDecoration(
-                                disabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                contentPadding: EdgeInsets.only(top: 0.0)),
+                        child: Text(
+                            details.currentStep == 2 ? "Add" : "Continue",
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge!
+                                .copyWith(color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+          //margin: EdgeInsetsGeometry.infinity,
+          currentStep: _index,
+          onStepCancel: () {
+            if (_index > 0) {
+              setState(() {
+                _index -= 1;
+              });
+            }
+          },
+          onStepContinue: () {
+            if (_index < 2) {
+              setState(() {
+                _index += 1;
+              });
+            }
+          },
+          // onStepTapped: (int index) {
+          //   setState(() {
+          //     _index = index;
+          //   });
+          // },
+          steps: <Step>[
+            Step(
+              title: Text(""),
+              state: _index > 0 ? StepState.complete : StepState.disabled,
+              isActive: _index >= 0 ? true : false,
+              content: Container(
+                height: SizeConfig.height! * 15,
+                // alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Container(
+                    //   alignment: Alignment.center,
+                    //   height: SizeConfig.height! * 15,
+                    //   child: Lottie.asset(
+                    //       "assets/lottie/person_profile_lottie.json"),
+                    // ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      height: SizeConfig.height! * 4,
+                      child: Text(
+                        "Enter the course name",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ),
+                    Form(
+                      key: _courseNameKey,
+                      child: TextFormField(
+                        controller: courseName,
+                        validator: (arg) {
+                          if (arg!.length <= 3) {
+                            return 'Name must be more than 3 charaters';
+                          } else {
+                            setState(() {});
+                          }
+                          return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.book),
+                            border: OutlineInputBorder(),
+                            hintText: "More than 3 characters",
+                            hoverColor: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Step(
+              title: Text(""),
+              label: Text(""),
+              state: _index > 1 ? StepState.complete : StepState.disabled,
+              isActive: _index >= 1 ? true : false,
+              content: Container(
+                height: SizeConfig.height! * 15,
+                // alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Container(
+                    //   alignment: Alignment.center,
+                    //   height: SizeConfig.height! * 15,
+                    //   child: Lottie.asset("assets/lottie/email_lottie.json"),
+                    // ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      height: SizeConfig.height! * 4,
+                      child: Text(
+                        "Enter the course description",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ),
+                    Form(
+                      key: _courseDescriptionKey,
+                      child: TextFormField(
+                        controller: courseDescription,
+                        textInputAction: TextInputAction.next,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        validator: (value) {
+                          if (value!.length > 300) {
+                            return "Exceeded the limit of 300 characters";
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.wysiwyg_rounded),
+                            border: OutlineInputBorder(),
+                            hintText: "Max of 300 characters",
+                            hoverColor: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Step(
+              title: Text(""),
+              label: Text(""),
+              state: _index <= 2 ? StepState.indexed : StepState.complete,
+              isActive: _index >= 2 ? true : false,
+              content: Container(
+                height: SizeConfig.height! * 15,
+                // alignment: Alignment.centerLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Container(
+                    //   alignment: Alignment.center,
+                    //   height: SizeConfig.height! * 15,
+                    //   child: Lottie.asset(
+                    //     "assets/lottie/password2_lottie.json",
+                    //   ),
+                    // ),
+                    Container(
+                      padding: EdgeInsets.only(left: 5),
+                      height: SizeConfig.height! * 4,
+                      child: Text(
+                        "Select your course time",
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        InkWell(
+                          borderRadius: BorderRadius.circular(48),
+                          onTap: () {
+                            _selectDate(context);
+                          },
+                          child: Container(
+                            width: SizeConfig.width! * 40,
+                            height: SizeConfig.height! * 7,
+                            margin: EdgeInsets.all(5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(48)),
+                            child: TextFormField(
+                              textAlign: TextAlign.center,
+                              enabled: false,
+                              keyboardType: TextInputType.text,
+                              controller: _dateController,
+                              onSaved: (String? val) {
+                                _setDate = val!;
+                              },
+                              decoration: const InputDecoration(
+                                  disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide.none),
+                                  contentPadding: EdgeInsets.only(top: 0.0)),
+                            ),
                           ),
                         ),
-                      ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(48),
-                        onTap: () {
-                          _selectTime(context);
-                        },
-                        child: Container(
-                          //margin: EdgeInsets.only(top: 30),
-                          width: SizeConfig.width! * 40,
-                          height: SizeConfig.height! * 7,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(48)),
-                          child: TextFormField(
-                            //style: TextStyle(fontSize: 40),
-                            textAlign: TextAlign.center,
-                            onSaved: (String? val) {
-                              _setTime = val!;
-                            },
-                            enabled: false,
-                            keyboardType: TextInputType.text,
-                            controller: _timeController,
-                            decoration: InputDecoration(
-                                disabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide.none),
-                                // labelText: 'Time',
-                                contentPadding: EdgeInsets.all(5)),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(48),
+                          onTap: () {
+                            _selectTime(context);
+                          },
+                          child: Container(
+                            //margin: EdgeInsets.only(top: 30),
+                            width: SizeConfig.width! * 40,
+                            height: SizeConfig.height! * 7,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(48)),
+                            child: TextFormField(
+                              //style: TextStyle(fontSize: 40),
+                              textAlign: TextAlign.center,
+                              onSaved: (String? val) {
+                                _setTime = val!;
+                              },
+                              enabled: false,
+                              keyboardType: TextInputType.text,
+                              controller: _timeController,
+                              decoration: InputDecoration(
+                                  disabledBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide.none),
+                                  // labelText: 'Time',
+                                  contentPadding: EdgeInsets.all(5)),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
- /*
+/*
     return Scaffold(
         appBar: AppBar(
           title: const Text("Add Courses Page"),
@@ -771,4 +801,3 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
           ),
         )*/
         ); */
-

@@ -39,6 +39,7 @@ class Datum {
     required this.teacherId,
     required this.roomId,
     required this.hostId,
+    this.endDateTime,
     //required this.teacher,
   });
 
@@ -47,21 +48,23 @@ class Datum {
   String description;
   String slug;
   DateTime scheduleDate;
+  DateTime? endDateTime;
   String teacherId;
   String roomId;
   String hostId;
   // Teacher teacher;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-        id: json["id"],
-        courseName: json["course_name"],
-        description: json["description"],
-        slug: json["slug"],
-        scheduleDate: DateTime.parse(json["schedule_date"]),
-        teacherId: json["teacherId"],
-        roomId: json["roomId"],
-        hostId: json["hostId"],
-        //teacher: Teacher.fromJson(json["Teacher"]),
+      id: json["id"],
+      courseName: json["course_name"],
+      description: json["description"],
+      slug: json["slug"],
+      scheduleDate: DateTime.parse(json["schedule_date"]),
+      teacherId: json["teacherId"],
+      roomId: json["roomId"],
+      hostId: json["hostId"],
+      endDateTime: DateTime.parse(json["schedule_date"]).add(Duration(hours: 1))
+      //teacher: Teacher.fromJson(json["Teacher"]),
       );
 
   Map<String, dynamic> toJson() => {

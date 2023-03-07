@@ -13,6 +13,7 @@ import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/login_page/screens/forgot_password.dart';
+import 'package:learn_it/login_page/screens/reset_password.dart';
 import 'package:learn_it/login_page/widgets/bottomborderclipper.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
 import 'package:learn_it/signup_page/screens/user_selection_page.dart';
@@ -20,6 +21,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/utils/screen_size.dart';
+import '../../common/widgets/button_loader.dart';
 import '../../video_call_page/screens/video_call_screen.dart';
 import '../../video_call_page/screens/video_call_screen_layout.dart';
 import '../widgets/topborderclipper.dart';
@@ -38,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
   bool isPasswordVisible = false;
   bool emailBoolean = false;
   bool passwordBoolean = false;
+  bool isLoading = false;
   final _loginUserFormKey = GlobalKey<FormState>();
   final _loginPassFormKey = GlobalKey<FormState>();
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
@@ -223,6 +226,9 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => ForgotPasswordScreen(),
                     ));
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) => ResetPasswordScreen(),
+                    // ));
                   },
                   child: const Text(
                     "Forgot Password?",
@@ -243,7 +249,13 @@ class _LoginPageState extends State<LoginPage> {
                   print(password.text);
                   if (_loginUserFormKey.currentState!.validate() &&
                       _loginPassFormKey.currentState!.validate()) {
+                    setState(() {
+                      isLoading = !isLoading;
+                    });
                     var jwt = await attemptLogIn(username.text, password.text);
+                    setState(() {
+                      isLoading = !isLoading;
+                    });
 
                     if (jwt != null) {
                       print("Success jwt");
@@ -262,7 +274,7 @@ class _LoginPageState extends State<LoginPage> {
 
                       // ignore: use_build_context_synchronously
                       //Navigation to the dashboard page
-                      Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
                           builder: (context) => HomePage(userType: userType)));
                     } else {
                       print("Failure");
@@ -272,11 +284,13 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   }
                 },
-                child: Text("Login",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelLarge!
-                        .copyWith(color: Colors.white)),
+                child: isLoading
+                    ? ButtonLoader()
+                    : Text("Login",
+                        style: Theme.of(context)
+                            .textTheme
+                            .labelLarge!
+                            .copyWith(color: Colors.white)),
               ),
               SizedBox(
                 height: SizeConfig.blockSizeVertical! * 2,

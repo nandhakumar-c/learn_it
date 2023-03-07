@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/utils/color.dart';
+import 'package:learn_it/login_page/screens/reset_password.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +21,10 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   String otp = "";
+
   @override
   Widget build(BuildContext context) {
+    print(widget.email);
     final backendProvider = Provider.of<BackEndProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -100,6 +105,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           onCodeChanged: (String code) {
                             //handle validation or checks here
                           },
+
                           //runs when every textfield is filled
                           onSubmit: (String verificationCode) async {
                             print(verificationCode);
@@ -126,11 +132,36 @@ class _OtpScreenState extends State<OtpScreen> {
                     child: FilledButton(
                       onPressed: () async {
                         String serverIp = backendProvider.getLocalhost();
+                        print("otp ==> $otp");
                         final res = await http.post(
                             Uri.parse("$serverIp/verifyOtp"),
                             body: {"email": widget.email, "otp": otp});
 
                         print("Result --> ${res.body}");
+                        if (jsonDecode(res.body)["status"] == true) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ResetPasswordScreen(),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: Text("Enter valid OTP"),
+                                actions: [
+                                  TextButton(
+                                    child: Text("OK"),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        }
                       },
                       child: Text("Verify",
                           style: Theme.of(context)

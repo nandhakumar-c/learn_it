@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 
+import '../../dashboard_page/models/dashboard_model.dart';
+
 class BackEndProvider with ChangeNotifier {
   final String _localhost = "http://192.168.1.80:4000/api";
   String getLocalhost() {
@@ -30,4 +32,9 @@ class BackEndProvider with ChangeNotifier {
     payloadData = payloadFromJson(payload);
     notifyListeners();
   }
+
+  DashboardData? dashboardData;
+
+  List<Datum> currentMeeting = [];
+  List<Datum> upcomingMeeting = [];
 }
