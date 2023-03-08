@@ -1,11 +1,7 @@
-import 'package:email_validator/email_validator.dart';
-import 'package:fancy_password_field/fancy_password_field.dart';
+import 'package:email_validator/email_validator.dart' show EmailValidator;
 import 'package:flutter/material.dart';
 
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
-import 'package:learn_it/common/widgets/button.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/signup_page/screens/user_selection_page.dart';
@@ -13,9 +9,11 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/providers/backend_provider.dart';
+import '../../common/utils/app_routes.dart';
 import '../../login_page/widgets/bottomborderclipper.dart';
 import '../../login_page/widgets/topborderclipper.dart';
 
+// ignore: must_be_immutable
 class SignUpPage extends StatefulWidget {
   SignUpPage({required this.userType, super.key});
   String userType;
@@ -131,20 +129,22 @@ class _SignUpPageState extends State<SignUpPage> {
         provider.storeJwtToken("jwt", provider.payloadData!.token);
         print("Success");
         String userType = provider.payloadData!.user.userType;
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => HomePage(
-            userType: userType,
-          ),
-        ));
+        Navigator.of(context).pushNamed(AppRoutes.home, arguments: userType);
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => HomePage(
+        //     userType: userType,
+        //   ),
+        // ));
       } else {
         print("Failure");
         // ignore: use_build_context_synchronously
         displayDialog(
             context, "Oops!", "User Account not created..Try again Later");
         // ignore: use_build_context_synchronously
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => UserSelectionPage(),
-        ));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //   builder: (context) => UserSelectionPage(),
+        // ));
+        Navigator.of(context).pushNamed(AppRoutes.userSelection);
       }
     }
 

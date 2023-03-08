@@ -20,29 +20,40 @@ class DashBoardProvider with ChangeNotifier {
   List<Datum> currentMeeting = [];
   List<Datum> upcomingMeeting = [];
 
+  Map<String, List<Datum>> filteredMeetings = {
+    "currentMeeting": [],
+    "upcomingMeeting": []
+  };
+
 //filters the today's currentMeeting and upcomingMeetings
   void meetingFilterFunction() {
     currentMeeting = [];
     upcomingMeeting = [];
     final todayDate = DateFormat("dd/MM/yyyy").format(DateTime.now());
-    print(todayDate);
+
     for (int index = 0; index < dashboardData!.data.length; index++) {
       final courseDate = DateFormat("dd/MM/yyyy")
           .format(dashboardData!.data[index].scheduleDate);
       final courseStartTime = dashboardData!.data[index].scheduleDate;
       final courseEndTime = dashboardData!.data[index].endDateTime;
+      print(courseEndTime);
       if (courseDate == todayDate) {
-        print(dashboardData!.data[index].courseName);
-        // print(dashboardData!.data[index].scheduleDate);
-        // print(dashboardData!.data[index].endDateTime);
-        // print("=====================================");
         if (courseStartTime.isBefore(DateTime.now()) &&
             courseEndTime!.isAfter(DateTime.now())) {
           print("currentMeeting => ${dashboardData!.data[index].courseName}");
           currentMeeting.add(dashboardData!.data[index]);
-        } else {
+          filteredMeetings.update("currentMeeting", (value) {
+            value = [...currentMeeting];
+
+            return value;
+          });
+        } else if (courseEndTime!.isAfter(DateTime.now())) {
           print("upcomingMeeting => ${dashboardData!.data[index].courseName}");
           upcomingMeeting.add(dashboardData!.data[index]);
+          filteredMeetings.update("upcomingMeeting", (value) {
+            value = [...upcomingMeeting];
+            return value;
+          });
         }
       }
     }

@@ -56,6 +56,15 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
     _timeController.text = DateFormat("HH:mm aa").format(DateTime.now());
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _dateController.dispose();
+    _timeController.dispose();
+    courseName!.dispose();
+    courseDescription!.dispose();
+  }
+
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,

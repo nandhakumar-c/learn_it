@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
-import 'package:learn_it/common/widgets/colors.dart';
-import 'package:learn_it/signup_page/screens/signup_page.dart';
+
 import 'package:lottie/lottie.dart';
+
+import '../../common/utils/app_routes.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({super.key});
@@ -109,10 +110,13 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                     userType = "S";
                   });
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        SignUpPage(userType: userType as String),
-                  ));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) =>
+                  //       SignUpPage(userType: userType as String),
+                  // ));
+
+                  Navigator.of(context).pushNamed(AppRoutes.signup,
+                      arguments: userType as String);
                 },
                 child: Text(
                   "Learner",
@@ -139,10 +143,12 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                     userType = "T";
                   });
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        SignUpPage(userType: userType as String),
-                  ));
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //   builder: (context) =>
+                  //       SignUpPage(userType: userType as String),
+                  // ));
+                  Navigator.of(context).pushNamed(AppRoutes.signup,
+                      arguments: userType as String);
                 },
                 child: Text("Instructor",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(

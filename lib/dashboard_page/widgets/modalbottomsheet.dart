@@ -18,21 +18,20 @@ import 'join_button.dart';
 
 class ModalBottomSheet extends StatefulWidget {
   BuildContext context;
-  String courseName;
-  String time;
-  String instructorName;
-  String courseDescription;
+
   int index;
+  String meetingType;
+  String date;
+  String time;
   // DraggableScrollableController _scrollController;
 
   Widget child;
   ModalBottomSheet(
       {required this.index,
       required this.context,
-      required this.courseName,
+      required this.meetingType,
       required this.time,
-      required this.instructorName,
-      required this.courseDescription,
+      required this.date,
       //required this._scrollController,
 
       required this.child});
@@ -106,9 +105,12 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    final dashboardProvider = Provider.of<DashBoardProvider>(context);
-    final _courseDescription =
-        dashboardProvider.dashboardData!.data[widget.index].description;
+    final dashboardProvider = Provider.of<DashBoardProvider>(context)
+        .filteredMeetings[widget.meetingType]![widget.index];
+    final courseName = dashboardProvider.courseName;
+    final courseDescription = dashboardProvider.description;
+    final instructor = dashboardProvider.teacherName;
+
     return InkWell(
         splashColor: CustomColor.primaryColor,
         child: widget.child,
@@ -167,7 +169,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                       alignment: Alignment.topCenter,
                                       child: Container(
                                         height: 4,
-                                        width: 100,
+                                        width: lerp(25, 100),
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
@@ -178,15 +180,15 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     ),
                                   ),
                                   Positioned(
-                                    top: lerp(5, maxHeight * 0.05),
-                                    left: lerp(0, 10),
+                                    top: lerp(10, maxHeight * 0.05),
+                                    left: lerp(2, 10),
                                     child: Text(
-                                      widget.courseName,
+                                      courseName,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineSmall!
                                           .copyWith(
-                                              fontSize: lerp(25, 30),
+                                              fontSize: lerp(20, 30),
                                               fontWeight: FontWeight.w700,
                                               color: lerpColor(
                                                   CustomColor.primaryColor,
@@ -203,7 +205,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                       child: Opacity(
                                         opacity: lerp(0, 1),
                                         child: Text(
-                                          _courseDescription,
+                                          courseDescription,
                                           //softWrap: false,
                                           style: Theme.of(context)
                                               .textTheme
@@ -280,7 +282,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                   Positioned(
                                     top: lerp(
                                         maxHeight * 0.052, maxHeight * 0.6),
-                                    left: lerp(maxHeight * 0.15, 10),
+                                    left: lerp(maxHeight * 0.275, 10),
                                     child: Icon(
                                       Icons.person_rounded,
                                       size: lerp(18, 0),
@@ -290,9 +292,9 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                   Positioned(
                                     top:
                                         lerp(maxHeight * 0.05, maxHeight * 0.6),
-                                    left: lerp(maxHeight * 0.175, 10),
+                                    left: lerp(maxHeight * 0.3, 10),
                                     child: Text(
-                                      widget.instructorName,
+                                      instructor,
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleMedium!

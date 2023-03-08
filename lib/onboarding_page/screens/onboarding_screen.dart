@@ -8,6 +8,8 @@ import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../common/utils/app_routes.dart';
+
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
@@ -219,11 +221,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             width: SizeConfig.width! * 100,
             child: FilledButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) {
-                    return UserSelectionPage();
-                  },
-                ));
+                Navigator.of(context).pushNamed(AppRoutes.userSelection);
+                // Navigator.of(context).push(MaterialPageRoute(
+                //   builder: (context) {
+                //     return UserSelectionPage();
+                //   },
+                // ));
               },
               child: Text("Get Started",
                   style: Theme.of(context).textTheme.labelLarge!.copyWith(
@@ -244,11 +247,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) {
-                        return LoginPage();
-                      },
-                    ));
+                    Navigator.of(context).pushNamed(AppRoutes.login);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) {
+                    //     return LoginPage();
+                    //   },
+                    // ));
                   },
                   child: Ink(
                     // height: SizeConfig.height! * 0.02,

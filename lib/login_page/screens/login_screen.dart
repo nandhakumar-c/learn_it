@@ -20,6 +20,7 @@ import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/utils/app_routes.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/button_loader.dart';
 import '../../video_call_page/screens/video_call_screen.dart';
@@ -223,9 +224,10 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.topRight,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ForgotPasswordScreen(),
-                    ));
+                    Navigator.of(context).pushNamed(AppRoutes.forgotPassword);
+                    // Navigator.of(context).push(MaterialPageRoute(
+                    //   builder: (context) => ForgotPasswordScreen(),
+                    // ));
                     // Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) => ResetPasswordScreen(),
                     // ));
@@ -274,8 +276,12 @@ class _LoginPageState extends State<LoginPage> {
 
                       // ignore: use_build_context_synchronously
                       //Navigation to the dashboard page
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => HomePage(userType: userType)));
+                      // Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      //     builder: (context) => HomePage(userType: userType)));
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          AppRoutes.home, (route) => false,
+                          arguments: userType);
                     } else {
                       print("Failure");
                       // ignore: use_build_context_synchronously

@@ -99,10 +99,11 @@ class _DashBoardPageState extends State<DashBoardPage> {
               final dashboardData =
                   dashboardDataFromJson(snapshot.data as String);
               //dashboardProvider.setDashboardData(snapshot.data as String);
-              int numberOfCourses =
-                  dashboardProvider.dashboardData!.data.length;
+
               int currentMeetingLength =
                   dashboardProvider.currentMeeting.length;
+              int upcomingMeetingLength =
+                  dashboardProvider.upcomingMeeting.length;
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: ListView(
@@ -125,7 +126,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                       fontWeight: FontWeight.w600),
                               children: [
                                 TextSpan(
-                                    text: currentMeetingLength.toString(),
+                                    text:
+                                        "${currentMeetingLength + upcomingMeetingLength}",
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium!
@@ -134,7 +136,12 @@ class _DashBoardPageState extends State<DashBoardPage> {
                                                 .colorScheme
                                                 .primary,
                                             fontWeight: FontWeight.bold)),
-                                const TextSpan(text: " meetings today")
+                                TextSpan(
+                                    text: currentMeetingLength +
+                                                upcomingMeetingLength >
+                                            1
+                                        ? " meetings today"
+                                        : " meeting today")
                               ]),
                         ),
                       ),
@@ -187,29 +194,25 @@ class _DashBoardPageState extends State<DashBoardPage> {
                             separatorBuilder: (context, index) => SizedBox(
                               height: SizeConfig.height! * 2,
                             ),
-                            itemCount: dashboardProvider.currentMeeting.length,
+                            itemCount: dashboardProvider
+                                .filteredMeetings["currentMeeting"]!.length,
                             itemBuilder: (context, index) {
-                              final dashboardvalue =
-                                  dashboardProvider.currentMeeting[index];
-                              final cardDetails = dashboardData.data[index];
+                              final dashboardvalue = dashboardProvider
+                                  .filteredMeetings["currentMeeting"]![index];
                               final dateFormat =
                                   DateFormat("MMM dd, yyyy HH:mm a");
                               String dateInput = dateFormat.format(
                                   DateTime.parse(
-                                      cardDetails.scheduleDate.toString()));
-
-                              String date = DateFormat("MMM dd, yyyy").format(
-                                  DateTime.parse(
-                                      cardDetails.scheduleDate.toString()));
-                              String time = DateFormat("hh:mm:a").format(
-                                  DateTime.parse(
-                                      cardDetails.scheduleDate.toString()));
-                              print(dashboardProvider.todaySchedule.length);
+                                      dashboardvalue.scheduleDate.toString()));
+                              String time = timeFormatConverter(
+                                  dashboardProvider, "currentMeeting", index);
                               return DashboardContainer(
-                                  index: index,
-                                  time: time,
-                                  courseName: dashboardvalue.courseName,
-                                  imgUrl: dashboardProvider.images[index % 5]);
+                                index: index,
+                                meetingType: "currentMeeting",
+                                courseName: dashboardvalue.courseName,
+                                date: dateInput,
+                                time: time,
+                              );
                             },
                           ),
                     SizedBox(
@@ -230,36 +233,23 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       separatorBuilder: (context, index) => SizedBox(
                         height: SizeConfig.height! * 2,
                       ),
-                      itemCount: dashboardProvider.upcomingMeeting.length,
+                      itemCount: dashboardProvider
+                          .filteredMeetings["upcomingMeeting"]!.length,
                       itemBuilder: (context, index) {
-                        // final dashboardvalue = dashboardData.data[index];
-                        // final cardDetails = dashboardData.data[index];
-                        final dashboardvalue =
-                            dashboardProvider.upcomingMeeting[index];
-                        final cardDetails =
-                            dashboardProvider.upcomingMeeting[index];
+                        final dashboardvalue = dashboardProvider
+                            .filteredMeetings["upcomingMeeting"]![index];
                         final dateFormat = DateFormat("MMM dd, yyyy HH:mm a");
                         String dateInput = dateFormat.format(DateTime.parse(
-                            cardDetails.scheduleDate.toString()));
-                        // print(
-                        //     "Input Value =====> ${cardDetails.scheduleDate.toString()}");
-                        // print("dateformat ------->  ${dateInput}");
-
-                        String date = DateFormat("MMM dd, yyyy").format(
-                            DateTime.parse(
-                                cardDetails.scheduleDate.toString()));
-                        String time = DateFormat("hh:mm:a").format(
-                            DateTime.parse(
-                                cardDetails.scheduleDate.toString()));
-
-                        /*final parsedDate =
-                          cardDetails.scheduleDate.toString().parseToDate();
-                      print(parsedDate.toIso8601String());*/
+                            dashboardvalue.scheduleDate.toString()));
+                        String time = timeFormatConverter(
+                            dashboardProvider, "upcomingMeeting", index);
                         return DashboardContainer(
-                            index: index,
-                            time: time,
-                            courseName: dashboardvalue.courseName,
-                            imgUrl: dashboardProvider.images[index % 5]);
+                          index: index,
+                          meetingType: "upcomingMeeting",
+                          courseName: dashboardvalue.courseName,
+                          date: dateInput,
+                          time: time,
+                        );
                       },
                     ),
                   ],
@@ -270,6 +260,23 @@ class _DashBoardPageState extends State<DashBoardPage> {
             }
           },
         ));
+  }
+
+  String timeFormatConverter(
+      DashBoardProvider dashboardProvider, String meetingType, int index) {
+    final dashboardvalue =
+        dashboardProvider.filteredMeetings[meetingType]![index];
+
+    String date = DateFormat("MMM dd, yyyy")
+        .format(DateTime.parse(dashboardvalue.scheduleDate.toString()));
+    String startTime = DateFormat("hh:mm ")
+        .format(DateTime.parse(dashboardvalue.scheduleDate.toString()));
+    String endTime = DateFormat("hh:mm a")
+        .format(DateTime.parse(dashboardvalue.endDateTime.toString()));
+    print(dashboardProvider.todaySchedule.length);
+
+    String time = "$startTime - $endTime";
+    return time;
   }
 }
 

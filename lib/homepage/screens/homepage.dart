@@ -53,9 +53,9 @@ class _HomePageState extends State<HomePage> {
                       label: "Dashboard"),
                   const BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.access_time_filled,
+                        Icons.calendar_month,
                       ),
-                      label: "Today's Schedule"),
+                      label: "Calendar"),
                   const BottomNavigationBarItem(
                       icon: Icon(
                         Icons.person,
@@ -88,9 +88,9 @@ class _HomePageState extends State<HomePage> {
                       label: "Dashboard"),
                   const BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.access_time_filled,
+                        Icons.calendar_month,
                       ),
-                      label: "Schedule"),
+                      label: "Calendar"),
                   const BottomNavigationBarItem(
                       icon: Icon(
                         Icons.task_alt,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
+import 'package:learn_it/common/utils/app_routes.dart';
 import 'package:learn_it/login_page/screens/otp_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -36,7 +37,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         //mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               height: SizeConfig.height! * 50,
               width: SizeConfig.width! * 100,
               // alignment: Alignment.center,
@@ -53,7 +54,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           "assets/lottie/forgot_password_lottie.json"),
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.only(left: 5),
                       height: SizeConfig.height! * 4,
                       child: Text(
                         "Enter your email address",
@@ -63,7 +64,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 5),
+                      padding: const EdgeInsets.only(left: 5),
                       child: Text(
                         "Enter your registered email address to send otp and change the password of the LearnIt account",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
@@ -105,27 +106,30 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         print("Result --> ${res.body}");
                         final data = jsonDecode(res.body);
                         if (data["success"] == true) {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  OtpScreen(email: _emailController.text),
-                            ),
-                          );
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (context) =>
+                          //         OtpScreen(email: _emailController.text),
+                          //   ),
+                          // );
+                          Navigator.of(context).pushNamed(AppRoutes.verifyOtp,
+                              arguments: _emailController.text);
                           // _emailController.clear();
                         } else {
+                          // ignore: use_build_context_synchronously
                           showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text("Oops :("),
-                                content: Text(
+                                title: const Text("Oops :("),
+                                content: const Text(
                                     "Email not registered. Please register to continue"),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text("OK"))
+                                      child: const Text("OK"))
                                 ],
                               );
                             },

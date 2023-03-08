@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/chatpage/providers/chat_provider.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
+import 'package:learn_it/common/utils/route_generator.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
@@ -17,6 +18,7 @@ import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'chatpage/screens/chat_screen.dart';
+import 'common/utils/app_routes.dart';
 import 'common/widgets/color_scheme.dart';
 import 'common/widgets/test.dart';
 
@@ -65,21 +67,42 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-          theme: ThemeData(
-              scaffoldBackgroundColor: Color(0xFFF5FAFA),
-              fontFamily: 'Inter',
-              textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
-              useMaterial3: true,
-              colorScheme: lightColorScheme),
-          darkTheme: ThemeData(
-              fontFamily: 'Inter',
-              textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
-              useMaterial3: true,
-              colorScheme: darkColorScheme),
-          debugShowCheckedModeBanner: false,
-          home: OnBoardingScreen()),
+        theme: ThemeData(
+            scaffoldBackgroundColor: Color(0xFFF5FAFA),
+            fontFamily: 'Inter',
+            textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
+            useMaterial3: true,
+            colorScheme: lightColorScheme),
+        darkTheme: ThemeData(
+            fontFamily: 'Inter',
+            textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
+            useMaterial3: true,
+            colorScheme: darkColorScheme),
+        debugShowCheckedModeBanner: false,
+        initialRoute: AppRoutes.onboardingscreen,
+        onGenerateRoute: RouteGenerator.generateRoute,
+      ),
     );
   }
+
+  /*generateRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case AppRoutes.onboardingscreen:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => OnBoardingScreen(),
+        );
+      default:
+        return null;
+    }
+  }
+
+  buildpage(Widget child, {RouteSettings? settings}) {
+    MaterialPageRoute(
+      settings: settings,
+      builder: (context) => child,
+    );
+  }*/
 }
 
 

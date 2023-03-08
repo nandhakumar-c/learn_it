@@ -33,9 +33,12 @@ class _TodaySchedulePageState extends State<TodaySchedulePage> {
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<DashBoardProvider>(context);
-    final todaySchedule = dashboardData.todaySchedule;
+    final todaySchedule = dashboardData.dashboardData!.data;
     return Scaffold(
-        appBar: AppBar(title: Text("Today's Schedule Page")),
+        appBar: AppBar(
+          title: Text("Meeting Calendar"),
+          automaticallyImplyLeading: false,
+        ),
         body: SfCalendar(
           dataSource: MeetingDataSource(getAppointments(todaySchedule, colors)),
         ));

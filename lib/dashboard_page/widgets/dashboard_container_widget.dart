@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/dashboard_page/widgets/join_button.dart';
 import 'package:learn_it/dashboard_page/widgets/modalbottomsheet.dart';
 import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
 import 'package:learn_it/dashboard_page/widgets/red_video_button.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
 
 class DashboardContainer extends StatefulWidget {
-  String time;
-  String courseName;
-  String imgUrl;
   int index;
+  String meetingType;
+  String courseName;
+  String time;
+  String date;
+
   DashboardContainer(
       {required this.index,
-      required this.time,
+      required this.meetingType,
       required this.courseName,
-      required this.imgUrl,
+      required this.time,
+      required this.date,
       super.key});
 
   @override
@@ -47,14 +52,15 @@ class _DashboardContainerState extends State<DashboardContainer> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<DashBoardProvider>(context);
+    String imgUrl = provider.images[widget.index % 5];
+
     return ModalBottomSheet(
       index: widget.index,
+      meetingType: widget.meetingType,
       context: context,
-      courseName: widget.courseName,
       time: widget.time,
-      instructorName: "John Smith",
-      courseDescription:
-          "This free Flutter course helps you get started with mobile app development. In this Flutter for beginners course, you will learn the basics on getting started with Flutter and learn how to start building applications for multiple devices using the same codebase",
+      date: widget.date,
       // controller: controller!,
 
       child: Ink(
@@ -66,7 +72,7 @@ class _DashboardContainerState extends State<DashboardContainer> {
               colorFilter:
                   const ColorFilter.mode(Colors.black38, BlendMode.multiply),
               opacity: 0.95,
-              image: AssetImage(widget.imgUrl),
+              image: AssetImage(imgUrl),
               fit: BoxFit.cover),
         ),
         height: 130,
