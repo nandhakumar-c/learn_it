@@ -81,12 +81,14 @@ class _DashboardContainerState extends State<DashboardContainer> {
           padding: const EdgeInsets.all(15.0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              widget.courseName,
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineSmall!
-                  .copyWith(fontWeight: FontWeight.w700, color: Colors.white),
+            Row(
+              children: [
+                Text(
+                  widget.courseName,
+                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                      fontWeight: FontWeight.w700, color: Colors.white),
+                ),
+              ],
             ),
             Text(
               widget.time,

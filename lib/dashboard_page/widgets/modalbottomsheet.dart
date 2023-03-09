@@ -1,4 +1,7 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:learn_it/common/utils/app_routes.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
@@ -12,6 +15,7 @@ import 'dart:ui';
 
 import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
+import '../utils/path_constant.dart';
 import 'join_button.dart';
 
 //Use AnimatedBuilder widget
@@ -48,10 +52,12 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
   double offset = 0;
   GlobalKey _sheetKey = GlobalKey();
   double maxHeight = (SizeConfig.height! * 100 - 40);
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     _scrollController = DraggableScrollableController();
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 400));
@@ -101,6 +107,36 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
     } else {
       animationController!.fling(velocity: flingVelocity < 0.5 ? -1 : 1);
     }
+  }
+
+  String? linkMessage;
+  bool _isCreatingLink = false;
+
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+  Future createDynamicLink(bool short, String link) async {
+    setState(() {
+      _isCreatingLink = true;
+    });
+
+    final parameters = DynamicLinkParameters(
+      link: Uri.parse(kUriPrefix + link),
+      uriPrefix: kUriPrefix,
+      androidParameters: AndroidParameters(
+          packageName: "com.example.learn_it", minimumVersion: 0),
+    );
+
+    Uri url;
+    if (short) {
+      final shortLink = await dynamicLinks.buildShortLink(parameters);
+      url = shortLink.shortUrl;
+    } else {
+      url = await dynamicLinks.buildLink(parameters);
+    }
+
+    setState(() {
+      _isCreatingLink = false;
+      linkMessage = url.toString();
+    });
   }
 
   @override
@@ -164,6 +200,36 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 10),
                                 child: Stack(children: [
+                                  /*----------------------------------- Deep Linking Setup ------------------------------------------ */
+                                  Positioned(
+                                      top: lerp(0, maxHeight * 0.05),
+                                      right: lerp(2, 5),
+                                      child: SizedBox(
+                                        height: 52,
+                                        width: 52,
+                                        child: IconButton(
+                                          onPressed: () {
+                                            print("Inside Function");
+                                            createDynamicLink(false,
+                                                "${AppRoutes.preview}?meetingId=${dashboardProvider.roomId}");
+                                            // createDynamicLink(
+                                            //     false, "/attendance");
+                                            print("Outside Function");
+
+                                            Clipboard.setData(ClipboardData(
+                                                text: linkMessage));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Copied to the Clipboard")));
+                                          },
+                                          icon: Icon(
+                                            Icons.share,
+                                            color: lerpColor(
+                                                Colors.black, Colors.white),
+                                          ),
+                                        ),
+                                      )),
                                   Positioned(
                                     child: Align(
                                       alignment: Alignment.topCenter,
@@ -238,7 +304,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                   ),
                                   Positioned(
                                     top: lerp(
-                                        maxHeight * 0.052, maxHeight * 0.6),
+                                        maxHeight * 0.057, maxHeight * 0.6),
                                     left: lerp(0, 10),
                                     child: Icon(
                                       Icons.access_time_filled_rounded,
@@ -247,8 +313,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     ),
                                   ),
                                   Positioned(
-                                    top:
-                                        lerp(maxHeight * 0.05, maxHeight * 0.4),
+                                    top: lerp(
+                                        maxHeight * 0.055, maxHeight * 0.4),
                                     left: lerp(20, 10),
                                     child: Text(
                                       widget.time,
@@ -281,7 +347,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                   ),
                                   Positioned(
                                     top: lerp(
-                                        maxHeight * 0.052, maxHeight * 0.6),
+                                        maxHeight * 0.057, maxHeight * 0.6),
                                     left: lerp(maxHeight * 0.275, 10),
                                     child: Icon(
                                       Icons.person_rounded,
@@ -290,8 +356,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     ),
                                   ),
                                   Positioned(
-                                    top:
-                                        lerp(maxHeight * 0.05, maxHeight * 0.6),
+                                    top: lerp(
+                                        maxHeight * 0.055, maxHeight * 0.6),
                                     left: lerp(maxHeight * 0.3, 10),
                                     child: Text(
                                       instructor,

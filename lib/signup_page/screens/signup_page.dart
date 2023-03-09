@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart' show EmailValidator;
 import 'package:flutter/material.dart';
+import 'package:learn_it/common/providers/sharedpref.dart';
 
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:http/http.dart' as http;
@@ -127,9 +128,14 @@ class _SignUpPageState extends State<SignUpPage> {
 
         provider.setpayloadData(payload);
         provider.storeJwtToken("jwt", provider.payloadData!.token);
+        UserLoginDetails.setEmailPassword(payload, provider.payloadData!.token);
         print("Success");
+
         String userType = provider.payloadData!.user.userType;
-        Navigator.of(context).pushNamed(AppRoutes.home, arguments: userType);
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.home, (route) => false,
+            arguments: userType);
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (context) => HomePage(
         //     userType: userType,

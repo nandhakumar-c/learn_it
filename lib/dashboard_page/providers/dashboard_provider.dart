@@ -13,6 +13,7 @@ class DashBoardProvider with ChangeNotifier {
   ];
   void setDashboardData(String data) {
     dashboardData = dashboardDataFromJson(data);
+    print("Saved Dashbaord Data");
     meetingFilterFunction();
     //filterTodaySchedule(); //assign values
   }

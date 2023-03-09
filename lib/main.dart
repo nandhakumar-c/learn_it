@@ -1,14 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/chatpage/providers/chat_provider.dart';
+import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
+import 'package:learn_it/common/providers/sharedpref.dart';
 import 'package:learn_it/common/utils/route_generator.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
+import 'package:learn_it/login_page/controllers/login_controller.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:learn_it/onboarding_page/screens/onboarding_screen.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
@@ -31,7 +35,7 @@ username
 email
 password
 c_password  */
-
+late String initialRoute;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -39,15 +43,50 @@ Future<void> main() async {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-  runApp(MyApp());
+
+  await UserLoginDetails.init();
+
+  runApp(const MyApp());
 }
 
 // void main() {
 //   runApp(const MyApp());
 // }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initDynamicLinks();
+  }
+
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
+  Future initDynamicLinks() async {
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      final Uri uri = dynamicLinkData.link;
+      final queryParams = uri.queryParameters;
+      String? meetingId = queryParams['meetingId'];
+
+      print("Query Params ====> $queryParams");
+      if (queryParams.isNotEmpty) {
+        Navigator.of(context)
+            .pushNamed(dynamicLinkData.link.path, arguments: meetingId);
+      } else {
+        Navigator.of(context).pushNamed(AppRoutes.calendar);
+      }
+    }).onError((error) {
+      print("Error ==>$error");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,33 +118,25 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
             colorScheme: darkColorScheme),
         debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.onboardingscreen,
+        initialRoute: getRoute(),
+        // AppRoutes.onboardingscreen,
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
-
-  /*generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      case AppRoutes.onboardingscreen:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (context) => OnBoardingScreen(),
-        );
-      default:
-        return null;
-    }
-  }
-
-  buildpage(Widget child, {RouteSettings? settings}) {
-    MaterialPageRoute(
-      settings: settings,
-      builder: (context) => child,
-    );
-  }*/
 }
 
-
+getRoute() {
+  String serverIp = "http://192.168.1.80:4000/api";
+  print("LOGIN DATA ======= ${UserLoginDetails.getLoginData()}");
+  print("JWT TOKEN ======= ${UserLoginDetails.getJwtToken()}");
+  if (UserLoginDetails.getLoginData() == null ||
+      UserLoginDetails.getJwtToken() == null) {
+    return AppRoutes.onboardingscreen;
+  } else {
+    return AppRoutes.home;
+  }
+}
  /* theme: ThemeData(
             // ignore: deprecated_member_use
             // primaryColor: Colors.green,

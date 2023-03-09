@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:learn_it/common/providers/sharedpref.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
@@ -20,7 +21,7 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _currentPage = 0;
 
-  Timer? _timer;
+  late Timer _timer;
   PageController _pageController = PageController(
     initialPage: 0,
   );
@@ -49,7 +50,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   void dispose() {
     super.dispose();
-    _timer?.cancel();
+    _timer.cancel();
   }
 
   @override

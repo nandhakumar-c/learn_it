@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learn_it/common/models/conference_meeting_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
+import 'package:learn_it/common/utils/app_routes.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
@@ -46,18 +48,17 @@ class _JoinButtonState extends State<JoinButton> {
       if (validMeeting) {
         if (callType == "GROUP") {
           // ignore: use_build_context_synchronously
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ConfereneceMeetingScreen(
-                token: _token,
-                meetingId: meetingId,
-                displayName: displayName,
-                micEnabled: videoProvider.isAudioEnabled,
-                camEnabled: videoProvider.isVideoEnabled,
-              ),
+          final args = conferenceMeetingModelToJson(
+            ConferenceMeetingModel(
+              meetingId: meetingId,
+              token: _token,
+              displayName: displayName,
+              micEnabled: videoProvider.isAudioEnabled,
+              camEnabled: videoProvider.isVideoEnabled,
             ),
           );
+          Navigator.of(context)
+              .pushNamed(AppRoutes.conference, arguments: args);
         }
       } else {
         // ignore: use_build_context_synchronously

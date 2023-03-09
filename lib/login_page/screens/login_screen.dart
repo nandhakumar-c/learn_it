@@ -20,11 +20,13 @@ import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/providers/sharedpref.dart';
 import '../../common/utils/app_routes.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/button_loader.dart';
 import '../../video_call_page/screens/video_call_screen.dart';
 import '../../video_call_page/screens/video_call_screen_layout.dart';
+import '../controllers/login_controller.dart';
 import '../widgets/topborderclipper.dart';
 
 class LoginPage extends StatefulWidget {
@@ -255,6 +257,9 @@ class _LoginPageState extends State<LoginPage> {
                       isLoading = !isLoading;
                     });
                     var jwt = await attemptLogIn(username.text, password.text);
+                    // var jwt =
+                    //     await LoginController(serverIp: provider.getLocalhost())
+                    //         .attemptLogIn(username.text, password.text);
                     setState(() {
                       isLoading = !isLoading;
                     });
@@ -262,14 +267,17 @@ class _LoginPageState extends State<LoginPage> {
                     if (jwt != null) {
                       print("Success jwt");
                       print(jwt);
+
                       //converting the payload to class
                       var payload = payloadFromJson(jwt);
 
+                      await UserLoginDetails.setEmailPassword(
+                          jwt, payload.token);
                       //storing the payload data into the provider
                       provider.setpayloadData(jwt);
 
                       //storing the jwt token in the local storage using provider
-                      await provider.storeJwtToken("jwt", payload.token);
+                      // await provider.storeJwtToken("jwt", payload.token);
 
                       // print("Token JWT ${payload.token}");
                       String userType = provider.payloadData!.user.userType;

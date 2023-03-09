@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:learn_it/common/providers/sharedpref.dart';
+import 'package:learn_it/common/utils/app_routes.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
@@ -49,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Profile Page"),
+        title: const Text("Your Profile"),
       ),
       body: ListView(
         shrinkWrap: true,
@@ -61,14 +63,14 @@ class _ProfilePageState extends State<ProfilePage> {
             //Logout button
             Padding(
                 padding: EdgeInsets.all(width * 0.035),
-                child: LearnItButton(
-                    text: "Log Out",
+                child: FilledButton(
+                    child: Text("Log Out"),
                     onPressed: () {
                       final storage = FlutterSecureStorage();
                       storage.delete(key: "jwt");
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ));
+                      UserLoginDetails.clearData();
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          AppRoutes.onboardingscreen, (route) => false);
                     }))
           ])
         ],

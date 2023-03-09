@@ -8,6 +8,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../../common/providers/backend_provider.dart';
+import '../../common/providers/sharedpref.dart';
 import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/loading.dart';
@@ -33,11 +34,18 @@ class _DashBoardPageState extends State<DashBoardPage> {
     // TODO: implement initState
     super.initState();
 
-    String jwt = context.read<BackEndProvider>().jwt;
+    // String jwt = context.read<BackEndProvider>().jwt;
+
     String serverIp = context.read<BackEndProvider>().getLocalhost();
     final dashboardProvider = context.read<DashBoardProvider>();
-    id = context.read<BackEndProvider>().payloadData!.user.id;
-    userType = context.read<BackEndProvider>().payloadData!.user.userType;
+
+    final payloadData =
+        payloadFromJson(UserLoginDetails.getLoginData() as String);
+
+    String jwt = UserLoginDetails.getJwtToken() as String;
+
+    id = payloadData.user.id;
+    userType = payloadData.user.userType;
     print("Debug------> $userType");
     myFuture = getDashboardData(jwt, serverIp, dashboardProvider);
   }
@@ -75,16 +83,17 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BackEndProvider>(context);
-
+    final payloadData =
+        payloadFromJson(UserLoginDetails.getLoginData() as String);
     //dashboardprovider
     final dashboardProvider = Provider.of<DashBoardProvider>(context);
-    //final courseCount = dashboardProvider.dashboardData!.data.length;
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
+    //final backendProvider = Provider.of<BackEndProvider>(context);
+
+    //final payload = (UserLoginDetails.getLoginData() as String);
+    //backendProvider.setpayloadData(payload);
     //function to get dashboard data
-    String username = provider.payloadData!.user.username;
+    String username = payloadData.user.username;
     return Scaffold(
         //backgroundColor: const Color(0xFFF2F2F2),
         appBar: AppBar(
