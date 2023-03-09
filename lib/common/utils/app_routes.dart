@@ -14,4 +14,7 @@ class AppRoutes {
   static const attendance = "/attendance";
   static const addcourses = "/addcourses";
   static const home = "/home";
+  static const preview = "/previewscreen";
+  static const waiting = "/waitingscreen";
+  static const conference = "/conferencemeetingscreen";
 }
