@@ -29,13 +29,13 @@ class RouteGenerator {
       case AppRoutes.onboardingscreen:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => OnBoardingScreen(),
+          builder: (context) => const OnBoardingScreen(),
         );
 
       case AppRoutes.userSelection:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => UserSelectionPage(),
+          builder: (context) => const UserSelectionPage(),
         );
       case AppRoutes.signup:
         final args = settings.arguments as String;
@@ -48,12 +48,12 @@ class RouteGenerator {
       case AppRoutes.login:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => LoginPage(),
+          builder: (context) => const LoginPage(),
         );
       case AppRoutes.forgotPassword:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => ForgotPasswordScreen(),
+          builder: (context) => const ForgotPasswordScreen(),
         );
       case AppRoutes.verifyOtp:
         final args = settings.arguments as String;
@@ -66,42 +66,42 @@ class RouteGenerator {
       case AppRoutes.resetPassword:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => ResetPasswordScreen(),
+          builder: (context) => const ResetPasswordScreen(),
         );
       case AppRoutes.videoCall:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => VideoCallScreen(),
+          builder: (context) => const VideoCallScreen(),
         );
       case AppRoutes.chatscreen:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => ChatScreen(),
+          builder: (context) => const ChatScreen(),
         );
       case AppRoutes.dashboardpage:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => DashBoardPage(),
+          builder: (context) => const DashBoardPage(),
         );
       case AppRoutes.calendar:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => TodaySchedulePage(),
+          builder: (context) => const TodaySchedulePage(),
         );
       case AppRoutes.profile:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => ProfilePage(),
+          builder: (context) => const ProfilePage(),
         );
       case AppRoutes.attendance:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => AttendancePage(),
+          builder: (context) => const AttendancePage(),
         );
       case AppRoutes.addcourses:
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => AddCoursesPage(),
+          builder: (context) => const AddCoursesPage(),
         );
       case AppRoutes.conference:
         final args =
@@ -143,10 +143,10 @@ class RouteGenerator {
                   meetingId: args,
                 ));
       case AppRoutes.waiting:
-        return MaterialPageRoute(builder: (context) => LoadingScreen());
+        return MaterialPageRoute(builder: (context) => const LoadingScreen());
       default:
         return MaterialPageRoute(
-          builder: (context) => LoadingScreen(),
+          builder: (context) => const LoadingScreen(),
         );
     }
   }

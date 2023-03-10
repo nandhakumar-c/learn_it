@@ -1,3 +1,4 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/attendance_page/screens/attendance_page.dart';
@@ -8,6 +9,7 @@ import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/utils/app_routes.dart';
 import '../../common/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +22,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int index = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:clay_containers/widgets/clay_container.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
@@ -34,6 +35,8 @@ class _DashBoardPageState extends State<DashBoardPage> {
     // TODO: implement initState
     super.initState();
 
+    //initDynamicLinks();
+
     // String jwt = context.read<BackEndProvider>().jwt;
 
     String serverIp = context.read<BackEndProvider>().getLocalhost();
@@ -48,6 +51,47 @@ class _DashBoardPageState extends State<DashBoardPage> {
     userType = payloadData.user.userType;
     print("Debug------> $userType");
     myFuture = getDashboardData(jwt, serverIp, dashboardProvider);
+  }
+
+  Future initDynamicLinks() async {
+    final PendingDynamicLinkData? initialLink =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+
+    if (initialLink != null) {
+      final Uri deepLink = initialLink.link;
+      // Example of using the dynamic link to push the user to a different screen
+      print("if block in dashboard ${deepLink.path}");
+      Navigator.pushNamed(context, deepLink.path);
+    }
+
+    FirebaseDynamicLinks.instance.onLink.listen(
+      (pendingDynamicLinkData) {
+        // Set up the `onLink` event listener next as it may be received here
+        if (pendingDynamicLinkData != null) {
+          final Uri deepLink = pendingDynamicLinkData.link;
+          print("else block in dashboard ${deepLink.path}");
+          // Example of using the dynamic link to push the user to a different screen
+          Navigator.pushNamed(context, deepLink.path);
+        }
+      },
+    );
+
+    /* FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+    dynamicLinks.onLink.listen((dynamicLinkData) {
+      final Uri uri = dynamicLinkData.link;
+      final queryParams = uri.queryParameters;
+      String? meetingId = queryParams['meetingId'];
+
+      print("Query Params ====> $queryParams");
+      if (queryParams.isNotEmpty) {
+        Navigator.of(context)
+            .pushNamed(dynamicLinkData.link.path, arguments: meetingId);
+      } else {
+        Navigator.of(context).pushNamed(AppRoutes.calendar);
+      }
+    }).onError((error) {
+      print("Error ==>$error");
+    }); */
   }
 
   Future<String> getDashboardData(
@@ -83,6 +127,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
   @override
   Widget build(BuildContext context) {
+    //initDynamicLinks();
     final payloadData =
         payloadFromJson(UserLoginDetails.getLoginData() as String);
     //dashboardprovider
