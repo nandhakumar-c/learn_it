@@ -68,10 +68,34 @@ class _MyAppState extends State<MyApp> {
     initDynamicLinks();
   }
 
-  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
-
   Future initDynamicLinks() async {
-    dynamicLinks.onLink.listen((dynamicLinkData) {
+    FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
+    final PendingDynamicLinkData? initialLink =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+
+    if (initialLink != null) {
+      final Uri deepLink = initialLink.link;
+      // Example of using the dynamic link to push the user to a different screen
+      print("if block ${deepLink.path}");
+      print("if block params ${deepLink.queryParameters['meetingId']}");
+      Navigator.pushNamed(context, deepLink.path)
+          .onError((error, stackTrace) => print("ERROR msg => $error"));
+    }
+
+    FirebaseDynamicLinks.instance.onLink.listen(
+      (pendingDynamicLinkData) {
+        // Set up the `onLink` event listener next as it may be received here
+        if (pendingDynamicLinkData != null) {
+          final Uri deepLink = pendingDynamicLinkData.link;
+          print(deepLink.path);
+          // Example of using the dynamic link to push the user to a different screen
+          Navigator.pushNamed(context, deepLink.path);
+        }
+      },
+    );
+
+    /* dynamicLinks.onLink.listen((dynamicLinkData) {
       final Uri uri = dynamicLinkData.link;
       final queryParams = uri.queryParameters;
       String? meetingId = queryParams['meetingId'];
@@ -85,7 +109,7 @@ class _MyAppState extends State<MyApp> {
       }
     }).onError((error) {
       print("Error ==>$error");
-    });
+    }); */
   }
 
   @override
