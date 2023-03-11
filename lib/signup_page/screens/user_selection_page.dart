@@ -5,7 +5,7 @@ import 'package:learn_it/common/utils/screen_size.dart';
 
 import 'package:lottie/lottie.dart';
 
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({super.key});

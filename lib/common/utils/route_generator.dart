@@ -21,7 +21,7 @@ import 'package:learn_it/video_call_page/screens/videosdk_screen.dart';
 
 import '../../dashboard_page/screens/preview_screen.dart';
 import '../../video_call_page/new_screens/conference_meeting_screen.dart';
-import 'app_routes.dart';
+import '../routes/app_routes.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
-import 'package:learn_it/common/utils/app_routes.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';

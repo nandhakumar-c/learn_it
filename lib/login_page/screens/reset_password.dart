@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
 import '../../common/providers/backend_provider.dart';
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 import '../../common/utils/screen_size.dart';
 
 class ResetPasswordScreen extends StatefulWidget {

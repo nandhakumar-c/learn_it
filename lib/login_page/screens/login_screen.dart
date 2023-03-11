@@ -21,7 +21,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/providers/sharedpref.dart';
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/button_loader.dart';
 import '../../video_call_page/screens/video_call_screen.dart';

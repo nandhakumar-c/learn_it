@@ -22,7 +22,8 @@ import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'chatpage/screens/chat_screen.dart';
-import 'common/utils/app_routes.dart';
+import 'common/routes/app_routes.dart';
+import 'common/routes/app_routes_config.dart';
 import 'common/widgets/color_scheme.dart';
 import 'common/widgets/test.dart';
 
@@ -129,7 +130,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChatProvider(),
         )
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         theme: ThemeData(
             scaffoldBackgroundColor: Color(0xFFF5FAFA),
             fontFamily: 'Inter',
@@ -142,9 +143,13 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
             colorScheme: darkColorScheme),
         debugShowCheckedModeBanner: false,
-        initialRoute: getRoute(),
+        routeInformationParser:
+            GoRouterConfig.returnRoutes().routeInformationParser,
+        routerDelegate: GoRouterConfig.returnRoutes().routerDelegate,
+
+        //initialRoute: getRoute(),
         // AppRoutes.onboardingscreen,
-        onGenerateRoute: RouteGenerator.generateRoute,
+        //onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }

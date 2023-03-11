@@ -10,7 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/providers/backend_provider.dart';
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 import '../../login_page/widgets/bottomborderclipper.dart';
 import '../../login_page/widgets/topborderclipper.dart';
 

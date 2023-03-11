@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
+import 'package:learn_it/common/routes/app_routes_name.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:learn_it/signup_page/screens/signup_page.dart';
@@ -9,7 +11,7 @@ import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -222,7 +224,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             width: SizeConfig.width! * 100,
             child: FilledButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.userSelection);
+                // context.go("/userSelection");
+                GoRouter.of(context).push("/userSelection");
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) {
                 //     return UserSelectionPage();

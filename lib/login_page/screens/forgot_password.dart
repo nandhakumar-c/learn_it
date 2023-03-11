@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
-import 'package:learn_it/common/utils/app_routes.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/login_page/screens/otp_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';

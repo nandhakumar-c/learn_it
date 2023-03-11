@@ -9,7 +9,7 @@ import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/utils/app_routes.dart';
+import '../../common/routes/app_routes.dart';
 import '../../common/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {

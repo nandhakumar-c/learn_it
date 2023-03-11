@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_it/common/providers/backend_provider.dart';
-import 'package:learn_it/common/utils/app_routes.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/common/utils/color.dart';
 import 'package:learn_it/login_page/screens/reset_password.dart';
 import 'package:lottie/lottie.dart';

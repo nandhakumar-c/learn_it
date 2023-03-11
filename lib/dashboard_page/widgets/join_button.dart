@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/models/conference_meeting_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
-import 'package:learn_it/common/utils/app_routes.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
