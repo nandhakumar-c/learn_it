@@ -1,16 +1,13 @@
-import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
-import 'package:learn_it/common/widgets/button.dart';
 import 'package:learn_it/dashboard_page/models/dashboard_model.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import '../../common/providers/backend_provider.dart';
 import '../../common/providers/sharedpref.dart';
-import '../../common/utils/color.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/loading.dart';
 import '../providers/dashboard_provider.dart';
@@ -67,12 +64,10 @@ class _DashBoardPageState extends State<DashBoardPage> {
     FirebaseDynamicLinks.instance.onLink.listen(
       (pendingDynamicLinkData) {
         // Set up the `onLink` event listener next as it may be received here
-        if (pendingDynamicLinkData != null) {
-          final Uri deepLink = pendingDynamicLinkData.link;
-          print("else block in dashboard ${deepLink.path}");
-          // Example of using the dynamic link to push the user to a different screen
-          Navigator.pushNamed(context, deepLink.path);
-        }
+        final Uri deepLink = pendingDynamicLinkData.link;
+        print("else block in dashboard ${deepLink.path}");
+        // Example of using the dynamic link to push the user to a different screen
+        Navigator.pushNamed(context, deepLink.path);
       },
     );
 
@@ -116,7 +111,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
 
       //success prompt
       if (res.statusCode == 200) {
-        print("Dashboard - Success Student");
+        debugPrint("Dashboard - Success Student");
         provider.setDashboardData(res.body);
         return res.body;
       }
@@ -243,7 +238,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                             ),
                           )
                         : ListView.separated(
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             separatorBuilder: (context, index) => SizedBox(
                               height: SizeConfig.height! * 2,
@@ -282,7 +277,7 @@ class _DashBoardPageState extends State<DashBoardPage> {
                       height: SizeConfig.height! * 2,
                     ),
                     ListView.separated(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       separatorBuilder: (context, index) => SizedBox(
                         height: SizeConfig.height! * 2,

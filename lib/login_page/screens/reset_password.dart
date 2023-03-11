@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:learn_it/login_page/screens/login_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -18,8 +17,8 @@ class ResetPasswordScreen extends StatefulWidget {
 }
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   final _passwordKey = GlobalKey<FormState>();
   final _confirmPasswordKey = GlobalKey<FormState>();
   bool isPasswordVisible = false;
@@ -37,8 +36,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
   //A function that validate user entered password
   bool validatePassword(String pass) {
-    String _password = pass.trim();
-    if (pass_valid.hasMatch(_password)) {
+    String password = pass.trim();
+    if (pass_valid.hasMatch(password)) {
       return true;
     } else {
       return false;
@@ -212,14 +211,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                     )),
                 Expanded(
-                  child: Container(
+                  child: SizedBox(
                     height: SizeConfig.height! * 10,
                     width: SizeConfig.width! * 100,
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Container(
+                        child: SizedBox(
                           width: SizeConfig.width! * 100,
                           child: FilledButton(
                             onPressed: () async {

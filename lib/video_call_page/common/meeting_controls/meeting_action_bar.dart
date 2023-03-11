@@ -53,14 +53,14 @@ class MeetingActionBar extends StatelessWidget {
           // onDoubleTapDown: (details) =>   {onSwitchMicButtonPressed(details)},
           TouchRippleEffect(
             borderRadius: BorderRadius.circular(48),
-            rippleColor: isMicEnabled ? Color(0xff808080) : Colors.white,
+            rippleColor: isMicEnabled ? const Color(0xff808080) : Colors.white,
             onTap: onMicButtonPressed,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(48),
                 border: Border.all(color: secondaryColor),
                 color: isMicEnabled
-                    ? Color.fromARGB(136, 128, 128, 128)
+                    ? const Color.fromARGB(136, 128, 128, 128)
                     : Colors.white,
               ),
               padding: const EdgeInsets.all(10),
@@ -69,7 +69,7 @@ class MeetingActionBar extends StatelessWidget {
                   Icon(
                     isMicEnabled ? Icons.mic : Icons.mic_off,
                     size: 24,
-                    color: isMicEnabled ? Colors.white : Color(0xff808080),
+                    color: isMicEnabled ? Colors.white : const Color(0xff808080),
                   ),
                 ],
               ),
@@ -86,12 +86,12 @@ class MeetingActionBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(48),
                 border: Border.all(color: secondaryColor),
                 color: isCamEnabled
-                    ? Color.fromARGB(136, 128, 128, 128)
+                    ? const Color.fromARGB(136, 128, 128, 128)
                     : Colors.white,
               ),
               padding: const EdgeInsets.all(10),
               child: isCamEnabled
-                  ? Icon(
+                  ? const Icon(
                       Icons.videocam,
                       color: Color(0xffffffff),
                     )
@@ -106,13 +106,13 @@ class MeetingActionBar extends StatelessWidget {
           TouchRippleEffect(
             borderRadius: BorderRadius.circular(48),
             onTap: onCallLeaveButtonPressed,
-            rippleColor: Color(0xffffffff),
+            rippleColor: const Color(0xffffffff),
             child: Container(
               height: 48,
               width: 48,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(48),
-                color: Color(0xffFF002E),
+                color: const Color(0xffFF002E),
               ),
               child: const Icon(
                 Icons.call_end,
@@ -129,8 +129,8 @@ class MeetingActionBar extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(48),
-                border: Border.all(color: Color(0xff808080)),
-                color: Color(0xff808080),
+                border: Border.all(color: const Color(0xff808080)),
+                color: const Color(0xff808080),
               ),
               padding: const EdgeInsets.all(10),
               child: const Icon(
@@ -149,7 +149,7 @@ class MeetingActionBar extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(48),
                     border: Border.all(color: secondaryColor),
-                    color: Color(0xff808080)
+                    color: const Color(0xff808080)
                     // color: red,
                     ),
                 padding: const EdgeInsets.all(8),

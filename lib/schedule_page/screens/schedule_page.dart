@@ -1,4 +1,3 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +35,7 @@ class _TodaySchedulePageState extends State<TodaySchedulePage> {
     final todaySchedule = dashboardData.dashboardData!.data;
     return Scaffold(
         appBar: AppBar(
-          title: Text("Meeting Calendar"),
+          title: const Text("Meeting Calendar"),
           automaticallyImplyLeading: false,
         ),
         body: SfCalendar(
@@ -62,7 +61,7 @@ List<Appointment> getAppointments(
     print(todaySchedule[i].courseName);
     print("--------------");
     var startTime = todaySchedule[i].scheduleDate;
-    var endTime = startTime.add(Duration(hours: 1));
+    var endTime = startTime.add(const Duration(hours: 1));
     String courseTitle = todaySchedule[i].courseName;
     Color tileColor = colors[i % 6];
     // Color tileColor =

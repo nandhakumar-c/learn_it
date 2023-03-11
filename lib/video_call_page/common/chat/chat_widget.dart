@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:videosdk/videosdk.dart';
 
 import '../../../common/utils/screen_size.dart';
-import '../../../common/widgets/colors.dart';
 import '../../utils/toast.dart';
 
 class ChatWidget extends StatelessWidget {
@@ -31,13 +30,13 @@ class ChatWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 color: isLocalParticipant
                     ? Theme.of(context).colorScheme.primary.withOpacity(0.25)
-                    : Color(0xffffffff),
+                    : const Color(0xffffffff),
                 borderRadius: BorderRadius.circular(10)),
             child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: SizedBox(
                   width: SizeConfig.width! * 100,
-                  child: Container(
+                  child: SizedBox(
                     // height: SizeConfig.height! * 10,
                     width: SizeConfig.width! * 100,
                     child: Row(
@@ -45,7 +44,7 @@ class ChatWidget extends StatelessWidget {
                       children: [
                         Container(
                           child: Align(
-                            child: Container(
+                            child: SizedBox(
                               height: SizeConfig.width! * 10,
                               width: SizeConfig.width! * 10,
                               child: ClipRRect(
@@ -65,7 +64,7 @@ class ChatWidget extends StatelessWidget {
                               Padding(
                                 padding:
                                     const EdgeInsets.only(left: 10, bottom: 0),
-                                child: Container(
+                                child: SizedBox(
                                     height: 20,
                                     //width: SizeConfig.width! * 75,
                                     child: Row(children: [
@@ -81,7 +80,7 @@ class ChatWidget extends StatelessWidget {
                                                     .colorScheme
                                                     .secondary),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Align(
                                           alignment: Alignment.centerRight,
                                           child: Text(
@@ -99,7 +98,7 @@ class ChatWidget extends StatelessWidget {
                                     ])),
                               ),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                padding: const EdgeInsets.symmetric(horizontal: 10),
                                 child: Text(
                                   message.message,
                                   softWrap: false,

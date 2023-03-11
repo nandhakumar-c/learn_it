@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
 import 'package:provider/provider.dart';
 
 class EndCallButton extends StatefulWidget {
   final void Function() onCallEndButtonPressed;
-  EndCallButton({required this.onCallEndButtonPressed, super.key});
+  const EndCallButton({required this.onCallEndButtonPressed, super.key});
 
   @override
   State<EndCallButton> createState() => _EndCallButtonState();
@@ -20,7 +19,7 @@ class _EndCallButtonState extends State<EndCallButton> {
       width: 48,
       child: IconButton(
         style: IconButton.styleFrom(
-          backgroundColor: Color(0xffFF002E),
+          backgroundColor: const Color(0xffFF002E),
         ),
         icon: const Icon(
           Icons.call_end,

@@ -83,10 +83,10 @@ class _CallStatsState extends State<CallStats> {
     if (widget.participant.streams.isEmpty) {
       bottomSheetController?.close();
     }
-    var _audioStats = widget.participant.getAudioStats();
-    var _videoStats = widget.participant.getVideoStats();
+    var audioStats = widget.participant.getAudioStats();
+    var videoStats = widget.participant.getVideoStats();
     var vStats;
-    _videoStats?.forEach((stat) {
+    videoStats?.forEach((stat) {
       if (vStats == null) {
         vStats = stat;
       } else {
@@ -98,8 +98,8 @@ class _CallStatsState extends State<CallStats> {
       }
     });
     var stats = {};
-    if (_audioStats != null) {
-      if (_audioStats.isNotEmpty) stats = _audioStats[0];
+    if (audioStats != null) {
+      if (audioStats.isNotEmpty) stats = audioStats[0];
     }
     if (vStats != null) {
       stats = vStats;
@@ -111,14 +111,14 @@ class _CallStatsState extends State<CallStats> {
     }
     double jitter = stats['jitter'] ?? 0;
     double rtt = stats['rtt'] ?? 0;
-    double? _score = stats.isNotEmpty ? 100 : null;
-    if (_score != null) {
-      _score -= packetLossPercent * 50 > 50 ? 50 : packetLossPercent * 50;
-      _score -= ((jitter / 30) * 25 > 25 ? 25 : (jitter / 30) * 25);
-      _score -= ((rtt / 300) * 25 > 25 ? 25 : (rtt / 300) * 25);
+    double? score = stats.isNotEmpty ? 100 : null;
+    if (score != null) {
+      score -= packetLossPercent * 50 > 50 ? 50 : packetLossPercent * 50;
+      score -= ((jitter / 30) * 25 > 25 ? 25 : (jitter / 30) * 25);
+      score -= ((rtt / 300) * 25 > 25 ? 25 : (rtt / 300) * 25);
     }
     setState(() {
-      score = _score != null ? (_score / 10).toInt() : null;
+      score = score != null ? score! / 10 : null;
     });
   }
 

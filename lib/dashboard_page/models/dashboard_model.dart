@@ -67,7 +67,7 @@ class Datum {
       endDateTime: DateTime.parse(json["schedule_date"]
               .toString()
               .substring(0, json["schedule_date"].toString().length - 1))
-          .add(Duration(hours: 1)),
+          .add(const Duration(hours: 1)),
       teacherId: json["teacherId"],
       roomId: json["roomId"],
       hostId: json["hostId"],

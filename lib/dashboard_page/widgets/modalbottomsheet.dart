@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
-import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
 import 'package:learn_it/dashboard_page/widgets/red_video_button.dart';
-import 'package:learn_it/video_call_page/widgets/audio_button.dart';
-import 'package:learn_it/video_call_page/widgets/video_button.dart';
 import 'package:provider/provider.dart';
 
 import 'dart:math' as math;
@@ -31,7 +28,7 @@ class ModalBottomSheet extends StatefulWidget {
 
   Widget child;
   ModalBottomSheet(
-      {required this.index,
+      {super.key, required this.index,
       required this.context,
       required this.meetingType,
       required this.time,
@@ -50,7 +47,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
       DraggableScrollableController();
   AnimationController? animationController;
   double offset = 0;
-  GlobalKey _sheetKey = GlobalKey();
+  final GlobalKey _sheetKey = GlobalKey();
   double maxHeight = (SizeConfig.height! * 100 - 40);
 
   @override
@@ -60,7 +57,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
 
     _scrollController = DraggableScrollableController();
     animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
     _scrollController.addListener(() {
       offset = _scrollController.pixels;
       //print("Offset value $offset");
@@ -121,7 +118,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
     final parameters = DynamicLinkParameters(
       link: Uri.parse(kUriPrefix + link),
       uriPrefix: kUriPrefix,
-      androidParameters: AndroidParameters(
+      androidParameters: const AndroidParameters(
           packageName: "com.example.learn_it", minimumVersion: 0),
     );
 
@@ -219,7 +216,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                             Clipboard.setData(ClipboardData(
                                                 text: linkMessage));
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
+                                                .showSnackBar(const SnackBar(
                                                     content: Text(
                                                         "Copied to the Clipboard")));
                                           },
@@ -239,8 +236,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10),
-                                          color: lerpColor(Color(0xff808080),
-                                              Color(0xffffffff)),
+                                          color: lerpColor(const Color(0xff808080),
+                                              const Color(0xffffffff)),
                                         ),
                                       ),
                                     ),
@@ -265,7 +262,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     top:
                                         lerp(maxHeight * 0.04, maxHeight * 0.1),
                                     left: lerp(0, 10),
-                                    child: Container(
+                                    child: SizedBox(
                                       height: maxHeight * 0.25,
                                       width: SizeConfig.width! * 80,
                                       child: Opacity(
@@ -280,8 +277,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   color: lerpColor(
-                                                      Color(0xff808080),
-                                                      Color(0xffffffff))),
+                                                      const Color(0xff808080),
+                                                      const Color(0xffffffff))),
                                         ),
                                       ),
                                     ),
@@ -309,7 +306,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     child: Icon(
                                       Icons.access_time_filled_rounded,
                                       size: lerp(18, 0),
-                                      color: Color(0xff808080),
+                                      color: const Color(0xff808080),
                                     ),
                                   ),
                                   Positioned(
@@ -325,8 +322,8 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                               fontSize: lerp(16, 20),
                                               fontWeight: FontWeight.w500,
                                               color: lerpColor(
-                                                  Color(0xff808080),
-                                                  Color(0xffffffff))),
+                                                  const Color(0xff808080),
+                                                  const Color(0xffffffff))),
                                     ),
                                   ),
                                   Positioned(
@@ -352,7 +349,7 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                     child: Icon(
                                       Icons.person_rounded,
                                       size: lerp(18, 0),
-                                      color: Color(0xff808080),
+                                      color: const Color(0xff808080),
                                     ),
                                   ),
                                   Positioned(
@@ -368,19 +365,19 @@ class _ModalBottomSheetState extends State<ModalBottomSheet>
                                               fontSize: lerp(16, 20),
                                               fontWeight: FontWeight.w500,
                                               color: lerpColor(
-                                                  Color(0xff808080),
-                                                  Color(0xffffffff))),
+                                                  const Color(0xff808080),
+                                                  const Color(0xffffffff))),
                                     ),
                                   ),
                                   Positioned(
                                     top: lerp(maxHeight * 0.1, maxHeight - 100),
-                                    child: Container(
+                                    child: SizedBox(
                                       width: SizeConfig.width! * 90,
                                       child: Row(
                                         children: [
-                                          RedAudioButton(),
-                                          RedVideoButton(),
-                                          Spacer(),
+                                          const RedAudioButton(),
+                                          const RedVideoButton(),
+                                          const Spacer(),
                                           SizedBox(
                                               height: 40,
                                               width: lerp(

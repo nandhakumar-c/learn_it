@@ -4,12 +4,8 @@ import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
-import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
-import 'package:learn_it/video_call_page/screens/video_call_screen_layout.dart';
-import 'package:learn_it/video_call_page/screens/videosdk_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../video_call_page/new_screens/conference_meeting_screen.dart';
 import '../../video_call_page/utils/api.dart';
 import '../../video_call_page/utils/toast.dart';
 
@@ -79,6 +75,6 @@ class _JoinButtonState extends State<JoinButton> {
           //   builder: (context) => VideoCallScreen(),
           // ));
         },
-        child: Text("Join"));
+        child: const Text("Join"));
   }
 }

@@ -7,7 +7,7 @@ import '../../../common/widgets/colors.dart';
 // ChatScreen
 class ChatView extends StatefulWidget {
   final Room meeting;
-  ChatView({
+  const ChatView({
     Key? key,
     required this.meeting,
   }) : super(key: key);
@@ -51,7 +51,7 @@ class _ChatViewState extends State<ChatView> {
             children: [
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     "In Call Messages",
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(

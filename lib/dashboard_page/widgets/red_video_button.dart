@@ -16,17 +16,17 @@ class _RedVideoButtonState extends State<RedVideoButton> {
     return videoProvider.isVideoEnabled
         ? IconButton(
             style: IconButton.styleFrom(
-              backgroundColor: Color.fromARGB(136, 128, 128, 128),
+              backgroundColor: const Color.fromARGB(136, 128, 128, 128),
             ),
             onPressed: () {
               videoProvider.videoSwitch();
             },
-            icon: Icon(Icons.videocam),
-            color: Color(0xffffffff),
+            icon: const Icon(Icons.videocam),
+            color: const Color(0xffffffff),
           )
         : IconButton(
             style: IconButton.styleFrom(
-              backgroundColor: Color(0xffFF002E),
+              backgroundColor: const Color(0xffFF002E),
             ),
             onPressed: () {
               videoProvider.videoSwitch();

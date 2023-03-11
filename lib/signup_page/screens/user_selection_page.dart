@@ -1,11 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 
 import 'package:lottie/lottie.dart';
 
+import '../../common/routes/app_path_name.dart';
 import '../../common/routes/app_routes.dart';
+import '../../common/routes/app_routes_name.dart';
 
 class UserSelectionPage extends StatefulWidget {
   const UserSelectionPage({super.key});
@@ -81,7 +82,7 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
           Positioned(
               top: SizeConfig.height! * 15,
               left: SizeConfig.width! * 10,
-              child: Container(
+              child: SizedBox(
                 height: SizeConfig.height! * 20,
                 width: SizeConfig.height! * 20,
                 child: Lottie.asset("assets/lottie/student.json"),
@@ -89,7 +90,7 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
           Positioned(
               bottom: SizeConfig.height! * 5,
               right: SizeConfig.width! * 10,
-              child: Container(
+              child: SizedBox(
                 height: SizeConfig.height! * 30,
                 width: SizeConfig.height! * 30,
                 child: Lottie.asset("assets/lottie/teacher.json"),
@@ -115,8 +116,11 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                   //       SignUpPage(userType: userType as String),
                   // ));
 
-                  Navigator.of(context).pushNamed(AppRoutes.signup,
-                      arguments: userType as String);
+                  // Navigator.of(context).pushNamed(AppRoutes.signup,
+                  //     arguments: userType as String);
+
+                  GoRouter.of(context).pushNamed(AppRouteName.signup,
+                      params: {"userType": userType!});
                 },
                 child: Text(
                   "Learner",
@@ -147,8 +151,11 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                   //   builder: (context) =>
                   //       SignUpPage(userType: userType as String),
                   // ));
-                  Navigator.of(context).pushNamed(AppRoutes.signup,
-                      arguments: userType as String);
+                  // Navigator.of(context).pushNamed(AppRoutes.signup,
+                  //     arguments: userType as String);
+
+                  GoRouter.of(context).pushNamed(AppRouteName.signup,
+                      params: {"userType": userType!});
                 },
                 child: Text("Instructor",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(

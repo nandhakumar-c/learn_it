@@ -13,15 +13,15 @@ class _ChatButtonState extends State<ChatButton> {
   Widget build(BuildContext context) {
     return IconButton(
       style: IconButton.styleFrom(
-        backgroundColor: Color.fromARGB(136, 128, 128, 128),
+        backgroundColor: const Color.fromARGB(136, 128, 128, 128),
       ),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ChatScreen(),
+          builder: (context) => const ChatScreen(),
         ));
       },
-      icon: Icon(Icons.chat, color: Color(0xffffffff)),
-      color: Color(0xffffffff),
+      icon: const Icon(Icons.chat, color: Color(0xffffffff)),
+      color: const Color(0xffffffff),
     );
   }
 }

@@ -12,7 +12,7 @@ class _AttendancePageState extends State<AttendancePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Container(child: Text("Attendance Page")),
+        child: Container(child: const Text("Attendance Page")),
       ),
     );
   }

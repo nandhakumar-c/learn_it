@@ -94,7 +94,7 @@ class _ChatScreenState extends State<ChatScreen> {
               .copyWith(color: Theme.of(context).colorScheme.secondary),
         ),
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: () {
             messageProvider.addMessage(message_list!);
             Navigator.of(context).pop();
@@ -110,15 +110,15 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: ListView.builder(
               itemCount: messageProvider.message_list.length,
               itemBuilder: (context, index) {
-                final message_data = messageProvider.message_list[index];
-                return message_data.socketId == socket!.id
+                final messageData = messageProvider.message_list[index];
+                return messageData.socketId == socket!.id
                     ? OwnMessageWidget(
-                        message: message_data.message,
-                        sender: message_data.sender,
+                        message: messageData.message,
+                        sender: messageData.sender,
                       )
                     : OtherMessageWidget(
-                        message: message_data.message,
-                        sender: message_data.sender);
+                        message: messageData.message,
+                        sender: messageData.sender);
               },
             )),
             Align(
@@ -131,15 +131,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       textAlign: TextAlign.start,
                       decoration: InputDecoration(
                           filled: true,
-                          fillColor: Color(0xffDCEDF5),
-                          contentPadding: EdgeInsets.all(20.0),
+                          fillColor: const Color(0xffDCEDF5),
+                          contentPadding: const EdgeInsets.all(20.0),
                           suffixIcon: IconButton(
                               onPressed: () {
                                 sendMessage(
                                     controller!.text, "NK", messageProvider);
                                 controller!.clear();
                               },
-                              icon: Icon(Icons.send)),
+                              icon: const Icon(Icons.send)),
                           border: const OutlineInputBorder(
                             borderSide: BorderSide(width: 0),
                             borderRadius: BorderRadius.all(

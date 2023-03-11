@@ -4,8 +4,6 @@ import 'package:learn_it/common/providers/sharedpref.dart';
 
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:http/http.dart' as http;
-import 'package:learn_it/homepage/screens/homepage.dart';
-import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -42,11 +40,11 @@ class _SignUpPageState extends State<SignUpPage> {
   bool emailBoolean = false;
   bool nameBoolean = false;
   bool passwordBoolean = false;
-  int _currentPage = 0;
-  PageController _pageController = PageController(initialPage: 0);
+  final int _currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-  int? _value = 0;
+  final int _value = 0;
   List<String> data = ["Student", "Teacher"];
   List<String> values = ["S", "T"];
   int _index = 0;
@@ -73,15 +71,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   animateToPage() {
     _pageController.animateToPage(_currentPage,
-        duration: Duration(seconds: 1), curve: Curves.easeIn);
+        duration: const Duration(seconds: 1), curve: Curves.easeIn);
   }
 
   // regular expression to check if string
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
   //A function that validate user entered password
   bool validatePassword(String pass) {
-    String _password = pass.trim();
-    if (pass_valid.hasMatch(_password)) {
+    String password = pass.trim();
+    if (pass_valid.hasMatch(password)) {
       return true;
     } else {
       return false;
@@ -177,7 +175,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
       body: Stepper(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         elevation: 0,
         type: StepperType.horizontal,
         controlsBuilder: (context, details) {
@@ -185,7 +183,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
+            child: SizedBox(
               height: 40,
               width: SizeConfig.width! * 80,
               child: Row(
@@ -200,12 +198,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                 Icons.chevron_left,
                               )),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   details.currentStep >= 1
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: 15,
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   SizedBox(
                     width: details.currentStep >= 1
                         ? SizeConfig.width! * 55
@@ -282,10 +280,10 @@ class _SignUpPageState extends State<SignUpPage> {
         // },
         steps: <Step>[
           Step(
-            title: Text(""),
+            title: const Text(""),
             state: _index > 0 ? StepState.complete : StepState.disabled,
             isActive: _index >= 0 ? true : false,
-            content: Container(
+            content: SizedBox(
               height: SizeConfig.height! * 30,
               // alignment: Alignment.center,
               child: Column(
@@ -298,7 +296,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         "assets/lottie/person_profile_lottie.json"),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 5),
+                    padding: const EdgeInsets.only(left: 5),
                     height: SizeConfig.height! * 4,
                     child: Text(
                       "Enter your name",
@@ -311,9 +309,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     key: _formKey,
                     child: TextFormField(
                       validator: (arg) {
-                        if (arg!.length < 3)
+                        if (arg!.length < 3) {
                           return 'Name must be more than 2 charater';
-                        else {
+                        } else {
                           setState(() {
                             nameBoolean = true;
                           });
@@ -335,11 +333,11 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Step(
-            title: Text(""),
-            label: Text(""),
+            title: const Text(""),
+            label: const Text(""),
             state: _index > 1 ? StepState.complete : StepState.disabled,
             isActive: _index >= 1 ? true : false,
-            content: Container(
+            content: SizedBox(
               height: SizeConfig.height! * 30,
               // alignment: Alignment.centerLeft,
               child: Column(
@@ -351,7 +349,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: Lottie.asset("assets/lottie/email_lottie.json"),
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 5),
+                    padding: const EdgeInsets.only(left: 5),
                     height: SizeConfig.height! * 4,
                     child: Text(
                       "Enter your email address",
@@ -392,11 +390,11 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           Step(
-            title: Text(""),
-            label: Text(""),
+            title: const Text(""),
+            label: const Text(""),
             state: _index <= 2 ? StepState.indexed : StepState.complete,
             isActive: _index >= 2 ? true : false,
-            content: Container(
+            content: SizedBox(
               height: SizeConfig.height! * 30,
               // alignment: Alignment.centerLeft,
               child: Column(
@@ -412,7 +410,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: 5),
+                        padding: const EdgeInsets.only(left: 5),
                         height: SizeConfig.height! * 4,
                         child: Text(
                           "Enter your password",
@@ -424,7 +422,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                   color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Align(
                         alignment: Alignment.center,
                         child: Ink(
@@ -438,20 +436,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               showDialog(
                                   context: context,
                                   builder: (context) => AlertDialog(
-                                        title: Text("Password rules"),
-                                        content: Text(
+                                        title: const Text("Password rules"),
+                                        content: const Text(
                                             "\u2022 Should contain atleast 8 characters\n\u2022 Should contain atleast 3 Alphabets\n\u2022 Should contain 2 uppercase letters\n\u2022 Should contain 3 numbers\n\u2022 Should contain 1 special character"),
                                         actions: [
                                           TextButton(
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text("OK"))
+                                              child: const Text("OK"))
                                         ],
                                       ));
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 4.0),
+                            child: const Padding(
+                              padding: EdgeInsets.only(bottom: 4.0),
                               child: Icon(Icons.info_outline, size: 20),
                             ),
                           ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:learn_it/common/utils/color.dart';
-import 'package:learn_it/video_call_page/screens/signaling.dart';
 import 'package:provider/provider.dart';
 import 'package:videosdk/videosdk.dart';
 
@@ -161,7 +159,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                     Positioned(
                         child: Align(
                       alignment: Alignment.center,
-                      child: Container(
+                      child: SizedBox(
                         height: SizeConfig.width! * 20,
                         width: SizeConfig.width! * 20,
                         child: ClipRRect(
@@ -233,7 +231,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                         borderRadius: BorderRadius.circular(
                           SizeConfig.width! * 2,
                         ),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(color: Colors.black26, blurRadius: 5)
                         ]),
                     height: SizeConfig.height! * 20,
@@ -254,7 +252,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                       Positioned(
                           child: Align(
                         alignment: Alignment.center,
-                        child: Container(
+                        child: SizedBox(
                           height: SizeConfig.width! * 10,
                           width: SizeConfig.width! * 10,
                           child: ClipRRect(
@@ -270,18 +268,18 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
           ),
           Positioned(
               bottom: 16,
-              child: Container(
+              child: SizedBox(
                 width: SizeConfig.width! * 100,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    AudioButton(),
-                    VideoButton(),
+                    const AudioButton(),
+                    const VideoButton(),
                     EndCallButton(onCallEndButtonPressed: () {
                       meeting.end();
                     }),
-                    ChatButton(),
-                    MoreOptionsButton()
+                    const ChatButton(),
+                    const MoreOptionsButton()
                   ],
                 ),
               ))

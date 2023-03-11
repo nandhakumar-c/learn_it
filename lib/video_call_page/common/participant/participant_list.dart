@@ -37,9 +37,7 @@ class _ParticipantListState extends State<ParticipantList> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
-                    "Participants (" +
-                        (widget.meeting.participants.length + 1).toString() +
-                        ")",
+                    "Participants (${widget.meeting.participants.length + 1})",
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 18,

@@ -1,22 +1,12 @@
 // ignore_for_file: avoid_print
 
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
-import 'package:learn_it/common/widgets/clipper.dart';
-import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
-import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
-import 'package:learn_it/login_page/screens/forgot_password.dart';
-import 'package:learn_it/login_page/screens/reset_password.dart';
-import 'package:learn_it/login_page/widgets/bottomborderclipper.dart';
-import 'package:learn_it/signup_page/screens/signup_page.dart';
-import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -24,10 +14,6 @@ import '../../common/providers/sharedpref.dart';
 import '../../common/routes/app_routes.dart';
 import '../../common/utils/screen_size.dart';
 import '../../common/widgets/button_loader.dart';
-import '../../video_call_page/screens/video_call_screen.dart';
-import '../../video_call_page/screens/video_call_screen_layout.dart';
-import '../controllers/login_controller.dart';
-import '../widgets/topborderclipper.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,8 +35,8 @@ class _LoginPageState extends State<LoginPage> {
   RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
   //A function that validate user entered password
   bool validatePassword(String pass) {
-    String _password = pass.trim();
-    if (pass_valid.hasMatch(_password)) {
+    String password = pass.trim();
+    if (pass_valid.hasMatch(password)) {
       return true;
     } else {
       return false;
@@ -119,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: height * 0.02,
               ),
-              Container(
+              SizedBox(
                 height: height * 0.08,
                 //color: Colors.blue,
                 child: Row(
@@ -192,7 +178,6 @@ class _LoginPageState extends State<LoginPage> {
                       bool result = validatePassword(value);
                       if (result) {
                         // create account event
-                        ;
                         return null;
                       } else {
                         return "Please enter the correct password";
@@ -299,7 +284,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 },
                 child: isLoading
-                    ? ButtonLoader()
+                    ? const ButtonLoader()
                     : Text("Login",
                         style: Theme.of(context)
                             .textTheme

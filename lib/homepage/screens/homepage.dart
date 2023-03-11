@@ -1,16 +1,12 @@
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/attendance_page/screens/attendance_page.dart';
-import 'package:learn_it/common/utils/color.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
 import 'package:learn_it/profile_page/screens/profile_page.dart';
 import 'package:learn_it/schedule_page/screens/schedule_page.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/routes/app_routes.dart';
-import '../../common/widgets/colors.dart';
 
 class HomePage extends StatefulWidget {
   String userType;
@@ -38,13 +34,13 @@ class _HomePageState extends State<HomePage> {
     // double height = MediaQuery.of(context).size.height;
     // double width = MediaQuery.of(context).size.width;
     final pages = [
-      DashBoardPage(),
-      TodaySchedulePage(),
-      AttendancePage(),
-      AddCoursesPage(),
-      ProfilePage()
+      const DashBoardPage(),
+      const TodaySchedulePage(),
+      const AttendancePage(),
+      const AddCoursesPage(),
+      const ProfilePage()
     ];
-    final studentPages = [DashBoardPage(), TodaySchedulePage(), ProfilePage()];
+    final studentPages = [const DashBoardPage(), const TodaySchedulePage(), const ProfilePage()];
 
     return widget.userType == "S"
         ? Scaffold(

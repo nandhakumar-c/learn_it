@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
-import 'package:learn_it/login_page/screens/otp_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +16,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  TextEditingController _emailController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +86,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 ),
               )),
           Expanded(
-            child: Container(
+            child: SizedBox(
               height: SizeConfig.height! * 10,
               width: SizeConfig.width! * 100,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Container(
+                  child: SizedBox(
                     width: SizeConfig.width! * 100,
                     child: FilledButton(
                       onPressed: () async {

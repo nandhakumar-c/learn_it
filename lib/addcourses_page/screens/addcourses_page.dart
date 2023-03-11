@@ -1,14 +1,10 @@
 import 'dart:async';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
-import 'package:learn_it/common/widgets/button.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -33,6 +29,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   final _courseNameKey = GlobalKey<FormState>();
   final _courseDescriptionKey = GlobalKey<FormState>();
   bool success = false;
+  // ignore: unused_field
   late String _setTime, _setDate;
 
   late String _hour, _minute, _time;
@@ -44,8 +41,8 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   TimeOfDay selectedTime =
       TimeOfDay(hour: DateTime.now().hour, minute: DateTime.now().minute);
 
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
 
   @override
   void initState() {
@@ -70,7 +67,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
     courseDescription!.dispose();
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
@@ -85,7 +82,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
     }
   }
 
-  Future<Null> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
@@ -95,7 +92,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
         selectedTime = picked;
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
-        _time = _hour + ' : ' + _minute;
+        _time = '$_hour : $_minute';
         _timeController.text = DateFormat("HH:mm aa").format(DateTime(
             selectedDate.day,
             selectedDate.month,
@@ -107,7 +104,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   }
 
   startTimer() {
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       setState(() {
         success = false;
       });
@@ -137,18 +134,18 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
             //the return value will be from "Yes" or "No" options
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('Exit App'),
-              content: Text('Do you want to exit an App?'),
+              title: const Text('Exit App'),
+              content: const Text('Do you want to exit an App?'),
               actions: [
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(false),
                   //return false when click on "NO"
-                  child: Text('No'),
+                  child: const Text('No'),
                 ),
                 ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(true),
                   //return true when click on "Yes"
-                  child: Text('Yes'),
+                  child: const Text('Yes'),
                 ),
               ],
             ),
@@ -173,7 +170,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
         body: success
             ? Center(
                 child: Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -195,7 +192,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                 ),
               )
             : Stepper(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 elevation: 0,
                 type: StepperType.horizontal,
                 controlsBuilder: (context, details) {
@@ -203,7 +200,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
 
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child: SizedBox(
                       height: 40,
                       width: SizeConfig.width! * 80,
                       child: Row(
@@ -219,12 +216,12 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                         Icons.chevron_left,
                                       )),
                                 )
-                              : SizedBox(),
+                              : const SizedBox(),
                           details.currentStep >= 1
-                              ? SizedBox(
+                              ? const SizedBox(
                                   width: 15,
                                 )
-                              : SizedBox(),
+                              : const SizedBox(),
                           SizedBox(
                             width: details.currentStep >= 1
                                 ? SizeConfig.width! * 55
@@ -256,7 +253,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                     String jwt = UserLoginDetails.getJwtToken()
                                         as String;
                                     print("jwt token add course ===> $jwt");
-                                    String _selectedDateTime = DateTime(
+                                    String selectedDateTime = DateTime(
                                             selectedDate.year,
                                             selectedDate.month,
                                             selectedDate.day,
@@ -274,7 +271,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                           "description":
                                               courseDescription!.text,
                                           "schedule_date":
-                                              "${_selectedDateTime}Z",
+                                              "${selectedDateTime}Z",
                                           "roomId": meetingId,
                                           "hostId": id
                                         },
@@ -329,10 +326,10 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                 // },
                 steps: <Step>[
                   Step(
-                    title: Text(""),
+                    title: const Text(""),
                     state: _index > 0 ? StepState.complete : StepState.disabled,
                     isActive: _index >= 0 ? true : false,
-                    content: Container(
+                    content: SizedBox(
                       height: SizeConfig.height! * 15,
                       // alignment: Alignment.center,
                       child: Column(
@@ -345,7 +342,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                           //       "assets/lottie/person_profile_lottie.json"),
                           // ),
                           Container(
-                            padding: EdgeInsets.only(left: 5),
+                            padding: const EdgeInsets.only(left: 5),
                             height: SizeConfig.height! * 4,
                             child: Text(
                               "Enter the course name",
@@ -385,11 +382,11 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                     ),
                   ),
                   Step(
-                    title: Text(""),
-                    label: Text(""),
+                    title: const Text(""),
+                    label: const Text(""),
                     state: _index > 1 ? StepState.complete : StepState.disabled,
                     isActive: _index >= 1 ? true : false,
-                    content: Container(
+                    content: SizedBox(
                       height: SizeConfig.height! * 15,
                       // alignment: Alignment.centerLeft,
                       child: Column(
@@ -401,7 +398,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                           //   child: Lottie.asset("assets/lottie/email_lottie.json"),
                           // ),
                           Container(
-                            padding: EdgeInsets.only(left: 5),
+                            padding: const EdgeInsets.only(left: 5),
                             height: SizeConfig.height! * 4,
                             child: Text(
                               "Enter the course description",
@@ -439,11 +436,11 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                     ),
                   ),
                   Step(
-                    title: Text(""),
-                    label: Text(""),
+                    title: const Text(""),
+                    label: const Text(""),
                     state: _index <= 2 ? StepState.indexed : StepState.complete,
                     isActive: _index >= 2 ? true : false,
-                    content: Container(
+                    content: SizedBox(
                       height: SizeConfig.height! * 15,
                       // alignment: Alignment.centerLeft,
                       child: Column(
@@ -457,7 +454,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                           //   ),
                           // ),
                           Container(
-                            padding: EdgeInsets.only(left: 5),
+                            padding: const EdgeInsets.only(left: 5),
                             height: SizeConfig.height! * 4,
                             child: Text(
                               "Select your course time",
@@ -481,7 +478,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                 child: Container(
                                   width: SizeConfig.width! * 40,
                                   height: SizeConfig.height! * 7,
-                                  margin: EdgeInsets.all(5),
+                                  margin: const EdgeInsets.all(5),
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                       color: Colors.grey[200],
@@ -524,7 +521,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
                                     enabled: false,
                                     keyboardType: TextInputType.text,
                                     controller: _timeController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         disabledBorder: UnderlineInputBorder(
                                             borderSide: BorderSide.none),
                                         // labelText: 'Time',

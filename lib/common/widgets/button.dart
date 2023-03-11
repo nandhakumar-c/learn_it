@@ -37,7 +37,7 @@ class LearnItButton extends StatelessWidget {
           child: Center(
             child: Text(
               text,
-              style: TextStyle(color: Colors.white, fontSize: 20),
+              style: const TextStyle(color: Colors.white, fontSize: 20),
             ),
           )),
     );

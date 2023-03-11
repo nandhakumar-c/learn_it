@@ -21,14 +21,14 @@ class VideoCallProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  videoAudioEnablingAndDisablingFunction(_localRenderer, _remoteRenderer) {
+  videoAudioEnablingAndDisablingFunction(localRenderer, remoteRenderer) {
     signaling.openUserMedia(
-        _localRenderer, _remoteRenderer, isAudioEnabled, isVideoEnabled);
+        localRenderer, remoteRenderer, isAudioEnabled, isVideoEnabled);
     // notifyListeners();
   }
 
-  hangUp(_localRenderer) {
-    signaling.hangUp(_localRenderer);
+  hangUp(localRenderer) {
+    signaling.hangUp(localRenderer);
     notifyListeners();
   }
 }

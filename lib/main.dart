@@ -3,29 +3,16 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:learn_it/addcourses_page/screens/addcourses_page.dart';
 import 'package:learn_it/chatpage/providers/chat_provider.dart';
-import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
-import 'package:learn_it/common/utils/route_generator.dart';
-import 'package:learn_it/common/widgets/colors.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
-import 'package:learn_it/login_page/controllers/login_controller.dart';
-import 'package:learn_it/login_page/screens/login_screen.dart';
-import 'package:learn_it/onboarding_page/screens/onboarding_screen.dart';
-import 'package:learn_it/profile_page/screens/profile_page.dart';
-import 'package:learn_it/startup_page/screens/startup_page.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
-import 'package:learn_it/video_call_page/screens/video_call_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'chatpage/screens/chat_screen.dart';
 import 'common/routes/app_routes.dart';
 import 'common/routes/app_routes_config.dart';
 import 'common/widgets/color_scheme.dart';
-import 'common/widgets/test.dart';
 
 //Integrate the WebRTC
 //Add Chat Feature to the app
@@ -87,12 +74,10 @@ class _MyAppState extends State<MyApp> {
     FirebaseDynamicLinks.instance.onLink.listen(
       (pendingDynamicLinkData) {
         // Set up the `onLink` event listener next as it may be received here
-        if (pendingDynamicLinkData != null) {
-          final Uri deepLink = pendingDynamicLinkData.link;
-          print(deepLink.path);
-          // Example of using the dynamic link to push the user to a different screen
-          Navigator.pushNamed(context, deepLink.path);
-        }
+        final Uri deepLink = pendingDynamicLinkData.link;
+        print(deepLink.path);
+        // Example of using the dynamic link to push the user to a different screen
+        Navigator.pushNamed(context, deepLink.path);
       },
     );
 
@@ -132,7 +117,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp.router(
         theme: ThemeData(
-            scaffoldBackgroundColor: Color(0xFFF5FAFA),
+            scaffoldBackgroundColor: const Color(0xFFF5FAFA),
             fontFamily: 'Inter',
             textTheme: Theme.of(context).textTheme.apply(fontFamily: 'Inter'),
             useMaterial3: true,

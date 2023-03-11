@@ -5,9 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
-import 'package:learn_it/common/widgets/button.dart';
-import 'package:learn_it/common/widgets/colors.dart';
-import 'package:learn_it/login_page/screens/login_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -36,6 +33,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context) => SnackBar(content: Text(e.toString())),
       );
     }
+    return null;
   }
 
   @override
@@ -64,9 +62,9 @@ class _ProfilePageState extends State<ProfilePage> {
             Padding(
                 padding: EdgeInsets.all(width * 0.035),
                 child: FilledButton(
-                    child: Text("Log Out"),
+                    child: const Text("Log Out"),
                     onPressed: () {
-                      final storage = FlutterSecureStorage();
+                      const storage = FlutterSecureStorage();
                       storage.delete(key: "jwt");
                       UserLoginDetails.clearData();
                       Navigator.of(context).pushNamedAndRemoveUntil(
@@ -104,7 +102,7 @@ class _ProfilePageState extends State<ProfilePage> {
           color: Colors.blue[100],
         ),
         child: Row(children: [
-          Container(
+          SizedBox(
             height: width * 0.25,
             width: width * 0.3,
             child: Stack(
@@ -126,14 +124,14 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                       border: Border.all(
                           style: BorderStyle.solid,
-                          color: Color.fromARGB(255, 214, 226, 246),
+                          color: const Color.fromARGB(255, 214, 226, 246),
                           width: 2),
                       shape: BoxShape.circle,
                       color: Colors.white),
                   child: image == null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(width),
-                          child: Image(
+                          child: const Image(
                             image: AssetImage("assets/images/student.jpg"),
                             fit: BoxFit.cover,
                           ),
@@ -154,12 +152,12 @@ class _ProfilePageState extends State<ProfilePage> {
                     height: width * 0.08,
                     width: width * 0.1,
                     alignment: Alignment.topCenter,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                         color: Color.fromARGB(125, 9, 43, 101),
                         shape: BoxShape.circle),
                     child: IconButton(
                       onPressed: selectImage,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.add_a_photo,
                         color: Colors.white,
                       ),

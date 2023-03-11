@@ -22,17 +22,17 @@ class _AudioButtonState extends State<AudioButton> {
     return audioTrigger.isAudioEnabled
         ? IconButton(
             style: IconButton.styleFrom(
-              backgroundColor: Color.fromARGB(136, 128, 128, 128),
+              backgroundColor: const Color.fromARGB(136, 128, 128, 128),
             ),
             onPressed: () {
               audioTrigger.audioSwitch();
             },
-            icon: Icon(Icons.mic),
-            color: Color(0xffffffff),
+            icon: const Icon(Icons.mic),
+            color: const Color(0xffffffff),
           )
         : IconButton(
             style: IconButton.styleFrom(
-              backgroundColor: Color(0xffffffff),
+              backgroundColor: const Color(0xffffffff),
             ),
             onPressed: () {
               audioTrigger.audioSwitch();

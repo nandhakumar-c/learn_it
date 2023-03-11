@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:learn_it/video_call_page/providers/video_call_provider.dart';
@@ -6,6 +5,8 @@ import 'package:learn_it/video_call_page/screens/signaling.dart';
 import 'package:provider/provider.dart';
 
 class VideoApp extends StatelessWidget {
+  const VideoApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -14,13 +15,13 @@ class VideoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -28,8 +29,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
   TextEditingController textEditingController = TextEditingController(text: '');
 
@@ -58,11 +59,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Welcome to Flutter Explained - WebRTC"),
+        title: const Text("Welcome to Flutter Explained - WebRTC"),
       ),
       body: Column(
         children: [
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -70,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   // signaling.openUserMedia(_localRenderer, _remoteRenderer);
                 },
-                child: Text("Camera"),
+                child: const Text("Camera"),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               ElevatedButton(
@@ -81,9 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   textEditingController.text = roomId!;
                   setState(() {});
                 },
-                child: Text("Create room"),
+                child: const Text("Create room"),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               ElevatedButton(
@@ -94,20 +95,20 @@ class _MyHomePageState extends State<MyHomePage> {
                     _remoteRenderer,
                   );
                 },
-                child: Text("Join room"),
+                child: const Text("Join room"),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               ElevatedButton(
                 onPressed: () {
                   signaling.hangUp(_localRenderer);
                 },
-                child: Text("Hangup"),
+                child: const Text("Hangup"),
               )
             ],
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -125,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Join the following Room: "),
+                const Text("Join the following Room: "),
                 Flexible(
                   child: TextFormField(
                     controller: textEditingController,
@@ -134,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 8)
+          const SizedBox(height: 8)
         ],
       ),
     );

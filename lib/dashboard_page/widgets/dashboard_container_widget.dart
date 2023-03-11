@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learn_it/dashboard_page/providers/dashboard_provider.dart';
-import 'package:learn_it/dashboard_page/widgets/join_button.dart';
 import 'package:learn_it/dashboard_page/widgets/modalbottomsheet.dart';
-import 'package:learn_it/dashboard_page/widgets/red_audio_button.dart';
-import 'package:learn_it/dashboard_page/widgets/red_video_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/utils/color.dart';

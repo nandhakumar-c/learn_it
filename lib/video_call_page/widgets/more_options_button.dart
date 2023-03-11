@@ -12,11 +12,11 @@ class _MoreOptionsButtonState extends State<MoreOptionsButton> {
   Widget build(BuildContext context) {
     return IconButton(
       style: IconButton.styleFrom(
-        backgroundColor: Color.fromARGB(136, 128, 128, 128),
+        backgroundColor: const Color.fromARGB(136, 128, 128, 128),
       ),
       onPressed: () {},
-      icon: Icon(Icons.more_vert),
-      color: Color(0xffffffff),
+      icon: const Icon(Icons.more_vert),
+      color: const Color(0xffffffff),
     );
   }
 }

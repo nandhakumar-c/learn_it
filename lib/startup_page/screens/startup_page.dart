@@ -2,13 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:learn_it/common/widgets/button.dart';
-import 'package:learn_it/common/widgets/colors.dart';
-import 'package:learn_it/dashboard_page/video_call_page.dart';
-import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/login_page/screens/login_screen.dart';
-import 'package:learn_it/profile_page/screens/profile_page.dart';
-import 'package:learn_it/schedule_page/screens/schedule_page.dart';
-import 'package:learn_it/signup_page/screens/signup_page.dart';
 import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'dart:ui' as ui;
 import '../../common/widgets/clipper.dart';
@@ -30,19 +24,19 @@ class _StartupScreenState extends State<StartupScreen> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    Future.delayed(Duration(milliseconds: 1200), () {
+    Future.delayed(const Duration(milliseconds: 1200), () {
       setState(() {
         isTitleVisible = true;
       });
     });
-    Future.delayed(Duration(milliseconds: 1500), () {
+    Future.delayed(const Duration(milliseconds: 1500), () {
       setState(() {
         isVisible = true;
       });
     });
 
     //Navigation to the User Selection Page
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         isButtonVisible = true;
       });
@@ -51,7 +45,7 @@ class _StartupScreenState extends State<StartupScreen> {
       print("Pressed !");
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => UserSelectionPage(),
+          builder: (context) => const UserSelectionPage(),
         ),
       );
     }
@@ -63,23 +57,23 @@ class _StartupScreenState extends State<StartupScreen> {
             StyleContainer(
                 context,
                 height * 0.55,
-                Color.fromARGB(255, 9, 43, 101),
-                Color.fromARGB(180, 14, 96, 195),
+                const Color.fromARGB(255, 9, 43, 101),
+                const Color.fromARGB(180, 14, 96, 195),
                 0.25,
                 400),
             StyleContainer(
                 context,
                 height * 0.5,
-                Color.fromARGB(255, 9, 43, 101),
-                Color.fromARGB(180, 14, 96, 195),
+                const Color.fromARGB(255, 9, 43, 101),
+                const Color.fromARGB(180, 14, 96, 195),
                 // Color.fromARGB(180, 9, 43, 101),
                 0.5,
                 800),
             StyleContainer(
                 context,
                 height * 0.45,
-                Color.fromARGB(255, 9, 43, 101),
-                Color.fromARGB(180, 14, 96, 195),
+                const Color.fromARGB(255, 9, 43, 101),
+                const Color.fromARGB(180, 14, 96, 195),
                 // Color.fromARGB(255, 106, 27, 154),
                 // Color.fromARGB(255, 171, 71, 188),
                 1,
@@ -92,7 +86,7 @@ class _StartupScreenState extends State<StartupScreen> {
             isTitleVisible
                 ? TweenAnimationBuilder(
                     tween: Tween<double>(begin: 0, end: 1),
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                     builder: (context, double value, child) {
                       return buildTitleText(
                           height, height * 0.116, width * 0.05, value);
@@ -103,7 +97,7 @@ class _StartupScreenState extends State<StartupScreen> {
             isTitleVisible
                 ? TweenAnimationBuilder(
                     tween: Tween<double>(begin: 0, end: 1),
-                    duration: Duration(seconds: 1),
+                    duration: const Duration(seconds: 1),
                     builder: (context, double value, child) {
                       return buildSubText(
                           height * 0.8, height * 0.23, width * 0.06, value);
@@ -144,7 +138,7 @@ class _StartupScreenState extends State<StartupScreen> {
   TweenAnimationBuilder<double> loginButton(double height) {
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       builder: (context, double value, child) {
         return Positioned(
           top: height * 0.90,
@@ -166,12 +160,12 @@ class _StartupScreenState extends State<StartupScreen> {
                     TextSpan(
                         text: " Login",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                            color: Color.fromARGB(180, 14, 96, 195),
+                            color: const Color.fromARGB(180, 14, 96, 195),
                             fontSize: 18),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => LoginPage(),
+                              builder: (context) => const LoginPage(),
                             ));
                           })
                   ],
@@ -185,10 +179,10 @@ class _StartupScreenState extends State<StartupScreen> {
   }
 
   TweenAnimationBuilder<double> getStartedButton(
-      double height, navigationCallBack()) {
+      double height, Function() navigationCallBack) {
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       builder: (context, double value, child) {
         return Positioned(
           bottom: height * 0.07,
@@ -214,7 +208,7 @@ class _StartupScreenState extends State<StartupScreen> {
   TweenAnimationBuilder<double> sloganText(double height, double width) {
     return TweenAnimationBuilder(
       tween: Tween<double>(begin: 0, end: 1),
-      duration: Duration(seconds: 1),
+      duration: const Duration(seconds: 1),
       builder: (context, double value, child) {
         return Positioned(
             top: height * 0.60,
@@ -241,7 +235,7 @@ class BookMarkPainter extends CustomPainter {
       ..shader = ui.Gradient.linear(
         Offset(size.width, size.height),
         Offset(size.width * 0.2, 0),
-        [Color.fromARGB(255, 12, 65, 157), Colors.white],
+        [const Color.fromARGB(255, 12, 65, 157), Colors.white],
       )
       ..style = PaintingStyle.fill;
     Path path = Path()..moveTo(size.width * 0.80, 0);
@@ -252,7 +246,7 @@ class BookMarkPainter extends CustomPainter {
     path.lineTo(size.width * 0.80, 0);
     path.close();
     canvas.drawShadow(
-        path, Color.fromARGB(255, 12, 65, 157).withAlpha(100), 3.0, true);
+        path, const Color.fromARGB(255, 12, 65, 157).withAlpha(100), 3.0, true);
     canvas.drawPath(path, paint);
   }
 

@@ -2,16 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:learn_it/common/providers/sharedpref.dart';
-import 'package:learn_it/common/routes/app_routes_name.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
-import 'package:learn_it/login_page/screens/login_screen.dart';
-import 'package:learn_it/signup_page/screens/signup_page.dart';
-import 'package:learn_it/signup_page/screens/user_selection_page.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../common/routes/app_routes.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -24,13 +18,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   int _currentPage = 0;
 
   late Timer _timer;
-  PageController _pageController = PageController(
+  final PageController _pageController = PageController(
     initialPage: 0,
   );
   @override
   void initState() {
     super.initState();
-    _timer = Timer.periodic(Duration(seconds: 5), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
       if (_currentPage < 2) {
         setState(() {
           _currentPage++;
@@ -43,7 +37,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
       _pageController.animateToPage(
         _currentPage,
-        duration: Duration(milliseconds: 350),
+        duration: const Duration(milliseconds: 350),
         curve: Curves.easeIn,
       );
     });
@@ -62,7 +56,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       body: Container(
         child: Column(children: [
           SizedBox(height: SizeConfig.height! * 13),
-          Container(
+          SizedBox(
             height: SizeConfig.height! * 56,
             width: SizeConfig.width! * 100,
             child: PageView(
@@ -73,7 +67,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               },
               controller: _pageController,
               children: [
-                Container(
+                SizedBox(
                   height: SizeConfig.height! * 55,
                   width: SizeConfig.width! * 100,
                   child: Column(
@@ -92,7 +86,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           height: SizeConfig.height! * 1,
                         ),
                         Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: const EdgeInsets.all(10),
                           child: Text(
                             ' An online school that allows you to re-discover yourself , You can create and join meetings anytime , anywhere',
                             style: Theme.of(context)
@@ -116,7 +110,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         )
                       ]),
                 ),
-                Container(
+                SizedBox(
                   height: SizeConfig.height! * 55,
                   width: SizeConfig.width! * 100,
                   child: Column(
@@ -160,7 +154,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         )
                       ]),
                 ),
-                Container(
+                SizedBox(
                   height: SizeConfig.height! * 60,
                   width: SizeConfig.width! * 100,
                   child: Column(
@@ -179,7 +173,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           height: SizeConfig.height! * 1,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 10),
                           child: Text(
                             'As a Learner , You can easily connect with mentors through chats and upgrade your skills to the next level',
@@ -220,7 +214,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             height: SizeConfig.height! * 15,
           ),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             width: SizeConfig.width! * 100,
             child: FilledButton(
               onPressed: () {
@@ -237,7 +231,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       color: Theme.of(context).colorScheme.onPrimary)),
             ),
           ),
-          Container(
+          SizedBox(
             width: SizeConfig.width! * 100,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -251,7 +245,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pushNamed(AppRoutes.login);
+                    GoRouter.of(context).push("/login");
+                    // Navigator.of(context).pushNamed(AppRoutes.login);
                     // Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) {
                     //     return LoginPage();

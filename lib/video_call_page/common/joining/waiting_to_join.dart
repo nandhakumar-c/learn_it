@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../utils/spacer.dart';
 
 class WaitingToJoin extends StatelessWidget {
   const WaitingToJoin({Key? key}) : super(key: key);

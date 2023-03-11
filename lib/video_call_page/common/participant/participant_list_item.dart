@@ -27,7 +27,7 @@ class _ParticipantListItemState extends State<ParticipantListItem> {
       } else if (stream.kind == 'audio') {
         audioStream = stream;
       }
-      log("Stream: " + stream.kind.toString());
+      log("Stream: ${stream.kind}");
     });
 
     super.initState();
@@ -91,24 +91,24 @@ class _ParticipantListItemState extends State<ParticipantListItem> {
   }
 
   void addParticipantListener(Participant participant) {
-    participant.on(Events.streamEnabled, (Stream _stream) {
+    participant.on(Events.streamEnabled, (Stream stream) {
       if (mounted) {
         setState(() {
-          if (_stream.kind == "video") {
-            videoStream = _stream;
-          } else if (_stream.kind == 'audio') {
-            audioStream = _stream;
+          if (stream.kind == "video") {
+            videoStream = stream;
+          } else if (stream.kind == 'audio') {
+            audioStream = stream;
           }
         });
       }
     });
 
-    participant.on(Events.streamDisabled, (Stream _stream) {
+    participant.on(Events.streamDisabled, (Stream stream) {
       if (mounted) {
         setState(() {
-          if (_stream.kind == "video") {
+          if (stream.kind == "video") {
             videoStream = null;
-          } else if (_stream.kind == 'audio') {
+          } else if (stream.kind == 'audio') {
             audioStream = null;
           }
         });

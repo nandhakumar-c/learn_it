@@ -5,8 +5,6 @@ import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:learn_it/common/providers/backend_provider.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
-import 'package:learn_it/common/utils/color.dart';
-import 'package:learn_it/login_page/screens/reset_password.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -49,7 +47,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: SizeConfig.height! * 50,
                   // alignment: Alignment.center,
                   width: SizeConfig.width! * 100,
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -88,7 +86,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       SizedBox(
                         height: SizeConfig.height! * 2,
                       ),
-                      Container(
+                      SizedBox(
                         height: SizeConfig.height! * 10,
                         child: OtpTextField(
                           numberOfFields: 6,
@@ -121,14 +119,14 @@ class _OtpScreenState extends State<OtpScreen> {
                 ),
               )),
           Expanded(
-            child: Container(
+            child: SizedBox(
               height: SizeConfig.height! * 20,
               width: SizeConfig.width! * 100,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Container(
+                  child: SizedBox(
                     width: SizeConfig.width! * 100,
                     child: FilledButton(
                       onPressed: () async {
@@ -152,10 +150,10 @@ class _OtpScreenState extends State<OtpScreen> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                content: Text("Enter valid OTP"),
+                                content: const Text("Enter valid OTP"),
                                 actions: [
                                   TextButton(
-                                    child: Text("OK"),
+                                    child: const Text("OK"),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
