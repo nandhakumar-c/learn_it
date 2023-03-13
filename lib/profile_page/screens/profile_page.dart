@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
 import 'package:learn_it/common/routes/app_routes.dart';
+import 'package:learn_it/common/utils/screen_size.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -56,7 +57,31 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Column(children: [
             //Profile Banner
-            profileBanner(width, height, selectImage, image),
+            // profileBanner(width, height, selectImage, image),
+
+            Container(
+              height: SizeConfig.height! * 70,
+              width: SizeConfig.width! * 100,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    child: Container(
+                      height: SizeConfig.height! * 60,
+                      width: SizeConfig.width! * 80,
+                      decoration: BoxDecoration(
+                        color: Color(0xfffffff),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          width: 10,
+                          color: Color(0xffD9D9D9),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
 
             //Logout button
             Padding(

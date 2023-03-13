@@ -106,6 +106,7 @@ class RouteGenerator {
       case AppRoutes.conference:
         final args =
             conferenceMeetingModelFromJson(settings.arguments as String);
+        debugPrint("Args ==> ${args.meetingId}");
         return MaterialPageRoute(
           builder: (context) => ConfereneceMeetingScreen(
             token: args.token,

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
 import 'package:learn_it/common/utils/screen_size.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -219,7 +219,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             child: FilledButton(
               onPressed: () {
                 // context.go("/userSelection");
-                GoRouter.of(context).push("/userSelection");
+                // GoRouter.of(context).push("/userSelection");
+                Navigator.of(context).pushNamed(AppRoutes.userSelection);
                 // Navigator.of(context).push(MaterialPageRoute(
                 //   builder: (context) {
                 //     return UserSelectionPage();
@@ -245,8 +246,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 ),
                 InkWell(
                   onTap: () {
-                    GoRouter.of(context).push("/login");
-                    // Navigator.of(context).pushNamed(AppRoutes.login);
+                    //GoRouter.of(context).push("/login");
+                    Navigator.of(context).pushNamed(AppRoutes.login);
                     // Navigator.of(context).push(MaterialPageRoute(
                     //   builder: (context) {
                     //     return LoginPage();

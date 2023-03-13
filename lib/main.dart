@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'common/routes/app_routes.dart';
 import 'common/routes/app_routes_config.dart';
+import 'common/utils/route_generator.dart';
 import 'common/widgets/color_scheme.dart';
 
 //Integrate the WebRTC
@@ -115,7 +116,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChatProvider(),
         )
       ],
-      child: MaterialApp.router(
+      child: MaterialApp(
         theme: ThemeData(
             scaffoldBackgroundColor: const Color(0xFFF5FAFA),
             fontFamily: 'Inter',
@@ -128,20 +129,20 @@ class _MyAppState extends State<MyApp> {
             useMaterial3: true,
             colorScheme: darkColorScheme),
         debugShowCheckedModeBanner: false,
-        routeInformationParser:
-            GoRouterConfig.returnRoutes().routeInformationParser,
-        routerDelegate: GoRouterConfig.returnRoutes().routerDelegate,
+        // routeInformationParser:
+        //     GoRouterConfig.returnRoutes().routeInformationParser,
+        // routerDelegate: GoRouterConfig.returnRoutes().routerDelegate,
 
-        //initialRoute: getRoute(),
-        // AppRoutes.onboardingscreen,
-        //onGenerateRoute: RouteGenerator.generateRoute,
+        initialRoute: getRoute(),
+
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }
 }
 
 getRoute() {
-  String serverIp = "http://192.168.1.80:4000/api";
+  String serverIp = "http://192.168.1.128:4000/api";
   print("LOGIN DATA ======= ${UserLoginDetails.getLoginData()}");
   print("JWT TOKEN ======= ${UserLoginDetails.getJwtToken()}");
   if (UserLoginDetails.getLoginData() == null ||

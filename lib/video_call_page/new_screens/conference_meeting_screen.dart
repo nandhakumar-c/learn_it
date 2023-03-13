@@ -6,6 +6,8 @@ import 'package:learn_it/video_call_page/common/participant/participant_list.dar
 import 'package:provider/provider.dart';
 import 'package:videosdk/videosdk.dart';
 
+import '../../common/models/userlogin_payload_model.dart';
+import '../../common/providers/sharedpref.dart';
 import '../../common/widgets/colors.dart';
 import 'conference_participant_grid.dart';
 import 'conference_screenshare_view.dart';
@@ -14,6 +16,8 @@ import '../common/app_bar/meeting_appbar.dart';
 import '../common/chat/chat_view.dart';
 import '../common/joining/waiting_to_join.dart';
 import '../common/meeting_controls/meeting_action_bar.dart';
+
+import 'package:http/http.dart' as http;
 
 class ConfereneceMeetingScreen extends StatefulWidget {
   final String meetingId, token, displayName;
@@ -140,7 +144,30 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
                             meeting.end();
                           },
 
-                          onCallLeaveButtonPressed: () {
+                          onCallLeaveButtonPressed: () async {
+                            final provider = Provider.of<BackEndProvider>(
+                                context,
+                                listen: false);
+                            final payloadData = payloadFromJson(
+                                UserLoginDetails.getLoginData() as String);
+
+                            String jwt =
+                                UserLoginDetails.getJwtToken() as String;
+
+                            String id = payloadData.user.id;
+
+                            final res = await http.get(
+                                Uri.parse(
+                                    "${provider.getLocalhost()}/leave-class/$id"),
+                                headers: {"Authorization": jwt});
+
+                            //success prompt
+                            if (res.statusCode == 200) {
+                              print("Dashboard - Success");
+
+                              print(res.body);
+                            }
+
                             meeting.leave();
                           },
                           // Called when mic button is pressed
@@ -261,22 +288,22 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
     );
   }
 
-  void registerMeetingEvents(Room meeting) {
+  void registerMeetingEvents(Room _meeting) {
     // Called when joined in meeting
-    meeting.on(
+    _meeting.on(
       Events.roomJoined,
       () {
         setState(() {
-          meeting = meeting;
+          meeting = _meeting;
           _joined = true;
         });
 
-        subscribeToChatMessages(meeting);
+        subscribeToChatMessages(_meeting);
       },
     );
 
     // Called when meeting is ended
-    meeting.on(Events.roomLeft, (String? errorMsg) {
+    _meeting.on(Events.roomLeft, (String? errorMsg) {
       if (errorMsg != null) {
         showSnackBarMessage(
             message: "Meeting left due to $errorMsg !!", context: context);
@@ -295,7 +322,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
     });
 
     // Called when recording is started
-    meeting.on(Events.recordingStateChanged, (String status) {
+    _meeting.on(Events.recordingStateChanged, (String status) {
       showSnackBarMessage(
           message:
               "Meeting recording ${status == "RECORDING_STARTING" ? "is starting" : status == "RECORDING_STARTED" ? "started" : status == "RECORDING_STOPPING" ? "is stopping" : "stopped"}",
@@ -307,7 +334,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
     });
 
     // Called when stream is enabled
-    meeting.localParticipant.on(Events.streamEnabled, (Stream stream) {
+    _meeting.localParticipant.on(Events.streamEnabled, (Stream stream) {
       if (stream.kind == 'video') {
         setState(() {
           videoStream = stream;
@@ -324,7 +351,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
     });
 
     // Called when stream is disabled
-    meeting.localParticipant.on(Events.streamDisabled, (Stream stream) {
+    _meeting.localParticipant.on(Events.streamDisabled, (Stream stream) {
       if (stream.kind == 'video' && videoStream?.id == stream.id) {
         setState(() {
           videoStream = null;
@@ -341,9 +368,9 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
     });
 
     // Called when presenter is changed
-    meeting.on(Events.presenterChanged, (activePresenterId) {
+    _meeting.on(Events.presenterChanged, (activePresenterId) {
       Participant? activePresenterParticipant =
-          meeting.participants[activePresenterId];
+          _meeting.participants[activePresenterId];
 
       // Get Share Stream
       Stream? stream = activePresenterParticipant?.streams.values
@@ -352,7 +379,7 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
       setState(() => remoteParticipantShareStream = stream);
     });
 
-    meeting.on(
+    _meeting.on(
         Events.error,
         (error) => {
               showSnackBarMessage(

@@ -5,7 +5,7 @@ import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import '../../dashboard_page/models/dashboard_model.dart';
 
 class BackEndProvider with ChangeNotifier {
-  final String _localhost = "http://192.168.1.80:4000/api";
+  final String _localhost = "http://192.168.1.128:4000/api";
   String getLocalhost() {
     return _localhost;
   }

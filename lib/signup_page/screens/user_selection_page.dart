@@ -116,11 +116,11 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                   //       SignUpPage(userType: userType as String),
                   // ));
 
-                  // Navigator.of(context).pushNamed(AppRoutes.signup,
-                  //     arguments: userType as String);
+                  Navigator.of(context).pushNamed(AppRoutes.signup,
+                      arguments: userType as String);
 
-                  GoRouter.of(context).pushNamed(AppRouteName.signup,
-                      params: {"userType": userType!});
+                  // GoRouter.of(context).pushNamed(AppRouteName.signup,
+                  //     params: {"userType": userType!});
                 },
                 child: Text(
                   "Learner",
@@ -151,11 +151,11 @@ class _UserSelectionPageState extends State<UserSelectionPage> {
                   //   builder: (context) =>
                   //       SignUpPage(userType: userType as String),
                   // ));
-                  // Navigator.of(context).pushNamed(AppRoutes.signup,
-                  //     arguments: userType as String);
+                  Navigator.of(context).pushNamed(AppRoutes.signup,
+                      arguments: userType as String);
 
-                  GoRouter.of(context).pushNamed(AppRouteName.signup,
-                      params: {"userType": userType!});
+                  // GoRouter.of(context).pushNamed(AppRouteName.signup,
+                  //     params: {"userType": userType!});
                 },
                 child: Text("Instructor",
                     style: Theme.of(context).textTheme.labelLarge!.copyWith(
