@@ -96,10 +96,21 @@ class _SignUpPageState extends State<SignUpPage> {
 
     //Displays Error Message
     void displayDialog(context, title, text) => showDialog(
-          context: context,
-          builder: (context) =>
-              AlertDialog(title: Text(title), content: Text(text)),
-        );
+        context: context,
+        builder: (context) {
+          Future.delayed(
+            Duration(seconds: 5),
+            () {
+              username!.clear();
+              email!.clear();
+              password!.clear();
+              Navigator.of(context)
+                  .popUntil(ModalRoute.withName(AppRoutes.userSelection));
+            },
+          );
+
+          return AlertDialog(title: Text(title), content: Text(text));
+        });
 
     //Attempt SignUP
     attemptSignUp(String username, String email, String password,
@@ -148,7 +159,6 @@ class _SignUpPageState extends State<SignUpPage> {
         // Navigator.of(context).push(MaterialPageRoute(
         //   builder: (context) => UserSelectionPage(),
         // ));
-        Navigator.of(context).pushNamed(AppRoutes.userSelection);
       }
     }
 

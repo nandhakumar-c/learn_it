@@ -5,6 +5,7 @@ import 'package:learn_it/chatpage/screens/chat_screen.dart';
 import 'package:learn_it/common/models/conference_meeting_model.dart';
 import 'package:learn_it/common/models/userlogin_payload_model.dart';
 import 'package:learn_it/common/providers/sharedpref.dart';
+import 'package:learn_it/common/widgets/default_page.dart';
 import 'package:learn_it/common/widgets/loading.dart';
 import 'package:learn_it/dashboard_page/screens/dashboard_page.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
@@ -147,7 +148,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => const LoadingScreen());
       default:
         return MaterialPageRoute(
-          builder: (context) => const LoadingScreen(),
+          builder: (context) => const DefaultPage(),
         );
     }
   }

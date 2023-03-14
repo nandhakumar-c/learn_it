@@ -267,12 +267,16 @@ class _DashBoardPageState extends State<DashBoardPage> {
                     SizedBox(
                       height: SizeConfig.height! * 5,
                     ),
-                    Text(
-                      "Upcoming Meetings",
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w700),
-                    ),
+                    if (upcomingMeetingLength > 0)
+                      Text(
+                        "Upcoming Meetings",
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color: Theme.of(context).colorScheme.secondary,
+                                fontWeight: FontWeight.w700),
+                      ),
                     SizedBox(
                       height: SizeConfig.height! * 2,
                     ),

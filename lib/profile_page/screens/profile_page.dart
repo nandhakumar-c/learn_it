@@ -26,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (pickedImage != null) {
         image = File(pickedImage.path);
+        await UserLoginDetails.setProfilePicture(pickedImage.path);
       }
       return image;
     } catch (e) {
@@ -35,6 +36,14 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (UserLoginDetails.getdp() != null) {
+      image = File(UserLoginDetails.getdp()!);
+    }
   }
 
   @override
@@ -77,8 +86,116 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Color(0xffD9D9D9),
                         ),
                       ),
+                      child: Stack(children: [
+                        Positioned(
+                            child: Container(
+                          height: SizeConfig.height! * 20,
+                          width: SizeConfig.width! * 80,
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 0, 195, 255),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                          ),
+                        )),
+                        Positioned(
+                          top: SizeConfig.height! * 15,
+                          left: SizeConfig.width! * 22,
+                          child: SizedBox(
+                            height: width * 0.25,
+                            width: width * 0.3,
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  height: width * 0.2,
+                                  width: width * 0.2,
+                                  // ignore: prefer_const_constructors
+                                  decoration: BoxDecoration(
+                                      // ignore: prefer_const_literals_to_create_immutables
+                                      boxShadow: [
+                                        const BoxShadow(
+                                            spreadRadius: 2,
+                                            blurRadius: 10,
+                                            blurStyle: BlurStyle.outer,
+                                            color: Color.fromARGB(
+                                                255, 255, 254, 254),
+                                            offset: Offset(0, 0))
+                                      ],
+                                      border: Border.all(
+                                          style: BorderStyle.solid,
+                                          color: const Color.fromARGB(
+                                              255, 214, 226, 246),
+                                          width: 2),
+                                      shape: BoxShape.circle,
+                                      color: Colors.white),
+                                  child: image == null
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(width),
+                                          child: const Image(
+                                            image: AssetImage(
+                                                "assets/avatars/profile picture.png"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(width),
+                                          child: Image(
+                                            image: FileImage(image!),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                ),
+                                //Adding photo
+                                Positioned(
+                                  right: width * 0.025,
+                                  bottom: 5,
+                                  child: Container(
+                                    height: width * 0.08,
+                                    width: width * 0.1,
+                                    alignment: Alignment.topCenter,
+                                    decoration: const BoxDecoration(
+                                        color: Color.fromARGB(125, 9, 43, 101),
+                                        shape: BoxShape.circle),
+                                    child: IconButton(
+                                      onPressed: selectImage,
+                                      icon: const Icon(
+                                        Icons.add_a_photo,
+                                        color: Colors.white,
+                                      ),
+                                      iconSize: width * 0.04,
+                                    ),
+                                  ),
+                                ),
+
+                                Positioned(
+                                    top: SizeConfig.height! * 50,
+                                    left: SizeConfig.width! * 20,
+                                    child: Column(
+                                      children: [
+                                        Flexible(
+                                          child: Text(
+                                            "Name",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge!
+                                                .copyWith(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary),
+                                          ),
+                                        )
+                                      ],
+                                    ))
+                              ],
+                            ),
+                          ),
+                        )
+                      ]),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:learn_it/common/providers/backend_provider.dart';
+import 'package:learn_it/common/routes/app_routes.dart';
+import 'package:learn_it/common/routes/app_routes_name.dart';
 import 'package:learn_it/homepage/screens/homepage.dart';
 import 'package:learn_it/video_call_page/common/participant/participant_list.dart';
 import 'package:provider/provider.dart';
@@ -78,8 +80,8 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
       multiStream: true,
       defaultCameraIndex: 1,
       notification: const NotificationInfo(
-        title: "Video SDK",
-        message: "Video SDK is sharing screen in the meeting",
+        title: "LearnIt",
+        message: "LearnIt is sharing screen in the meeting",
         icon: "notification_share", // drawable icon name
       ),
     );
@@ -308,17 +310,16 @@ class _ConfereneceMeetingScreenState extends State<ConfereneceMeetingScreen> {
         showSnackBarMessage(
             message: "Meeting left due to $errorMsg !!", context: context);
       }
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(
-              userType: Provider.of<BackEndProvider>(context)
-                  .payloadData!
-                  .user
-                  .userType,
-            ),
-          ),
-          (route) => false);
+
+      String userType =
+          payloadFromJson(UserLoginDetails.getLoginData() as String)
+              .user
+              .userType;
+
+      print(userType);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRoutes.home, (route) => false,
+          arguments: userType);
     });
 
     // Called when recording is started

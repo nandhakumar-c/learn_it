@@ -104,7 +104,7 @@ class _AddCoursesPageState extends State<AddCoursesPage> {
   }
 
   startTimer() {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(milliseconds: 2500), () {
       setState(() {
         success = false;
       });

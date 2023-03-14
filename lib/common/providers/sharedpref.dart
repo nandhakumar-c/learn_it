@@ -9,6 +9,10 @@ class UserLoginDetails {
     pref = await SharedPreferences.getInstance();
   }
 
+  static Future setProfilePicture(String image) async {
+    await pref.setString("dp", image);
+  }
+
   static Future setEmailPassword(String data, String jwt) async {
     payloadData = payloadFromJson(data);
     await pref.setString("loginData", data);
@@ -34,6 +38,11 @@ class UserLoginDetails {
   static String? getJwtToken() {
     final email = pref.getString("jwtToken");
     return email;
+  }
+
+  static String? getdp() {
+    final dp = pref.getString("dp");
+    return dp;
   }
 
   static void clearData() {
